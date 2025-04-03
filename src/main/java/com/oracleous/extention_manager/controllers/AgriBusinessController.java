@@ -6,6 +6,9 @@ import com.oracleous.extention_manager.exceptions.BusinessAlreadyExistsException
 import com.oracleous.extention_manager.exceptions.FarmerNotFoundException;
 import com.oracleous.extention_manager.services.agriBusinessServices.AgriBusinessService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,10 +21,11 @@ public class AgriBusinessController {
     final AgriBusinessService agriBusinessService;
 
     @PostMapping("/agri_business_registration")
-    public AgriBusinessResponse agriBusinessRegistration(@RequestBody AgriBusinessRegRequest agriBusinessRegRequest) throws BusinessAlreadyExistsException, FarmerNotFoundException {
-       return agriBusinessService.registerAgriBusiness(agriBusinessRegRequest);
-
-
-
+    public ResponseEntity <?> agriBusinessRegistration(@RequestBody AgriBusinessRegRequest agriBusinessRegRequest) throws BusinessAlreadyExistsException, FarmerNotFoundException {
+       try{
+           return new ResponseEntity<>(agriBusinessService.registerAgriBusiness(agriBusinessRegRequest), HttpStatus.CREATED);
+       }catch (BusinessAlreadyExistsException exception){
+           return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
+       }
     }
 }

@@ -10,6 +10,10 @@ public class ApplicationUtilities {
     public static final String BUSINESS_REGISTERED_CODE = "003";
     public static final String BUSINESS_REGISTERED_MESSAGE ="Business Registered Successfully";
 
+    public static final String INVESTOR_ALREADY_EXIST = "Investor With These details Already Exist";
+    public static final String INVESTOR_CREATED_CODE = "004";
+    public static final String INVESTOR_CREATED_MESSAGE = "Account Created Successfully";
+
 
 
     public static String generateRegNumber() {
