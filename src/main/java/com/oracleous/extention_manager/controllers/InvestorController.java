@@ -1,9 +1,7 @@
 package com.oracleous.extention_manager.controllers;
 
-import com.oracleous.extention_manager.dto.requests.AgriBusinessRegRequest;
 import com.oracleous.extention_manager.dto.requests.InvestorRegistrationRequest;
-import com.oracleous.extention_manager.dto.response.InvestorRegistrationResponse;
-import com.oracleous.extention_manager.services.investorServices.InvestorServiceReg;
+import com.oracleous.extention_manager.services.investorServices.InvestorRegistration.InvestorServiceReg;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +22,7 @@ public class InvestorController {
         try {
             return new ResponseEntity<>(investorServiceReg.investorRegistration(investorRegistrationRequest), HttpStatus.CREATED);
         } catch (Exception exception) {
-            return new ResponseEntity<>("Registration failed: " + exception.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 }

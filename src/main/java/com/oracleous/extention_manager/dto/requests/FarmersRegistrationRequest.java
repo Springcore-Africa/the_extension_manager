@@ -1,5 +1,6 @@
 package com.oracleous.extention_manager.dto.requests;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.oracleous.extention_manager.data.model.Gender;
 import com.oracleous.extention_manager.data.model.MaritalStatus;
 import lombok.Getter;
@@ -23,8 +24,14 @@ public class FarmersRegistrationRequest {
     private int numberOfChildren;
     private String regNumber;
     private String description;
-    private Enum<Gender> gender;
-    private Enum<MaritalStatus> maritalStatus;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
+    private Gender  gender;
+//    private Enum<Gender> gender;
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
+    private MaritalStatus maritalStatus ;
+//    private Enum<MaritalStatus> maritalStatus;
+
     private String ninSlip;
     private String birthCertificate;
     private String lastEducationalCertificate;

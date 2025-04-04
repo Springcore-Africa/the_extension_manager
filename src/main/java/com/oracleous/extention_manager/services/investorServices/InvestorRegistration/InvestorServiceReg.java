@@ -1,4 +1,4 @@
-package com.oracleous.extention_manager.services.investorServices;
+package com.oracleous.extention_manager.services.investorServices.InvestorRegistration;
 
 import com.oracleous.extention_manager.dto.requests.InvestorRegistrationRequest;
 import com.oracleous.extention_manager.dto.response.InvestorRegistrationResponse;

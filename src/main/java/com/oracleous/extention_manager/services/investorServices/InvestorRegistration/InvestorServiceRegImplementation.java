@@ -1,4 +1,4 @@
-package com.oracleous.extention_manager.services.investorServices;
+package com.oracleous.extention_manager.services.investorServices.InvestorRegistration;
 
 import com.oracleous.extention_manager.data.model.Investor;
 import com.oracleous.extention_manager.data.repositories.InvestorRepository;
@@ -10,7 +10,7 @@ import static com.oracleous.extention_manager.utilities.ApplicationUtilities.*;
 
 @Service
 @AllArgsConstructor
-public class InvestorServiceRegImplementation implements InvestorServiceReg{
+public class InvestorServiceRegImplementation implements InvestorServiceReg {
 
     private final InvestorRepository investorRepository;
 

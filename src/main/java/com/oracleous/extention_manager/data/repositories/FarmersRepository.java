@@ -17,4 +17,5 @@ public interface FarmersRepository extends JpaRepository<Farmer, Long> {
                                                    @Param("nationalId") String nationalId,
                                                    @Param("phoneNumber") String phoneNumber);
 
+    Optional<Farmer> findByEmailAndPhoneNumber(String email, String phoneNumber);
 }

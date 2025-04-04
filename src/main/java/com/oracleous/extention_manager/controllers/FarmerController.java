@@ -2,11 +2,9 @@ package com.oracleous.extention_manager.controllers;
 
 import com.oracleous.extention_manager.dto.requests.FarmersRegistrationRequest;
 import com.oracleous.extention_manager.dto.response.FarmerResponse;
-import com.oracleous.extention_manager.exceptions.FarmerExistException;
-import com.oracleous.extention_manager.services.farmersServices.FarmerServiceImplementation;
-import com.oracleous.extention_manager.services.farmersServices.FarmersService;
+import com.oracleous.extention_manager.services.farmersServices.FarmerRegistration.FarmerServiceImplementation;
+import com.oracleous.extention_manager.services.farmersServices.FarmerRegistration.FarmersService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
