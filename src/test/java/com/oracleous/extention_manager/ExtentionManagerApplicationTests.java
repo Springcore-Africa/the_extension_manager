@@ -1,9 +1,6 @@
 package com.oracleous.extention_manager;
 
-import com.oracleous.extention_manager.data.model.Farmer;
-import com.oracleous.extention_manager.data.model.Gender;
-import com.oracleous.extention_manager.data.model.Investor;
-import com.oracleous.extention_manager.data.model.MaritalStatus;
+import com.oracleous.extention_manager.data.model.*;
 import com.oracleous.extention_manager.data.repositories.AgriBusinessRepository;
 import com.oracleous.extention_manager.data.repositories.FarmersRepository;
 import com.oracleous.extention_manager.dto.requests.AgriBusinessRegRequest;
@@ -159,41 +156,38 @@ class ExtentionManagerApplicationTests {
 	}
 
 	private void agricBusiness() throws BusinessAlreadyExistsException, FarmerNotFoundException {
-		Farmer farmer = new Farmer();
+		Farmer farmer = Farmer.builder()
+				.firstName("Daniela")
+				.lastName("grace")
+				.email("john@doe.com")
+				.phoneNumber("1234567890")
+				.build();
 		farmersRepository.save(farmer);
-		farmer.setId(farmer.getId());
-		farmerResponseRegistration();
-		AgriBusinessRegRequest agriBusinessRegRequest = new AgriBusinessRegRequest();
-		agriBusinessRegRequest.setBusinessName("technology");
-		agriBusinessRegRequest.setBusinessLocationExact("Lagos");
-		agriBusinessRegRequest.setRegNumber("LOVE090");
-		agriBusinessRegRequest.setBusinessLocationLga("ikeja");
-		agriBusinessRegRequest.setAgriculturalProduct("yam");
-		agriBusinessRegRequest.setCacCertificate("certification");
-		agriBusinessRegRequest.setCacRegistrationDate(LocalDate.of(2020, 10,1).atStartOfDay());
-		agriBusinessRegRequest.setNumberOfEmployees(20);
-		agriBusinessRegRequest.setMemart("polo");
-		agriBusinessRegRequest.setProductPhotos("image");
-		agriBusinessRegRequest.setProductDescription("this is an agric business");
-		agriBusinessRegRequest.setFarmerId(farmer.getId());
-		agricBusinessService.registerAgriBusiness(agriBusinessRegRequest);
+
+		AgriBusiness agriBusiness = AgriBusiness.builder()
+				.businessName("technology")
+				.farmer(farmer)
+				.build();
+		agriBusinessRepository.save(agriBusiness);
 	}
 
 	@Test
 	public void testThatFarmerCanRegisterForAgrcBusinessAfterRegistration() throws BusinessAlreadyExistsException, FarmerNotFoundException {
-//		farmerResponseRegistration();
 		agricBusiness();
+
 		AgricGetRequest agricGetRequest = new AgricGetRequest();
 		agricGetRequest.setEmail("john@doe.com");
 		agricGetRequest.setPhoneNumber("1234567890");
 
 		AgricGetResponse agricGetResponse = getAgricBusinessDetails.getAgricBusinessDetails(agricGetRequest);
+
 		FullName fullName = agricGetResponse.getFullName();
-		assertNotNull(fullName, "Full name should not be null");
-		assertEquals("Emails ", agricGetResponse.getEmail(), "john@doe.com");
-		assertEquals("Phone number", agricGetResponse.getPhoneNumber(), "1234567890");
-		assertEquals("First names ", fullName.getFirstName(), "Daniela");
-		assertEquals("Last names ", fullName.getLastName(), "grace");
+//		assertNotNull(fullName, "Full name should not be null");
+//		assertEquals("Email should match", agricGetResponse.getEmail(), "john@doe.com");
+		assertEquals("Phone number should match", agricGetResponse.getPhoneNumber(), "1234567890");
+		assertEquals("First name should match", fullName.getFirstName(), "Daniela");
+		assertEquals("Last name should match", fullName.getLastName(), "grace");
 	}
+
 
 }

@@ -13,4 +13,7 @@ public class InvestorGetResponse {
     private FullName fullName;
     private String email;
     private String phoneNumber;
+    private String password;
+    private String shortBio;
+    private String passportPhotograph;
 }

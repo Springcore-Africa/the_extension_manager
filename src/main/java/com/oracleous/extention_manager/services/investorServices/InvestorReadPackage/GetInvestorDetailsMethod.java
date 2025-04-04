@@ -19,10 +19,10 @@ public class GetInvestorDetailsMethod implements GetInvestorDetails{
         String email = getInvestorDetailsRequest.getEmail();
         String phoneNumber = getInvestorDetailsRequest.getPhoneNumber();
 
-        if(email == null || email.isEmpty() || phoneNumber == null || phoneNumber.isEmpty()){
-            throw new InvestorNotFoundException("The details provided isn't correct");
+        if ((email == null || email.isEmpty()) && (phoneNumber == null || phoneNumber.isEmpty())) {
+            throw new InvestorNotFoundException("Either Email or PhoneNumber must be provided");
         }
-        Investor investor = investorRepository.findByEmailAndPhoneNumber(email, phoneNumber).
+        Investor investor = investorRepository.findByEmailOrPhoneNumber(email, phoneNumber).
                 orElseThrow(()-> new InvestorNotFoundException("Email or PhoneNumber is not found"));
 
         FullName fullName = FullName.builder().
@@ -34,6 +34,8 @@ public class GetInvestorDetailsMethod implements GetInvestorDetails{
                 fullName(fullName).
                 email(email).
                 phoneNumber(phoneNumber).
+                passportPhotograph(investor.getPassportPhotograph()).
+                shortBio(investor.getShortBio()).
                 build();
     }
 }

@@ -26,7 +26,7 @@ public class FarmersRegistrationRequest {
     private String description;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING)
-    private Gender  gender;
+    private Gender gender;
 //    private Enum<Gender> gender;
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private MaritalStatus maritalStatus ;

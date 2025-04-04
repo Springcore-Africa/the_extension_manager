@@ -13,7 +13,7 @@ public class ApplicationUtilities {
     public static final String INVESTOR_ALREADY_EXIST = "Investor With These details Already Exist";
     public static final String INVESTOR_CREATED_CODE = "004";
     public static final String INVESTOR_CREATED_MESSAGE = "Account Created Successfully";
-
+    public static final String AGRIBUSINESS_NOT_FOUND_MESSAGE = "Email or Phone Number Not Found";
 
 
     public static String generateRegNumber() {

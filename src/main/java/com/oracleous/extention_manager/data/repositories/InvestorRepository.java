@@ -10,5 +10,5 @@ import java.util.Optional;
 public interface InvestorRepository extends JpaRepository<Investor, Long> {
     boolean existsByEmailAndPhoneNumber(String email, String phoneNumber);
 
-    Optional<Investor> findByEmailAndPhoneNumber(String email, String phoneNumber);
+    Optional<Investor> findByEmailOrPhoneNumber(String email, String phoneNumber);
 }
