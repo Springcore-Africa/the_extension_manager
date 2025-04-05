@@ -35,4 +35,17 @@ public class AgriBusinessController {
             return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
+
+//    @GetMapping("/find_agriBusiness/")
+//    public ResponseEntity <?> findAgriBusiness(    @RequestParam(required = false) String email,
+//                                                   @RequestParam(required = false) String phoneNumber) {
+//        try{
+//            AgricGetRequest agric = new AgricGetRequest();
+//            agric.setEmail(email);
+//            agric.setPhoneNumber(phoneNumber);
+//            return new ResponseEntity<>(agricBusinessDetailsMethod.getAgricBusinessDetails(agric), HttpStatus.FOUND);
+//        }catch (Exception exception){
+//            return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
+//        }
+//    }
 }

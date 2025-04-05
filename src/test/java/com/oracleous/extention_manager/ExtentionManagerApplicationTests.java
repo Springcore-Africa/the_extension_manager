@@ -3,7 +3,6 @@ package com.oracleous.extention_manager;
 import com.oracleous.extention_manager.data.model.*;
 import com.oracleous.extention_manager.data.repositories.AgriBusinessRepository;
 import com.oracleous.extention_manager.data.repositories.FarmersRepository;
-import com.oracleous.extention_manager.dto.requests.AgriBusinessRegRequest;
 import com.oracleous.extention_manager.dto.requests.FarmersRegistrationRequest;
 import com.oracleous.extention_manager.dto.requests.InvestorRegistrationRequest;
 import com.oracleous.extention_manager.dto.requests.readRequest.AgricGetRequest;
@@ -14,8 +13,6 @@ import com.oracleous.extention_manager.dto.response.readResponse.AgricGetRespons
 import com.oracleous.extention_manager.dto.response.readResponse.FarmerGetResponse;
 import com.oracleous.extention_manager.dto.response.readResponse.FullName;
 import com.oracleous.extention_manager.dto.response.readResponse.InvestorGetResponse;
-import com.oracleous.extention_manager.exceptions.BusinessAlreadyExistsException;
-import com.oracleous.extention_manager.exceptions.FarmerNotFoundException;
 import com.oracleous.extention_manager.services.agriBusinessServices.AgricBusinessReadPackage.GetAgricBusinessDetails;
 import com.oracleous.extention_manager.services.agriBusinessServices.AgricBusinessRegistration.AgriBusinessService;
 import com.oracleous.extention_manager.services.farmersServices.FarmerReadPackage.GetFarmerDetailsMethod;
@@ -155,39 +152,42 @@ class ExtentionManagerApplicationTests {
 		assertEquals("Last names ", fullName.getLastName(), "grace");
 	}
 
-	private void agricBusiness() throws BusinessAlreadyExistsException, FarmerNotFoundException {
+
+	private AgricGetRequest agricBusiness() {
+		AgriBusiness agriBusiness = AgriBusiness.builder()
+				.businessName("technology")
+				.businessLocationLga("abuja")
+				.businessLocationState("lagos")
+				.build();
+
 		Farmer farmer = Farmer.builder()
 				.firstName("Daniela")
 				.lastName("grace")
 				.email("john@doe.com")
 				.phoneNumber("1234567890")
+				.agriBusiness(agriBusiness)
 				.build();
+		agriBusiness.setFarmer(farmer);
 		farmersRepository.save(farmer);
 
-		AgriBusiness agriBusiness = AgriBusiness.builder()
-				.businessName("technology")
-				.farmer(farmer)
-				.build();
-		agriBusinessRepository.save(agriBusiness);
-	}
-
-	@Test
-	public void testThatFarmerCanRegisterForAgrcBusinessAfterRegistration() throws BusinessAlreadyExistsException, FarmerNotFoundException {
-		agricBusiness();
-
 		AgricGetRequest agricGetRequest = new AgricGetRequest();
-		agricGetRequest.setEmail("john@doe.com");
-		agricGetRequest.setPhoneNumber("1234567890");
+		agricGetRequest.setPhoneNumber(farmer.getPhoneNumber());
+		agricGetRequest.setEmail(farmer.getEmail());
 
-		AgricGetResponse agricGetResponse = getAgricBusinessDetails.getAgricBusinessDetails(agricGetRequest);
-
-		FullName fullName = agricGetResponse.getFullName();
-//		assertNotNull(fullName, "Full name should not be null");
-//		assertEquals("Email should match", agricGetResponse.getEmail(), "john@doe.com");
-		assertEquals("Phone number should match", agricGetResponse.getPhoneNumber(), "1234567890");
-		assertEquals("First name should match", fullName.getFirstName(), "Daniela");
-		assertEquals("Last name should match", fullName.getLastName(), "grace");
+		return agricGetRequest;
 	}
+@Test
+public void testThatFarmerCanRegisterForAgrcBusinessAfterRegistration() {
+	AgricGetRequest agricGetRequest = agricBusiness();
 
+	AgricGetResponse agricGetResponse = getAgricBusinessDetails.getAgricBusinessDetails(agricGetRequest);
+
+	FullName fullName = agricGetResponse.getFullName();
+	assertNotNull(fullName, "Full name should not be null");
+	assertEquals("Email should match", agricGetResponse.getEmail(), "john@doe.com");
+	assertEquals("Phone number should match", agricGetResponse.getPhoneNumber(), "1234567890");
+	assertEquals("First name should match", fullName.getFirstName(), "Daniela");
+	assertEquals("Last name should match", fullName.getLastName(), "grace");
+}
 
 }

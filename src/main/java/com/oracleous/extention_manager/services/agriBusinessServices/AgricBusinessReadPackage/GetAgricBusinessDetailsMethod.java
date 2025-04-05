@@ -5,10 +5,12 @@ import com.oracleous.extention_manager.data.repositories.AgriBusinessRepository;
 import com.oracleous.extention_manager.data.repositories.FarmersRepository;
 import com.oracleous.extention_manager.dto.requests.readRequest.AgricGetRequest;
 import com.oracleous.extention_manager.dto.response.readResponse.AgricGetResponse;
+import com.oracleous.extention_manager.dto.response.readResponse.FullName;
 import com.oracleous.extention_manager.exceptions.FarmerNotFoundException;
 import com.oracleous.extention_manager.exceptions.FarmerNotFoundExceptionWhileFetching;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import static com.oracleous.extention_manager.utilities.ApplicationUtilities.*;
@@ -18,7 +20,7 @@ import java.util.Optional;
 @Service
 @Builder
 @AllArgsConstructor
-//@NoArgsConstructor
+@Slf4j
 public class GetAgricBusinessDetailsMethod implements GetAgricBusinessDetails {
     @Autowired
     private AgriBusinessRepository agriBusinessRepository;
@@ -28,30 +30,28 @@ public class GetAgricBusinessDetailsMethod implements GetAgricBusinessDetails {
     @Override
     public AgricGetResponse getAgricBusinessDetails(AgricGetRequest getAgriBusinessDetailsRequest) {
 
-//        boolean farmerExist = farmersRepository.existsByEmailOrPhoneNumber(
-//                getAgriBusinessDetailsRequest.getEmail(),
-//                getAgriBusinessDetailsRequest.getPhoneNumber()
-//        );
-//        if (farmerExist) {
-//            Optional<AgriBusiness> agriBusiness = agriBusinessRepository.findByEmailOrPhoneNumber(
-//                    getAgriBusinessDetailsRequest.getEmail(),
-//                    getAgriBusinessDetailsRequest.getPhoneNumber()
-//            );
         String email = getAgriBusinessDetailsRequest.getEmail();
-        String phoneNumber = getAgriBusinessDetailsRequest.getPhoneNumber();
+        log.info("this is the email input: {} ", email);
 
-        // Ensure that at least one field is provided
+        String phoneNumber = getAgriBusinessDetailsRequest.getPhoneNumber();
+        log.info("this is the phone number: {}", phoneNumber);
+
         if ((email == null || email.isEmpty()) && (phoneNumber == null || phoneNumber.isEmpty())) {
             throw new IllegalArgumentException("Either Email or PhoneNumber must be provided.");
         }
+        log.info("getAgricBusinessDetails email: {}, phoneNumber: {}", email, phoneNumber);
 
-        // Fetch AgriBusiness through associated Farmer
         Optional<AgriBusiness> agriBusiness = agriBusinessRepository.findByFarmer_EmailOrFarmer_PhoneNumber(email, phoneNumber);
-            return agriBusiness.map(business -> AgricGetResponse.builder().
+            return agriBusiness.map(business -> AgricGetResponse.builder().fullName(FullName.builder().
+                                    firstName(business.getFarmer().getFirstName()).
+                                    lastName(business.getFarmer().getLastName()).
+                                    build()).
+                    email(business.getFarmer().getEmail()).
+                    phoneNumber(business.getFarmer().getPhoneNumber()).
+
                     businessLocationLga(business.getBusinessLocationLga()).
                     businessName(business.getBusinessName()).
                     businessLocationState(business.getBusinessLocationState()).
-                    businessLocationLga(business.getBusinessLocationLga()).
                     businessLocationExact(business.getBusinessLocationExact()).
                     cacNumber(business.getCacNumber()).
                     cacRegistrationDate(business.getCacRegistrationDate()).
@@ -70,9 +70,5 @@ public class GetAgricBusinessDetailsMethod implements GetAgricBusinessDetails {
                             (AgricGetResponse.builder()
                                     .responseMessage(AGRIBUSINESS_NOT_FOUND_MESSAGE)
                                     .build());
-//        }
-//        return AgricGetResponse.builder().
-//                responseMessage(AGRIBUSINESS_NOT_FOUND_MESSAGE).
-//                build();
     }
 }
