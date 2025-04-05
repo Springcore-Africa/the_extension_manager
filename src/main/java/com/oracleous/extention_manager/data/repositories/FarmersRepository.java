@@ -17,7 +17,11 @@ public interface FarmersRepository extends JpaRepository<Farmer, Long> {
                                                    @Param("nationalId") String nationalId,
                                                    @Param("phoneNumber") String phoneNumber);
 
-    Optional<Farmer> findByEmailOrPhoneNumber(String email, String phoneNumber);
+//    Optional<Farmer> findByEmailOrPhoneNumber(String email, String phoneNumber);
+    @Query("SELECT f FROM Farmer f WHERE " +
+            "(:email IS NOT NULL AND LOWER(f.email) = LOWER(:email)) OR " +
+            "(:phoneNumber IS NOT NULL AND f.phoneNumber = :phoneNumber)")
+    Optional<Farmer> findByEmailOrPhoneNumber(@Param("email") String email, @Param("phoneNumber") String phoneNumber);
 
-    boolean existsByEmailOrPhoneNumber(String email, String phoneNumber);
+//    boolean existsByEmailOrPhoneNumber(String email, String phoneNumber);
 }

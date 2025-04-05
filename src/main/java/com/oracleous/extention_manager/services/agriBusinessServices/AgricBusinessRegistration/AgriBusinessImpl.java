@@ -13,6 +13,7 @@ import com.oracleous.extention_manager.utilities.ApplicationUtilities;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.oracleous.extention_manager.utilities.ApplicationUtilities.BUSINESS_REGISTERED_CODE;
@@ -40,7 +41,7 @@ public class AgriBusinessImpl implements AgriBusinessService {
                 .businessLocationLga(regRequest.getBusinessLocationLga())
                 .businessLocationExact(regRequest.getBusinessLocationExact())
                 .cacNumber(regRequest.getCacNumber())
-                .cacRegistrationDate(regRequest.getCacRegistrationDate())
+                .cacRegistrationDate(LocalDateTime.now())
                 .farmSize(regRequest.getFarmSize())
                 .agriculturalProduct(regRequest.getAgriculturalProduct())
                 .yearlyProduction(regRequest.getYearlyProduction())
@@ -56,6 +57,10 @@ public class AgriBusinessImpl implements AgriBusinessService {
 
 
         AgriBusiness savedBusiness = agriBusinessRepository.save(agriBusiness);
+
+        //  THIS is the missing link
+        farmer.setAgriBusiness(savedBusiness);
+        farmersRepository.save(farmer); // persist the update
 
 
         return AgriBusinessResponse.builder()

@@ -177,17 +177,17 @@ class ExtentionManagerApplicationTests {
 		return agricGetRequest;
 	}
 @Test
-public void testThatFarmerCanRegisterForAgrcBusinessAfterRegistration() {
-	AgricGetRequest agricGetRequest = agricBusiness();
+public void testThatFarmerCanRegisterForAgricBusinessAfterRegistration() {
+		AgricGetRequest agricGetRequest = agricBusiness();
 
-	AgricGetResponse agricGetResponse = getAgricBusinessDetails.getAgricBusinessDetails(agricGetRequest);
+		AgricGetResponse agricGetResponse = getAgricBusinessDetails.getAgricBusinessDetails(agricGetRequest);
 
-	FullName fullName = agricGetResponse.getFullName();
-	assertNotNull(fullName, "Full name should not be null");
-	assertEquals("Email should match", agricGetResponse.getEmail(), "john@doe.com");
-	assertEquals("Phone number should match", agricGetResponse.getPhoneNumber(), "1234567890");
-	assertEquals("First name should match", fullName.getFirstName(), "Daniela");
-	assertEquals("Last name should match", fullName.getLastName(), "grace");
-}
+		FullName fullName = agricGetResponse.getFullName();
+		assertNotNull(fullName, "Full name should not be null");
+		assertEquals("Email should match", agricGetResponse.getEmail(), "john@doe.com");
+		assertEquals("Phone number should match", agricGetResponse.getPhoneNumber(), "1234567890");
+		assertEquals("First name should match", fullName.getFirstName(), "Daniela");
+		assertEquals("Last name should match", fullName.getLastName(), "grace");
+	}
 
 }
