@@ -13,4 +13,8 @@ public interface AgriBusinessRepository extends JpaRepository<AgriBusiness, Inte
     Optional<AgriBusiness> findByCacNumber(String cacNumber);
 
     boolean existsByCacNumber(String cacNumber);
+
+//    Optional<AgriBusiness> findByEmailOrPhoneNumber(String email, String phoneNumber);
+
+    Optional<AgriBusiness> findByFarmer_EmailOrFarmer_PhoneNumber(String email, String phoneNumber);
 }

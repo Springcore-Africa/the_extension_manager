@@ -1,4 +1,4 @@
-package com.oracleous.extention_manager.services.agriBusinessServices;
+package com.oracleous.extention_manager.services.agriBusinessServices.AgricBusinessRegistration;
 
 import com.oracleous.extention_manager.dto.requests.AgriBusinessRegRequest;
 import com.oracleous.extention_manager.dto.response.AgriBusinessResponse;

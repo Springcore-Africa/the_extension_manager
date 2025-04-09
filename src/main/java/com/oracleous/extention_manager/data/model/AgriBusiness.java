@@ -59,6 +59,7 @@ public class AgriBusiness {
     @OneToOne(mappedBy = "agriBusiness")
     private Farmer farmer;
 
+
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime createdAt;

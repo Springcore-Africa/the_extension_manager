@@ -1,6 +1,5 @@
-package com.oracleous.extention_manager.services.farmersServices;
+package com.oracleous.extention_manager.services.farmersServices.FarmerRegistration;
 
-import com.oracleous.extention_manager.data.model.Farmer;
 import com.oracleous.extention_manager.dto.requests.FarmersRegistrationRequest;
 import com.oracleous.extention_manager.dto.response.FarmerResponse;
 

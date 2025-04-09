@@ -1,20 +1,25 @@
-package com.oracleous.extention_manager.dto.requests;
+package com.oracleous.extention_manager.dto.response.readResponse;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.oracleous.extention_manager.data.model.Gender;
 import com.oracleous.extention_manager.data.model.MaritalStatus;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-@Getter
-@Setter
-public class FarmersRegistrationRequest {
-    private String firstName;
-    private String lastName;
-    private String phoneNumber;
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class FarmerGetResponse {
+    private FullName fullName;
+    //    private String firstName;
+    //    private String lastName;
     private String email;
+    private String phoneNumber;
     private String password;
     private String nationalId;
     private LocalDateTime dateOfBirth;
@@ -24,13 +29,12 @@ public class FarmersRegistrationRequest {
     private int numberOfChildren;
     private String regNumber;
     private String description;
+//    private String business
 
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Gender gender;
-//    private Enum<Gender> gender;
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private MaritalStatus maritalStatus ;
-//    private Enum<MaritalStatus> maritalStatus;
 
     private String ninSlip;
     private String birthCertificate;

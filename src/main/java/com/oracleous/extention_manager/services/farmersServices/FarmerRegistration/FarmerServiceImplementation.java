@@ -1,15 +1,12 @@
-package com.oracleous.extention_manager.services.farmersServices;
+package com.oracleous.extention_manager.services.farmersServices.FarmerRegistration;
 
 import com.oracleous.extention_manager.data.model.Farmer;
 import com.oracleous.extention_manager.data.repositories.FarmersRepository;
 import com.oracleous.extention_manager.dto.requests.FarmersRegistrationRequest;
 import com.oracleous.extention_manager.dto.response.FarmerInfo;
 import com.oracleous.extention_manager.dto.response.FarmerResponse;
-import com.oracleous.extention_manager.exceptions.FarmerExistException;
 import com.oracleous.extention_manager.utilities.ApplicationUtilities;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import static com.oracleous.extention_manager.utilities.ApplicationUtilities.*;
