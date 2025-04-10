@@ -34,30 +34,28 @@ public class GetAgricBusinessDetailsMethod implements GetAgricBusinessDetails {
         String phoneNumber = getAgriBusinessDetailsRequest.getPhoneNumber();
 
         if ((email == null || email.isEmpty()) && (phoneNumber == null || phoneNumber.isEmpty())) {
-            throw new IllegalArgumentException("Either Email or PhoneNumber must be provided.");
+            throw new IllegalArgumentException(REQUIRED_REQUEST_MESSAGE);
         }
 
         Optional<Farmer> optionalFarmer = farmersRepository.findByEmailOrPhoneNumber(email, phoneNumber);
         if (optionalFarmer.isEmpty()) {
-            throw new FarmerNotFoundExceptionWhileFetching("Farmer not found for provided contact");
+            throw new FarmerNotFoundExceptionWhileFetching(USER_NOT_FOUND_MESSAGE);
         }
 
         Farmer farmer = optionalFarmer.get();
-
         AgriBusiness business = farmer.getAgriBusiness();
         if (business == null) {
             return AgricGetResponse.builder()
                     .responseMessage(AGRIBUSINESS_NOT_FOUND_MESSAGE)
                     .build();
         }
-
         return AgricGetResponse.builder()
-                .fullName(FullName.builder()
-                        .firstName(farmer.getFirstName())
-                        .lastName(farmer.getLastName())
-                        .build())
-                .email(farmer.getEmail())
-                .phoneNumber(farmer.getPhoneNumber())
+//                .fullName(FullName.builder()
+//                        .firstName(farmer.getFirstName())
+//                        .lastName(farmer.getLastName())
+//                        .build())
+//                .email(farmer.getEmail())
+//                .phoneNumber(farmer.getPhoneNumber())
                 .businessLocationLga(business.getBusinessLocationLga())
                 .businessName(business.getBusinessName())
                 .businessLocationState(business.getBusinessLocationState())

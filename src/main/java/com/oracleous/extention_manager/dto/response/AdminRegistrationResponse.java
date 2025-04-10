@@ -1,4 +1,4 @@
-package com.oracleous.extention_manager.dto.requests.readRequest;
+package com.oracleous.extention_manager.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AgricGetRequest {
-    private String email ;
-    private String phoneNumber;
+public class AdminRegistrationResponse {
+    private String message ;
 }

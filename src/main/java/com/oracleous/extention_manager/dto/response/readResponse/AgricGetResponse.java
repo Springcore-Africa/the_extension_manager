@@ -14,9 +14,9 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AgricGetResponse {
-    private FullName fullName;
-    private String email;
-    private String phoneNumber;
+//    private FullName fullName;
+//    private String email;
+//    private String phoneNumber;
     private String businessName;
     private String businessLocationState;
     private String businessLocationLga;

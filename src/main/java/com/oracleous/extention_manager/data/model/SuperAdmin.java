@@ -6,6 +6,7 @@ import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -16,6 +17,7 @@ import java.time.LocalDateTime;
 @Table(name = "Super Admin")
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class SuperAdmin {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

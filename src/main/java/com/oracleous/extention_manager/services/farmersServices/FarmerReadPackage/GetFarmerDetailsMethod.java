@@ -8,6 +8,7 @@ import com.oracleous.extention_manager.dto.requests.readRequest.FarmerGetRequest
 import com.oracleous.extention_manager.dto.response.readResponse.FarmerGetResponse;
 import com.oracleous.extention_manager.dto.response.readResponse.FullName;
 import com.oracleous.extention_manager.exceptions.FarmerNotFoundExceptionWhileFetching;
+import static com.oracleous.extention_manager.utilities.ApplicationUtilities.*;
 import com.oracleous.extention_manager.exceptions.InvestorNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,11 +24,11 @@ public class GetFarmerDetailsMethod implements GetFarmerDetails {
         String phoneNumber = getFarmerDetailsRequest.getPhoneNumber();
 
         if ((email == null || email.isEmpty()) && (phoneNumber == null || phoneNumber.isEmpty())) {
-            throw new FarmerNotFoundExceptionWhileFetching("Either Email or PhoneNumber must be provided");
+            throw new FarmerNotFoundExceptionWhileFetching(REQUIRED_REQUEST_MESSAGE);
         }
 
         Farmer farmer = farmersRepository.findByEmailOrPhoneNumber(email,phoneNumber).
-                orElseThrow(()-> new FarmerNotFoundExceptionWhileFetching("Farmer not found"));
+                orElseThrow(()-> new FarmerNotFoundExceptionWhileFetching(USER_NOT_FOUND_MESSAGE));
 
         FullName fullName = FullName.builder().
                 firstName(farmer.getFirstName()).
