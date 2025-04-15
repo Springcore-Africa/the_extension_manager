@@ -10,10 +10,6 @@ import org.springframework.stereotype.Service;
 public class EmailEventListener {
     private final EmailService emailService;
 
-//    public EmailEventListener(EmailService emailService) {
-//        this.emailService = emailService;
-//    }
-
     @Async
     @EventListener
     public void handleEmailEvent(EmailEvent event) {

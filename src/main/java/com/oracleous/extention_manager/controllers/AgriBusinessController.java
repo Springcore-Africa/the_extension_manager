@@ -1,6 +1,6 @@
 package com.oracleous.extention_manager.controllers;
 
-import com.oracleous.extention_manager.dto.requests.AgriBusinessRegRequest;
+import com.oracleous.extention_manager.dto.requests.registrationRequest.AgriBusinessRegRequest;
 import com.oracleous.extention_manager.dto.requests.readRequest.AgricGetRequest;
 import com.oracleous.extention_manager.exceptions.BusinessAlreadyExistsException;
 import com.oracleous.extention_manager.exceptions.FarmerNotFoundException;

@@ -1,4 +1,4 @@
-package com.oracleous.extention_manager.dto.response;
+package com.oracleous.extention_manager.dto.response.ResponseToMailSend;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-
-public class SuperAdminResponse {
-    private String message ;
+public class InitiateAdminRegistration {
+    private String message;
 }

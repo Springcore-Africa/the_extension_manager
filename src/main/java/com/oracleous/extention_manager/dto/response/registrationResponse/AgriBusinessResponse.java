@@ -1,4 +1,4 @@
-package com.oracleous.extention_manager.dto.response;
+package com.oracleous.extention_manager.dto.response.registrationResponse;
 
 import lombok.Builder;
 import lombok.Getter;

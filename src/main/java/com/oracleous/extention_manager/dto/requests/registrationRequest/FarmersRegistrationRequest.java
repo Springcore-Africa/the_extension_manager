@@ -1,4 +1,4 @@
-package com.oracleous.extention_manager.dto.requests;
+package com.oracleous.extention_manager.dto.requests.registrationRequest;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.oracleous.extention_manager.data.model.Gender;

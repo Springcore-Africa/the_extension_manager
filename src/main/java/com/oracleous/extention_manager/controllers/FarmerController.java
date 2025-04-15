@@ -1,8 +1,8 @@
 package com.oracleous.extention_manager.controllers;
 
-import com.oracleous.extention_manager.dto.requests.FarmersRegistrationRequest;
+import com.oracleous.extention_manager.dto.requests.registrationRequest.FarmersRegistrationRequest;
 import com.oracleous.extention_manager.dto.requests.readRequest.FarmerGetRequest;
-import com.oracleous.extention_manager.dto.response.FarmerResponse;
+import com.oracleous.extention_manager.dto.response.registrationResponse.FarmerResponse;
 import com.oracleous.extention_manager.services.farmersServices.FarmerReadPackage.GetFarmerDetailsMethod;
 import com.oracleous.extention_manager.services.farmersServices.FarmerRegistration.FarmerServiceImplementation;
 import com.oracleous.extention_manager.services.farmersServices.FarmerRegistration.FarmersService;

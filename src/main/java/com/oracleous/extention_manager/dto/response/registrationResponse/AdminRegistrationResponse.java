@@ -1,4 +1,4 @@
-package com.oracleous.extention_manager.dto.response;
+package com.oracleous.extention_manager.dto.response.registrationResponse;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class FarmerInfo {
-    private String farmersName;
-    private String farmersRegNumber;
+public class AdminRegistrationResponse {
+    private String message ;
 }

@@ -1,6 +1,5 @@
-package com.oracleous.extention_manager.dto.requests;
+package com.oracleous.extention_manager.dto.requests.registrationRequest;
 
-import jakarta.persistence.Column;
 import lombok.Getter;
 import lombok.Setter;
 

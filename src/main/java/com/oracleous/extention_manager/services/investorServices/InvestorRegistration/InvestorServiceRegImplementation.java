@@ -2,8 +2,8 @@ package com.oracleous.extention_manager.services.investorServices.InvestorRegist
 
 import com.oracleous.extention_manager.data.model.Investor;
 import com.oracleous.extention_manager.data.repositories.InvestorRepository;
-import com.oracleous.extention_manager.dto.requests.InvestorRegistrationRequest;
-import com.oracleous.extention_manager.dto.response.InvestorRegistrationResponse;
+import com.oracleous.extention_manager.dto.requests.registrationRequest.InvestorRegistrationRequest;
+import com.oracleous.extention_manager.dto.response.registrationResponse.InvestorRegistrationResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import static com.oracleous.extention_manager.utilities.ApplicationUtilities.*;

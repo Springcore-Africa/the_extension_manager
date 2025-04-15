@@ -4,18 +4,19 @@ import com.oracleous.extention_manager.data.model.*;
 import com.oracleous.extention_manager.data.repositories.AgriBusinessRepository;
 import com.oracleous.extention_manager.data.repositories.FarmersRepository;
 import com.oracleous.extention_manager.data.repositories.SuperAdminRepository;
-import com.oracleous.extention_manager.dto.requests.FarmersRegistrationRequest;
-import com.oracleous.extention_manager.dto.requests.InvestorRegistrationRequest;
-import com.oracleous.extention_manager.dto.requests.SuperAdminRegRequest;
+import com.oracleous.extention_manager.dto.requests.registrationRequest.FarmersRegistrationRequest;
+import com.oracleous.extention_manager.dto.requests.registrationRequest.InvestorRegistrationRequest;
+import com.oracleous.extention_manager.dto.requests.registrationRequest.SuperAdminRegRequest;
 import com.oracleous.extention_manager.dto.requests.readRequest.AgricGetRequest;
 import com.oracleous.extention_manager.dto.requests.readRequest.FarmerGetRequest;
 import com.oracleous.extention_manager.dto.requests.readRequest.InvestorGetRequest;
-import com.oracleous.extention_manager.dto.response.InvestorRegistrationResponse;
-import com.oracleous.extention_manager.dto.response.SuperAdminResponse;
-import com.oracleous.extention_manager.dto.response.readResponse.AgricGetResponse;
+import com.oracleous.extention_manager.dto.requests.requestEmail.AdminRegistrationRequestDto;
+import com.oracleous.extention_manager.dto.response.registrationResponse.InvestorRegistrationResponse;
+import com.oracleous.extention_manager.dto.response.registrationResponse.SuperAdminResponse;
 import com.oracleous.extention_manager.dto.response.readResponse.FarmerGetResponse;
 import com.oracleous.extention_manager.dto.response.readResponse.FullName;
 import com.oracleous.extention_manager.dto.response.readResponse.InvestorGetResponse;
+import com.oracleous.extention_manager.email.EmailEvent;
 import com.oracleous.extention_manager.services.agriBusinessServices.AgricBusinessReadPackage.GetAgricBusinessDetails;
 import com.oracleous.extention_manager.services.agriBusinessServices.AgricBusinessRegistration.AgriBusinessService;
 import com.oracleous.extention_manager.services.farmersServices.FarmerReadPackage.GetFarmerDetailsMethod;
@@ -23,7 +24,6 @@ import com.oracleous.extention_manager.services.farmersServices.FarmerRegistrati
 import com.oracleous.extention_manager.services.investorServices.InvestorReadPackage.GetInvestorDetailsMethod;
 import com.oracleous.extention_manager.services.investorServices.InvestorRegistration.InvestorServiceReg;
 import com.oracleous.extention_manager.services.superAdminServices.superAdminRegistration.SuperAdminRegistrationImplementation;
-import lombok.AllArgsConstructor;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -31,8 +31,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.time.LocalDate;
 
 import static com.oracleous.extention_manager.utilities.ApplicationUtilities.ACCOUNT_CREATED_MESSAGE;
+//import static jdk.internal.org.objectweb.asm.util.CheckClassAdapter.verify;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.contains;
+import static org.mockito.Mockito.times;
 import static org.springframework.test.util.AssertionErrors.assertEquals;
+//import static
 
 @SpringBootTest
 //@AllArgsConstructor
@@ -57,6 +62,8 @@ class ExtentionManagerApplicationTests {
 	private  SuperAdminRegistrationImplementation superAdminRegistrationImplementation ;
 	@Autowired
     private  SuperAdminRepository superAdminRepository;
+//	@Autowired
+	private EmailEvent emailEvent ;
 
 
 	@Test
@@ -206,12 +213,34 @@ class ExtentionManagerApplicationTests {
 		assertEquals(superAdminResponse.getMessage(), ACCOUNT_CREATED_MESSAGE, "Account Created Successfully");
 	}
 
-	@Test
-	public void testThatSuperAdminCanSendMeesgaeToEmail(){
-		SuperResponse();
-		SuperAdminRegRequest superAdminRegRequest = new SuperAdminRegRequest();
-		superAdminRegistrationImplementation.superAdminRegistration(superAdminRegRequest);
+//	@Test
+//	public void testThatSuperAdminCanSendMeesgaeToEmail(){
+//		SuperResponse();
+//		SuperAdminRegRequest superAdminRegRequest = new SuperAdminRegRequest();
+//		SuperAdminResponse superAdmin = superAdminRegistrationImplementation.superAdminRegistration(superAdminRegRequest);
+//		Admin admin = new Admin();
+//
+//		AdminRegistrationRequestDto adminRegistrationRequestDto = AdminRegistrationRequestDto.builder().
+//				email("ajaditaoreed@gmail.com").
+//				build();
+//		superAdminRegistrationImplementation.sendAdminInviteEmail(adminRegistrationRequestDto);
+//		verify(emailSender, times(1))
+//				.send(eg("ajaditaoreed@gmail.com"), anyString(), contains("Click to register"));
+//	}
 
+//	@Test
+//	public void testThatSuperAdminCanSendMessageToEmail() {
+//		String testEmail = "ajaditaoreed@gmail.com";
+//
+//		AdminRegistrationRequestDto request = AdminRegistrationRequestDto.builder()
+//				.email(testEmail)
+//				.build();
+//		when(superAdminRepository.existsByEmail(testEmail)).thenReturn(false);
+//
+//		inviteEmailService.responsetoAdmin(request);
+//
+//		// Then
+//		verify(emailSender, times(1)).send(eq(testEmail), anyString(), contains("Click the link to complete your registrationResponse"));
+//	}
 
-	}
 }
