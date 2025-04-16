@@ -17,6 +17,12 @@ public class ApplicationUtilities {
     public static final String AGRIBUSINESS_NOT_FOUND_MESSAGE = "Email or Phone Number Not Found";
     public static final String USER_NOT_FOUND_MESSAGE = "User not found for the provided contact";
     public static final String REQUIRED_REQUEST_MESSAGE = "Either Email or PhoneNumber must be provided";
+    public static final String EMAIL_ALREADY_EXIST = "Email Already Exist";
+    public static final String INVALID_EMAIL_ADDRESS = "Invalid email address";
+    public static final String SUPER_ADMIN_INITIATIVE = "Only SuperAdmin can initiate registration";
+    public static final String ADMIN_NOT_FOUND = "Admin not found";
+    public static final String ADMIN_ALREADY_CONFIRMED = "Admin already confirmed";
+    public static final String EMAIL_REGISTRATION_SENT = "Registration email sent";
 
 
     public static String generateRegNumber() {
