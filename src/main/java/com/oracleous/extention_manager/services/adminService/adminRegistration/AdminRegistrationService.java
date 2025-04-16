@@ -1,7 +1,9 @@
 package com.oracleous.extention_manager.services.adminService.adminRegistration;
 
 import com.oracleous.extention_manager.data.model.Admin;
+import com.oracleous.extention_manager.data.model.RegistrationToken;
 import com.oracleous.extention_manager.data.repositories.AdminRepository;
+import com.oracleous.extention_manager.data.repositories.RegistrationTokenRepository;
 import com.oracleous.extention_manager.data.repositories.SuperAdminRepository;
 import com.oracleous.extention_manager.dto.requests.requestEmail.AdminRegistrationRequestDto;
 import com.oracleous.extention_manager.dto.response.ResponseToMailSend.InitiateAdminRegistration;
@@ -12,6 +14,8 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 import static com.oracleous.extention_manager.utilities.ApplicationUtilities.*;
 
@@ -21,16 +25,19 @@ public class AdminRegistrationService implements AdminRegistration {
     private final AdminRepository adminRepository;
     private final SuperAdminRepository superAdminRepository;
     private final ApplicationEventPublisher eventPublisher;
+    private final RegistrationTokenRepository tokenRepository;
 
     @Value("${app.base-url:http://localhost:8080}")
     private String baseUrl;
 
     public AdminRegistrationService(AdminRepository adminRepository,
                                     SuperAdminRepository superAdminRepository,
+                                    RegistrationTokenRepository tokenRepository,
                                     ApplicationEventPublisher eventPublisher) {
         this.adminRepository = adminRepository;
         this.superAdminRepository = superAdminRepository;
         this.eventPublisher = eventPublisher;
+        this.tokenRepository = tokenRepository;
     }
 
     @Override
@@ -54,14 +61,23 @@ public class AdminRegistrationService implements AdminRegistration {
                 .build();
         adminRepository.save(admin);
 
+        // I generate and save token
+        String token = UUID.randomUUID().toString();
+        RegistrationToken registrationToken = new RegistrationToken();
+        registrationToken.setToken(token);
+        registrationToken.setEmail(request.getEmail());
+        registrationToken.setCreatedAt(LocalDateTime.now());
+        registrationToken.setExpiresAt(LocalDateTime.now().plusHours(2));
+        tokenRepository.save(registrationToken);
+
         //I generate and send email here
-        String encodedEmail = URLEncoder.encode(request.getEmail(), StandardCharsets.UTF_8);
-        String link = baseUrl + "/admin/register/complete-form?email=" + encodedEmail; //I Changed to new endpoint here
+        String link = baseUrl + "/admin/register/complete-form?token=" + token;
         log.info("Generated registration link: {}", link);
 
         String subject = "Complete Your Admin Registration";
-        String text = "<p>Click to complete your registration:</p>" +
-                "<a href=\"" + link + "\">Complete Registration</a>";
+        String text = "<p>Click to complete your registration within two hours:</p>" +
+                "<a href=\"" + link + "\">Complete Registration</a>" +
+                "<p> This link will expire after 2 hours.</p>";  // i added this
         eventPublisher.publishEvent(new EmailEvent(this, request.getEmail(), subject, text));
 
         return InitiateAdminRegistration.builder()
@@ -69,29 +85,14 @@ public class AdminRegistrationService implements AdminRegistration {
                 .build();
     }
 
-//    @Override
-//    public CompleteAdminRegistration completeAdminRegistration(AdminCompletionRequestDto request) {
-//        String email = request.getEmail();
-//        Admin admin = adminRepository.findByEmail(email);
-//        if (admin == null) {
-//            throw new IllegalArgumentException(ADMIN_NOT_FOUND);
-//        }
-//        if (admin.isConfirmed()) {
-//            throw new IllegalStateException(ADMIN_ALREADY_CONFIRMED);
-//        }
-//
-//        admin.setEmail(request.getEmail());
-//        admin.setName(request.getName());
-//        admin.setPassword(request.getPassword());
-//        admin.setConfirmed(true);
-//        adminRepository.save(admin);
-//        return CompleteAdminRegistration.builder().
-//                message("Registration successful")
-//                .build();
-//    }
-
     @Override
     public boolean isAdminEmailRegistered(String email) {
         return adminRepository.existsByEmail(email);
+    }
+
+    public RegistrationToken validateToken(String token) {
+        return tokenRepository.findByToken(token)
+                .filter(t -> t.getExpiresAt().isAfter(LocalDateTime.now()))
+                .orElse(null);
     }
 }

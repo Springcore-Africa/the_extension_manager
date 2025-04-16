@@ -2,10 +2,17 @@ package com.oracleous.extention_manager.controllers;
 
 import com.oracleous.extention_manager.dto.requests.registrationRequest.AgriBusinessRegRequest;
 import com.oracleous.extention_manager.dto.requests.readRequest.AgricGetRequest;
+import com.oracleous.extention_manager.dto.response.registrationResponse.SuperAdminResponse;
 import com.oracleous.extention_manager.exceptions.BusinessAlreadyExistsException;
 import com.oracleous.extention_manager.exceptions.FarmerNotFoundException;
 import com.oracleous.extention_manager.services.agriBusinessServices.AgricBusinessReadPackage.GetAgricBusinessDetailsMethod;
 import com.oracleous.extention_manager.services.agriBusinessServices.AgricBusinessRegistration.AgriBusinessService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,9 +21,27 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/agri_business")
+@Tag(name = "AgricBusiness Registration and Find AgricBusiness API's", description = "API for registering AgricBusiness and find AgricBusiness users")
 public class AgriBusinessController {
     final AgriBusinessService agriBusinessService;
     final GetAgricBusinessDetailsMethod agricBusinessDetailsMethod ;
+
+    @Operation(
+            summary = "Register a AgriBusiness",
+            description = "Creates a new AgricBusiness account with the provided details. Returns a success message if registration is successful or an error if the email already exists."
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "AgricBusiness registered successfully",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = SuperAdminResponse.class))
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Invalid request or email already exists",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = SuperAdminResponse.class))
+            )
+    })
 
     @PostMapping("/agri_business_registration")
     public ResponseEntity <?> agriBusinessRegistration(@RequestBody AgriBusinessRegRequest agriBusinessRegRequest) throws BusinessAlreadyExistsException, FarmerNotFoundException {
@@ -27,6 +52,23 @@ public class AgriBusinessController {
        }
     }
 
+
+    @Operation(
+            summary = "To find AgriBusiness details",
+            description = "End point to find agriBusiness details. Returns the details or an error if the invalid request are input."
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "AgricBusiness details",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = SuperAdminResponse.class))
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Invalid request or email already exists",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = SuperAdminResponse.class))
+            )
+    })
     @GetMapping("/find_agriBusiness/")
     public ResponseEntity <?> findAgriBusiness(@RequestBody AgricGetRequest agricGetRequest) {
         try{
@@ -36,16 +78,4 @@ public class AgriBusinessController {
         }
     }
 
-//    @GetMapping("/find_agriBusiness/")
-//    public ResponseEntity <?> findAgriBusiness(    @RequestParam(required = false) String email,
-//                                                   @RequestParam(required = false) String phoneNumber) {
-//        try{
-//            AgricGetRequest agric = new AgricGetRequest();
-//            agric.setEmail(email);
-//            agric.setPhoneNumber(phoneNumber);
-//            return new ResponseEntity<>(agricBusinessDetailsMethod.getAgricBusinessDetails(agric), HttpStatus.FOUND);
-//        }catch (Exception exception){
-//            return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
-//        }
-//    }
 }

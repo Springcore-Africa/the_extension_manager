@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class AdminCompletionRequestDto {
+    private String token;
     private String email ;
     private String name;
     private String password;

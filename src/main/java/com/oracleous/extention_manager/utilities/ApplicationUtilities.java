@@ -61,5 +61,6 @@ public class ApplicationUtilities {
 
         return FARM + regNumber.append(year).append(randomString);
     }
+
 }
 

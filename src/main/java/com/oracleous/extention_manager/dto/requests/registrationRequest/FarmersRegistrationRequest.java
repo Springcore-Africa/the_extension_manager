@@ -3,6 +3,7 @@ package com.oracleous.extention_manager.dto.requests.registrationRequest;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.oracleous.extention_manager.data.model.Gender;
 import com.oracleous.extention_manager.data.model.MaritalStatus;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,6 +11,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
+@Schema(description = "Request payload to register farmer")
 public class FarmersRegistrationRequest {
     private String firstName;
     private String lastName;
