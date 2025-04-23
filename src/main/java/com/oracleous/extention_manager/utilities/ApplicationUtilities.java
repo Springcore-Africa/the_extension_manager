@@ -1,9 +1,12 @@
 package com.oracleous.extention_manager.utilities;
 
+import java.security.SecureRandom;
 import java.time.Year;
 import java.util.random.RandomGenerator;
 
 public class ApplicationUtilities {
+    private static final SecureRandom random = new SecureRandom();
+
     public static final String FARMER_ALREADY_EXIST = "Farmer With These details Already Exist";
     public static final String SUPER_ADMIN_EXIST = "Super Admin With These details Already Exist";
     public static final String FARMER_EXIST_CODE = "001";
@@ -26,6 +29,10 @@ public class ApplicationUtilities {
     public static final String EMAIL_REGISTRATION_SENT = "Registration email sent";
     public static final String ACCOUNT_TOKEN_SENT = "Account token sent";
     public static final String INVALID_TOKEN = "Invalid token";
+    public static final String INVALID_TOKEN_CODE = "400";
+    public static final String TOKEN_EXPIRED_CODE = "400";
+    public static final String TOKEN_SENT_CODE = "201";
+
 
 
     public static String generateRegNumber() {
@@ -66,11 +73,8 @@ public class ApplicationUtilities {
     }
 
     public static String registrationToken(){
-        int startAt = 11111 ;
-        int endAt = 99999 ;
-        int confirmationNumber = (int)Math.floor(Math.random()*(startAt - endAt +1)- endAt);
-
-        return String.valueOf(confirmationNumber);
+        int token = 100000 + random.nextInt(900000);
+        return String.valueOf(token);
     };
 
 }

@@ -4,13 +4,17 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.oracleous.extention_manager.data.model.Gender;
 import com.oracleous.extention_manager.data.model.MaritalStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.jetbrains.annotations.NotNull;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
-@Getter
 @Setter
+@Getter
 @Schema(description = "Request payload to register a farmer")
 public class FarmersRegistrationRequest {
 
@@ -23,17 +27,22 @@ public class FarmersRegistrationRequest {
     @Schema(description = "Farmer's phone number", example = "09109223355", required = true)
     private String phoneNumber;
 
+    @NotBlank
+    @Email
     @Schema(description = "Farmer's email address", example = "joy@gmail.com", required = true)
     private String email;
 
     @Schema(description = "Account password", example = "securepassword123", required = true)
     private String password;
 
+    @NotBlank
     @Schema(description = "National ID card number", example = "WRN290K", required = true)
     private String nationalId;
 
     @Schema(description = "Date of birth of the farmer", example = "2025-07-20", required = true)
-    private LocalDateTime dateOfBirth;
+    @NotNull
+    @JsonFormat(pattern = "yyyy/MM/dd")
+    private LocalDate dateOfBirth;
 
     @Schema(description = "State where the farmer was born", example = "Kano", required = true)
     private String stateOfOrigin;

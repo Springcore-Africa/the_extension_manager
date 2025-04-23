@@ -136,7 +136,7 @@ class ExtentionManagerApplicationTests {
 		farmersRegistrationRequest.setPassportPhotograph("img");
 		farmersRegistrationRequest.setDescription("i am a farmer");
 		farmersRegistrationRequest.setBirthCertificate("brith certificate");
-		farmersRegistrationRequest.setDateOfBirth(LocalDate.ofYearDay(2020, 20).atStartOfDay());
+		farmersRegistrationRequest.setDateOfBirth(LocalDate.ofYearDay(2020, 20));
 		farmersRegistrationRequest.setLastEducationalCertificate("SSCE");
 		farmersRegistrationRequest.setLgaOfOrigin("Lagos");
 		farmersRegistrationRequest.setMaritalStatus(MaritalStatus.MARRIED);

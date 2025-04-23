@@ -9,6 +9,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 
@@ -36,7 +38,7 @@ public class Farmer {
     @Column(name = "NATIONAL ID")
     private String nationalId;
     @Column(name = "DATE OF BIRTH")
-    private LocalDateTime dateOfBirth;
+    private LocalDate dateOfBirth;
     @Column(name = "STATE OF ORIGIN")
     private String stateOfOrigin;
     @Column(name = "LGA OF ORIGIN")
@@ -67,6 +69,7 @@ public class Farmer {
     @Column(name = "RegistrationToken")
     private String verificationToken ;
     private boolean isVerified ;
+    private Long tokenExpiration;
 
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)

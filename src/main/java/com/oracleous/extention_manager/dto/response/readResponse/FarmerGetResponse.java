@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -22,7 +23,7 @@ public class FarmerGetResponse {
     private String phoneNumber;
     private String password;
     private String nationalId;
-    private LocalDateTime dateOfBirth;
+    private LocalDate dateOfBirth;
     private String stateOfOrigin;
     private String lgaOfOrigin;
     private String residentialAddress;
