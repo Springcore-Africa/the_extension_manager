@@ -2,7 +2,9 @@ package com.oracleous.extention_manager.services.adminService.adminRegistration;
 
 import com.oracleous.extention_manager.dto.requests.requestEmail.AdminRegistrationRequestDto;
 import com.oracleous.extention_manager.dto.response.ResponseToMailSend.InitiateAdminRegistration;
+import org.springframework.stereotype.Service;
 
+@Service
 public interface AdminRegistration {
     InitiateAdminRegistration initiateAdminRegistration(AdminRegistrationRequestDto adminRegistrationRequestDto, String superAdminEmail);
 //    CompleteAdminRegistration completeAdminRegistration(AdminCompletionRequestDto request);

@@ -4,5 +4,5 @@ import com.oracleous.extention_manager.dto.requests.registrationRequest.FarmersR
 import com.oracleous.extention_manager.dto.response.registrationResponse.FarmerResponse;
 
 public interface FarmersService {
-    FarmerResponse registerFarmer(FarmersRegistrationRequest farmersRegistrationRequest);
+    FarmerResponse registerFarmer(FarmersRegistrationRequest farmersRegistrationRequest, String tokenProvided);
 }

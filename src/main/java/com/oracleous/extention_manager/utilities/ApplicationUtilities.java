@@ -1,6 +1,7 @@
 package com.oracleous.extention_manager.utilities;
 
 import java.time.Year;
+import java.util.random.RandomGenerator;
 
 public class ApplicationUtilities {
     public static final String FARMER_ALREADY_EXIST = "Farmer With These details Already Exist";
@@ -23,6 +24,8 @@ public class ApplicationUtilities {
     public static final String ADMIN_NOT_FOUND = "Admin not found";
     public static final String ADMIN_ALREADY_CONFIRMED = "Admin already confirmed";
     public static final String EMAIL_REGISTRATION_SENT = "Registration email sent";
+    public static final String ACCOUNT_TOKEN_SENT = "Account token sent";
+    public static final String INVALID_TOKEN = "Invalid token";
 
 
     public static String generateRegNumber() {
@@ -61,6 +64,14 @@ public class ApplicationUtilities {
 
         return FARM + regNumber.append(year).append(randomString);
     }
+
+    public static String registrationToken(){
+        int startAt = 11111 ;
+        int endAt = 99999 ;
+        int confirmationNumber = (int)Math.floor(Math.random()*(startAt - endAt +1)- endAt);
+
+        return String.valueOf(confirmationNumber);
+    };
 
 }
 

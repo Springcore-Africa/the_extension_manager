@@ -2,6 +2,8 @@ package com.oracleous.extention_manager.controllers;
 
 import com.oracleous.extention_manager.dto.requests.registrationRequest.AgriBusinessRegRequest;
 import com.oracleous.extention_manager.dto.requests.readRequest.AgricGetRequest;
+import com.oracleous.extention_manager.dto.response.readResponse.AgricGetResponse;
+import com.oracleous.extention_manager.dto.response.registrationResponse.AgriBusinessResponse;
 import com.oracleous.extention_manager.dto.response.registrationResponse.SuperAdminResponse;
 import com.oracleous.extention_manager.exceptions.BusinessAlreadyExistsException;
 import com.oracleous.extention_manager.exceptions.FarmerNotFoundException;
@@ -34,12 +36,12 @@ public class AgriBusinessController {
             @ApiResponse(
                     responseCode = "201",
                     description = "AgricBusiness registered successfully",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = SuperAdminResponse.class))
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = AgriBusinessResponse.class))
             ),
             @ApiResponse(
                     responseCode = "400",
                     description = "Invalid request or email already exists",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = SuperAdminResponse.class))
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = AgriBusinessResponse.class))
             )
     })
 
@@ -61,14 +63,15 @@ public class AgriBusinessController {
             @ApiResponse(
                     responseCode = "201",
                     description = "AgricBusiness details",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = SuperAdminResponse.class))
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = AgricGetResponse.class))
             ),
             @ApiResponse(
                     responseCode = "400",
                     description = "Invalid request or email already exists",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = SuperAdminResponse.class))
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = AgricGetResponse.class))
             )
     })
+
     @GetMapping("/find_agriBusiness/")
     public ResponseEntity <?> findAgriBusiness(@RequestBody AgricGetRequest agricGetRequest) {
         try{

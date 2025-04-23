@@ -8,18 +8,18 @@ import com.oracleous.extention_manager.data.repositories.SuperAdminRepository;
 import com.oracleous.extention_manager.dto.requests.requestEmail.AdminRegistrationRequestDto;
 import com.oracleous.extention_manager.dto.response.ResponseToMailSend.InitiateAdminRegistration;
 import com.oracleous.extention_manager.email.EmailEvent;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 import static com.oracleous.extention_manager.utilities.ApplicationUtilities.*;
 
 @Service
+//@AllArgsConstructor
 @Slf4j
 public class AdminRegistrationService implements AdminRegistration {
     private final AdminRepository adminRepository;

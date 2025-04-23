@@ -64,7 +64,9 @@ public class Farmer {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "BUSINESS_ID", referencedColumnName = "ID")
     private AgriBusiness agriBusiness;
-
+    @Column(name = "RegistrationToken")
+    private String verificationToken ;
+    private boolean isVerified ;
 
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
