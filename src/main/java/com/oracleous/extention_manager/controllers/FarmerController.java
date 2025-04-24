@@ -28,8 +28,6 @@ import static com.oracleous.extention_manager.utilities.ApplicationUtilities.TOK
 public class FarmerController {
 
     private final FarmersService farmersService;
-    // Remove unused dependencies: FarmerServiceImplementation, GetFarmerDetailsMethod
-
     @Operation(
             summary = "Farmer Registration",
             description = "Initiates farmer registration and sends a verification token to the provided email."
