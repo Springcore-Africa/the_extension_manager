@@ -1,20 +1,21 @@
-package com.oracleous.extention_manager.dto.requests;
+package com.oracleous.extention_manager.dto.requests.registrationRequest;
 
-import jakarta.persistence.Column;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class InvestorRegistrationRequest {
-
+public class LocalAdminRegRequest {
     private String firstName;
-
     private String lastName;
 
     private String phoneNumber;
+
     private String email;
+
     private String password;
+
     private String shortBio;
+
     private String passportPhotograph;
 }

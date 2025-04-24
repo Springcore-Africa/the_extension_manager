@@ -23,5 +23,7 @@ public interface FarmersRepository extends JpaRepository<Farmer, Long> {
             "(:phoneNumber IS NOT NULL AND f.phoneNumber = :phoneNumber)")
     Optional<Farmer> findByEmailOrPhoneNumber(@Param("email") String email, @Param("phoneNumber") String phoneNumber);
 
+    boolean existsByEmail(String email);
+
 //    boolean existsByEmailOrPhoneNumber(String email, String phoneNumber);
 }

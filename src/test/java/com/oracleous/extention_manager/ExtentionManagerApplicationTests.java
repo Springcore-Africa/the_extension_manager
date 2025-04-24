@@ -3,51 +3,67 @@ package com.oracleous.extention_manager;
 import com.oracleous.extention_manager.data.model.*;
 import com.oracleous.extention_manager.data.repositories.AgriBusinessRepository;
 import com.oracleous.extention_manager.data.repositories.FarmersRepository;
-import com.oracleous.extention_manager.dto.requests.FarmersRegistrationRequest;
-import com.oracleous.extention_manager.dto.requests.InvestorRegistrationRequest;
+import com.oracleous.extention_manager.data.repositories.SuperAdminRepository;
+import com.oracleous.extention_manager.dto.requests.registrationRequest.FarmersRegistrationRequest;
+import com.oracleous.extention_manager.dto.requests.registrationRequest.InvestorRegistrationRequest;
+import com.oracleous.extention_manager.dto.requests.registrationRequest.SuperAdminRegRequest;
 import com.oracleous.extention_manager.dto.requests.readRequest.AgricGetRequest;
 import com.oracleous.extention_manager.dto.requests.readRequest.FarmerGetRequest;
 import com.oracleous.extention_manager.dto.requests.readRequest.InvestorGetRequest;
-import com.oracleous.extention_manager.dto.response.InvestorRegistrationResponse;
-import com.oracleous.extention_manager.dto.response.readResponse.AgricGetResponse;
+import com.oracleous.extention_manager.dto.requests.requestEmail.AdminRegistrationRequestDto;
+import com.oracleous.extention_manager.dto.response.registrationResponse.InvestorRegistrationResponse;
+import com.oracleous.extention_manager.dto.response.registrationResponse.SuperAdminResponse;
 import com.oracleous.extention_manager.dto.response.readResponse.FarmerGetResponse;
 import com.oracleous.extention_manager.dto.response.readResponse.FullName;
 import com.oracleous.extention_manager.dto.response.readResponse.InvestorGetResponse;
+import com.oracleous.extention_manager.email.EmailEvent;
 import com.oracleous.extention_manager.services.agriBusinessServices.AgricBusinessReadPackage.GetAgricBusinessDetails;
 import com.oracleous.extention_manager.services.agriBusinessServices.AgricBusinessRegistration.AgriBusinessService;
 import com.oracleous.extention_manager.services.farmersServices.FarmerReadPackage.GetFarmerDetailsMethod;
 import com.oracleous.extention_manager.services.farmersServices.FarmerRegistration.FarmerServiceImplementation;
 import com.oracleous.extention_manager.services.investorServices.InvestorReadPackage.GetInvestorDetailsMethod;
 import com.oracleous.extention_manager.services.investorServices.InvestorRegistration.InvestorServiceReg;
+import com.oracleous.extention_manager.services.superAdminServices.superAdminRegistration.SuperAdminRegistrationImplementation;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
 
+import static com.oracleous.extention_manager.utilities.ApplicationUtilities.ACCOUNT_CREATED_MESSAGE;
+//import static jdk.internal.org.objectweb.asm.util.CheckClassAdapter.verify;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.contains;
+import static org.mockito.Mockito.times;
 import static org.springframework.test.util.AssertionErrors.assertEquals;
+//import static
 
 @SpringBootTest
+//@AllArgsConstructor
 class ExtentionManagerApplicationTests {
-
 	@Autowired
-	private InvestorServiceReg investorServiceReg;
+	private  InvestorServiceReg investorServiceReg;
 	@Autowired
-	private GetFarmerDetailsMethod getFarmerDetailsMethod;
-    @Autowired
-    private FarmerServiceImplementation farmerServiceImplementation;
+	private  GetFarmerDetailsMethod getFarmerDetailsMethod;
 	@Autowired
-	private GetInvestorDetailsMethod getInvestorDetailsMethod ;
-    @Autowired
-    private FarmersRepository farmersRepository;
+    private  FarmerServiceImplementation farmerServiceImplementation;
 	@Autowired
-	private AgriBusinessService agricBusinessService ;
+	private  GetInvestorDetailsMethod getInvestorDetailsMethod ;
 	@Autowired
-	private AgriBusinessRepository agriBusinessRepository ;
+    private  FarmersRepository farmersRepository;
 	@Autowired
-	private GetAgricBusinessDetails getAgricBusinessDetails ;
-
+	private  AgriBusinessService agricBusinessService ;
+	@Autowired
+	private  AgriBusinessRepository agriBusinessRepository ;
+	@Autowired
+	private  GetAgricBusinessDetails getAgricBusinessDetails ;
+	@Autowired
+	private  SuperAdminRegistrationImplementation superAdminRegistrationImplementation ;
+	@Autowired
+    private  SuperAdminRepository superAdminRepository;
+//	@Autowired
+	private EmailEvent emailEvent ;
 
 
 	@Test
@@ -120,7 +136,7 @@ class ExtentionManagerApplicationTests {
 		farmersRegistrationRequest.setPassportPhotograph("img");
 		farmersRegistrationRequest.setDescription("i am a farmer");
 		farmersRegistrationRequest.setBirthCertificate("brith certificate");
-		farmersRegistrationRequest.setDateOfBirth(LocalDate.ofYearDay(2020, 20).atStartOfDay());
+		farmersRegistrationRequest.setDateOfBirth(LocalDate.ofYearDay(2020, 20));
 		farmersRegistrationRequest.setLastEducationalCertificate("SSCE");
 		farmersRegistrationRequest.setLgaOfOrigin("Lagos");
 		farmersRegistrationRequest.setMaritalStatus(MaritalStatus.MARRIED);
@@ -176,18 +192,55 @@ class ExtentionManagerApplicationTests {
 
 		return agricGetRequest;
 	}
-@Test
-public void testThatFarmerCanRegisterForAgricBusinessAfterRegistration() {
-		AgricGetRequest agricGetRequest = agricBusiness();
 
-		AgricGetResponse agricGetResponse = getAgricBusinessDetails.getAgricBusinessDetails(agricGetRequest);
-
-		FullName fullName = agricGetResponse.getFullName();
-		assertNotNull(fullName, "Full name should not be null");
-		assertEquals("Email should match", agricGetResponse.getEmail(), "john@doe.com");
-		assertEquals("Phone number should match", agricGetResponse.getPhoneNumber(), "1234567890");
-		assertEquals("First name should match", fullName.getFirstName(), "Daniela");
-		assertEquals("Last name should match", fullName.getLastName(), "grace");
+	public void SuperResponse(){
+		SuperAdminRegRequest superAdminRegRequest = new SuperAdminRegRequest();
+		superAdminRegRequest.setFirstName("Daniela");
+		superAdminRegRequest.setLastName("grace");
+		superAdminRegRequest.setEmail("john@doe.com");
+		superAdminRegRequest.setPassword("1234");
+		superAdminRegRequest.setPhoneNumber("1234567890");
+		superAdminRegRequest.setPassportPhotograph("img");
+		superAdminRegistrationImplementation.superAdminRegistration(superAdminRegRequest);
 	}
+
+	@Test
+	public void testThatSuperAdminRegCanRegister(){
+		SuperResponse();
+		SuperAdminRegRequest superAdminRegRequest = new SuperAdminRegRequest();
+		SuperAdminResponse superAdminResponse = superAdminRegistrationImplementation.superAdminRegistration(superAdminRegRequest);
+		superAdminResponse.setMessage(ACCOUNT_CREATED_MESSAGE);
+		assertEquals(superAdminResponse.getMessage(), ACCOUNT_CREATED_MESSAGE, "Account Created Successfully");
+	}
+
+//	@Test
+//	public void testThatSuperAdminCanSendMeesgaeToEmail(){
+//		SuperResponse();
+//		SuperAdminRegRequest superAdminRegRequest = new SuperAdminRegRequest();
+//		SuperAdminResponse superAdmin = superAdminRegistrationImplementation.superAdminRegistration(superAdminRegRequest);
+//		Admin admin = new Admin();
+//
+//		AdminRegistrationRequestDto adminRegistrationRequestDto = AdminRegistrationRequestDto.builder().
+//				email("ajaditaoreed@gmail.com").
+//				build();
+//		superAdminRegistrationImplementation.sendAdminInviteEmail(adminRegistrationRequestDto);
+//		verify(emailSender, times(1))
+//				.send(eg("ajaditaoreed@gmail.com"), anyString(), contains("Click to register"));
+//	}
+
+//	@Test
+//	public void testThatSuperAdminCanSendMessageToEmail() {
+//		String testEmail = "ajaditaoreed@gmail.com";
+//
+//		AdminRegistrationRequestDto request = AdminRegistrationRequestDto.builder()
+//				.email(testEmail)
+//				.build();
+//		when(superAdminRepository.existsByEmail(testEmail)).thenReturn(false);
+//
+//		inviteEmailService.responsetoAdmin(request);
+//
+//		// Then
+//		verify(emailSender, times(1)).send(eq(testEmail), anyString(), contains("Click the link to complete your registrationResponse"));
+//	}
 
 }

@@ -1,8 +1,11 @@
 package com.oracleous.extention_manager.services.farmersServices.FarmerRegistration;
 
-import com.oracleous.extention_manager.dto.requests.FarmersRegistrationRequest;
-import com.oracleous.extention_manager.dto.response.FarmerResponse;
+import com.oracleous.extention_manager.dto.requests.registrationRequest.FarmerVerifyTokenRequest;
+import com.oracleous.extention_manager.dto.requests.registrationRequest.FarmersRegistrationRequest;
+import com.oracleous.extention_manager.dto.response.registrationResponse.FarmerResponse;
 
 public interface FarmersService {
     FarmerResponse registerFarmer(FarmersRegistrationRequest farmersRegistrationRequest);
+
+    FarmerResponse verifyToken(FarmerVerifyTokenRequest farmerVerifyTokenRequest);
 }
