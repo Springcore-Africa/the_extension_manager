@@ -7,6 +7,11 @@ import com.oracleous.extention_manager.dto.response.ResponseToMailSend.CompleteA
 import com.oracleous.extention_manager.dto.response.ResponseToMailSend.InitiateAdminRegistration;
 import com.oracleous.extention_manager.services.adminService.adminRegistration.AdminRegistrationService;
 import com.oracleous.extention_manager.services.adminService.completeRegistration.CompleteAdminRegMethod;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,12 +26,38 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 public class AdminRegistrationController {
     @Autowired
-    private  AdminRegistrationService adminRegistrationService;
+    private AdminRegistrationService adminRegistrationService;
     @Autowired
     private final CompleteAdminRegMethod completeAdminRegistration;
 
+    @Operation(
+            summary = "Initiate Admin Registration",
+            description = "Initiates admin registration by validating the SuperAdmin's email, checking for duplicate emails, generating a 2-hour token, and sending a registration email."
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "Registration initiated, check email for token",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = InitiateAdminRegistration.class))
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Invalid email format or email already exists",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = InitiateAdminRegistration.class))
+            ),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Unauthorized, SuperAdmin access required",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = InitiateAdminRegistration.class))
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Internal server error",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = InitiateAdminRegistration.class))
+            )
+    })
     @PostMapping("/register/initiate")
-    public ResponseEntity<InitiateAdminRegistration> initiateAdminRegistration(@RequestBody @Valid AdminRegistrationRequestDto adminRegistrationRequestDto) {
+    public ResponseEntity<InitiateAdminRegistration> initiateAdminRegistration(@Valid @RequestBody AdminRegistrationRequestDto adminRegistrationRequestDto) {
         String superAdminEmail = "ajaditaoreed@gmail.com";
         try {
             InitiateAdminRegistration response = adminRegistrationService.initiateAdminRegistration(adminRegistrationRequestDto, superAdminEmail);
@@ -49,6 +80,27 @@ public class AdminRegistrationController {
         }
     }
 
+    @Operation(
+            summary = "Show Admin Registration Form",
+            description = "Returns an HTML form for completing admin registration if the provided token is valid (within 2 hours) and the admin email is registered."
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "HTML form for completing registration",
+                    content = @Content(mediaType = "text/html", schema = @Schema(implementation = String.class))
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Invalid or expired token, or admin not found",
+                    content = @Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Internal server error",
+                    content = @Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))
+            )
+    })
     @GetMapping("/register/complete-form")
     public ResponseEntity<String> showCompleteRegistrationForm(@RequestParam("token") String token) {
         try {
@@ -105,6 +157,27 @@ public class AdminRegistrationController {
         }
     }
 
+    @Operation(
+            summary = "Complete Admin Registration",
+            description = "Finalizes admin registration by validating the token, email, name, and password. Token must be valid and not expired (within 2 hours)."
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Registration completed successfully",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = CompleteAdminRegistration.class))
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Invalid input or registration state",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = CompleteAdminRegistration.class))
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Internal server error",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = CompleteAdminRegistration.class))
+            )
+    })
     @PostMapping("/register/complete")
     public ResponseEntity<CompleteAdminRegistration> completeRegistration(@Valid @RequestBody AdminCompletionRequestDto request) {
         try {
@@ -128,6 +201,17 @@ public class AdminRegistrationController {
         }
     }
 
+    @Operation(
+            summary = "Show Registration Success Page",
+            description = "Returns an HTML page confirming successful admin registration."
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Registration success page displayed",
+                    content = @Content(mediaType = "text/html", schema = @Schema(implementation = String.class))
+            )
+    })
     @GetMapping("/registration-success")
     public ResponseEntity<String> showRegistrationSuccess() {
         return ResponseEntity.ok(

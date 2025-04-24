@@ -14,16 +14,15 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
-@Tag(name = "Investor Registration and to find investor details", description = "API for registering SuperAdmin")
+@Tag(name = "Investor API", description = "API for registering and retrieving investor details")
 public class InvestorController {
     private final InvestorServiceReg investorServiceReg;
-    private final GetInvestorDetails getInvestorDetails ;
+    private final GetInvestorDetails getInvestorDetails;
 
     @Operation(
             summary = "Investor Registration",
@@ -38,11 +37,11 @@ public class InvestorController {
             @ApiResponse(
                     responseCode = "400",
                     description = "Invalid request or registration error",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = String.class))
             )
     })
     @PostMapping("/investor_registration")
-    public ResponseEntity<?> investorRegistration(@RequestBody InvestorRegistrationRequest investorRegistrationRequest){
+    public ResponseEntity<?> investorRegistration(@RequestBody InvestorRegistrationRequest investorRegistrationRequest) {
         try {
             return new ResponseEntity<>(investorServiceReg.investorRegistration(investorRegistrationRequest), HttpStatus.CREATED);
         } catch (Exception exception) {
@@ -51,19 +50,31 @@ public class InvestorController {
     }
 
     @Operation(
-            summary = "Find an investor",
+            summary = "Find an Investor",
             description = "Retrieves investor details based on the request parameters."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "it will return the user details"),
-            @ApiResponse(responseCode = "400", description = "Invalid request data"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Investor details retrieved successfully",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = InvestorRegistrationResponse.class))
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Invalid request data",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = String.class))
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Internal server error",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = String.class))
+            )
     })
-    @GetMapping("/find_investor/")
-    public ResponseEntity<?> findInvestor(@RequestBody InvestorGetRequest investorGetRequest){
-        try{
+    @GetMapping("/find_investor")
+    public ResponseEntity<?> findInvestor(@RequestBody InvestorGetRequest investorGetRequest) {
+        try {
             return new ResponseEntity<>(getInvestorDetails.getInvestorDetails(investorGetRequest), HttpStatus.OK);
-        }catch (Exception exception) {
+        } catch (Exception exception) {
             return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }

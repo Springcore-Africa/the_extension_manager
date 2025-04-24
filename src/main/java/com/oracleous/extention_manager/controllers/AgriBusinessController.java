@@ -20,8 +20,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RequiredArgsConstructor
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/agri_business")
 @Tag(name = "AgricBusiness Registration and Find AgricBusiness API's", description = "API for registering AgricBusiness and find AgricBusiness users")
 public class AgriBusinessController {
