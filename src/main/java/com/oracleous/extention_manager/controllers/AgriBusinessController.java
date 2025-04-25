@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/agri_business")
-@Tag(name = "AgricBusiness Registration and Find AgricBusiness API's", description = "API for registering AgricBusiness and find AgricBusiness users")
+@Tag(name = "AgriBusiness Registration and retrieving API", description = "API for registering AgricBusiness and find AgricBusiness users")
 public class AgriBusinessController {
     final AgriBusinessService agriBusinessService;
     final GetAgricBusinessDetailsMethod agricBusinessDetailsMethod ;

@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
-@Tag(name = "Investor API", description = "API for registering and retrieving investor details")
+@Tag(name = "Investor registering and retrieving API", description = "Registering and Retrieving investor details")
 public class InvestorController {
     private final InvestorServiceReg investorServiceReg;
     private final GetInvestorDetails getInvestorDetails;

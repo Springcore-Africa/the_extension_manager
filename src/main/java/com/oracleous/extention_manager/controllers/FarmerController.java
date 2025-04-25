@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -25,6 +26,7 @@ import static com.oracleous.extention_manager.utilities.ApplicationUtilities.TOK
 @RequestMapping("/api/v1/farmers")
 @RequiredArgsConstructor
 @Validated
+@Tag(name = "Farmer initiate registration and Completion", description = "Farmer registration and Completion via link")
 public class FarmerController {
 
     private final FarmersService farmersService;
