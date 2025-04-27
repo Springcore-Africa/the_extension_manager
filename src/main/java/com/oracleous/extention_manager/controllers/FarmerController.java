@@ -1,8 +1,10 @@
 package com.oracleous.extention_manager.controllers; // Adjust package as needed
 
+import com.oracleous.extention_manager.dto.requests.readRequest.FarmerGetRequest;
 import com.oracleous.extention_manager.dto.requests.registrationRequest.FarmerVerifyTokenRequest;
 import com.oracleous.extention_manager.dto.requests.registrationRequest.FarmersRegistrationRequest;
 import com.oracleous.extention_manager.dto.response.registrationResponse.FarmerResponse;
+import com.oracleous.extention_manager.services.farmersServices.FarmerReadPackage.GetFarmerDetailsMethod;
 import com.oracleous.extention_manager.services.farmersServices.FarmerRegistration.FarmersService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -30,6 +32,7 @@ import static com.oracleous.extention_manager.utilities.ApplicationUtilities.TOK
 public class FarmerController {
 
     private final FarmersService farmersService;
+    private final GetFarmerDetailsMethod getFarmerDetailsMethod ;
     @Operation(
             summary = "Farmer Registration",
             description = "Initiates farmer registration and sends a verification token to the provided email."
@@ -73,4 +76,14 @@ public class FarmerController {
         FarmerResponse response = farmersService.verifyToken(farmerVerifyTokenRequest);
         return new ResponseEntity<>(response, response.getResponseCode().equals(ACCOUNT_CREATED_CODE) ? HttpStatus.OK : HttpStatus.BAD_REQUEST);
     }
+
+    @GetMapping("/find-farmer/")
+    public ResponseEntity<?> findFarmerm(@RequestBody FarmerGetRequest farmerGetRequest){
+        try{
+            return new ResponseEntity<>(getFarmerDetailsMethod.getFarmerDetails(farmerGetRequest), HttpStatus.OK);
+        }catch(Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
 }
