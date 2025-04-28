@@ -3,6 +3,7 @@ package com.oracleous.extention_manager.controllers; // Adjust package as needed
 import com.oracleous.extention_manager.dto.requests.readRequest.FarmerGetRequest;
 import com.oracleous.extention_manager.dto.requests.registrationRequest.FarmerVerifyTokenRequest;
 import com.oracleous.extention_manager.dto.requests.registrationRequest.FarmersRegistrationRequest;
+import com.oracleous.extention_manager.dto.response.readResponse.FarmerGetResponse;
 import com.oracleous.extention_manager.dto.response.registrationResponse.FarmerResponse;
 import com.oracleous.extention_manager.services.farmersServices.FarmerReadPackage.GetFarmerDetailsMethod;
 import com.oracleous.extention_manager.services.farmersServices.FarmerRegistration.FarmersService;
@@ -77,6 +78,22 @@ public class FarmerController {
         return new ResponseEntity<>(response, response.getResponseCode().equals(ACCOUNT_CREATED_CODE) ? HttpStatus.OK : HttpStatus.BAD_REQUEST);
     }
 
+    @Operation(
+            summary = "Find Farmer Details",
+            description = "Retrieves farmer details based on the provided email or phone number."
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Farmer details retrieved successfully",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = FarmerGetResponse.class))
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Farmer not found",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = String.class))
+            )
+    })
     @GetMapping("/find-farmer/")
     public ResponseEntity<?> findFarmerm(@RequestBody FarmerGetRequest farmerGetRequest){
         try{
