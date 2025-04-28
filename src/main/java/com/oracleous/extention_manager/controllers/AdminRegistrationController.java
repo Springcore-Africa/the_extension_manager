@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/admin")
 @AllArgsConstructor
 @Slf4j
+@Tag(name = "Initiate Admin Registration and Completion API", description = "")
 public class AdminRegistrationController {
     @Autowired
     private AdminRegistrationService adminRegistrationService;

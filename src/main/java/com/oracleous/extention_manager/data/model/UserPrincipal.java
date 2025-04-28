@@ -15,7 +15,7 @@
 //
 //    @Override
 //    public Collection<? extends GrantedAuthority> getAuthorities() {
-//        return Collections.singleton(new SimpleGrantedAuthority(users.getUserRole().name()));
+//        return (Collection<? extends GrantedAuthority>) Collections.singleton(new SimpleGrantedAuthority(users.getUserRole().name()));
 //    }
 //
 //    @Override
