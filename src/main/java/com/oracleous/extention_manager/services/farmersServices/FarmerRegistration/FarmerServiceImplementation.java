@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -24,7 +25,7 @@ import static com.oracleous.extention_manager.utilities.ApplicationUtilities.*;
 public class FarmerServiceImplementation implements FarmersService {
 
     private static final Logger log = LoggerFactory.getLogger(FarmerServiceImplementation.class);
-
+    private final BCryptPasswordEncoder passwordEncoder ;
     private final FarmersRepository farmersRepository;
     private final ApplicationEventPublisher eventPublisher;
     private final ConcurrentHashMap<String, Farmer> pendingRegistrations = new ConcurrentHashMap<>();
@@ -67,6 +68,7 @@ public class FarmerServiceImplementation implements FarmersService {
                 .passportPhotograph(request.getPassportPhotograph())
                 .lastEducationalCertificate(request.getLastEducationalCertificate())
                 .birthCertificate(request.getBirthCertificate())
+                .password(passwordEncoder.encode(request.getPassword()))
                 .build();
 
         String token = registrationToken();

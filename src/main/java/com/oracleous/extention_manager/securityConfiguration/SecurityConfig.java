@@ -31,7 +31,15 @@ public class SecurityConfig {
         httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(requests -> requests
-                .requestMatchers("/api/farmers/farmers_registration").permitAll()
+                        .requestMatchers("/api/farmers/farmers_registration").permitAll()
+                        .requestMatchers("/api/v1/farmers/register").permitAll()
+                        .requestMatchers("/api/v1/farmers/verify-token").permitAll()
+                        .requestMatchers("/auth/super_admin_registration").permitAll()
+                        .requestMatchers("/auth/investor_registration").permitAll()
+                        .requestMatchers("/user/login").permitAll()
+                        .requestMatchers("/v1/farmers/find-farmer/").hasAuthority("farmer")
+
+
                         .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

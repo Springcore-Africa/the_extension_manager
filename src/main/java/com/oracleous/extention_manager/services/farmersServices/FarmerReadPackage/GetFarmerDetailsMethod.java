@@ -11,6 +11,8 @@ import com.oracleous.extention_manager.exceptions.FarmerNotFoundExceptionWhileFe
 import static com.oracleous.extention_manager.utilities.ApplicationUtilities.*;
 import com.oracleous.extention_manager.exceptions.InvestorNotFoundException;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,6 +22,11 @@ public class GetFarmerDetailsMethod implements GetFarmerDetails {
 
     @Override
     public FarmerGetResponse getFarmerDetails(FarmerGetRequest getFarmerDetailsRequest) {
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal() instanceof String) {
+//            throw new IllegalArgumentException("User not found");
+//        }
+
         String email = getFarmerDetailsRequest.getEmail();
         String phoneNumber = getFarmerDetailsRequest.getPhoneNumber();
 
