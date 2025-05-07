@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 @Data
 
 public class RegistrationToken {
+
     @Id
     private String token;
     private String email;

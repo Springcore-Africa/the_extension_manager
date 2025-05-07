@@ -1,5 +1,6 @@
 package com.oracleous.extention_manager.dto.requests.requestEmail;
 
+import com.oracleous.extention_manager.data.model.Roles;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
@@ -23,4 +24,5 @@ public class AdminRegistrationRequestDto {
             pattern = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$"
     )
     private String email;
+    private Roles role;
 }

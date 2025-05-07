@@ -2,6 +2,7 @@ package com.oracleous.extention_manager.services.adminService.adminRegistration;
 
 import com.oracleous.extention_manager.data.model.Admin;
 import com.oracleous.extention_manager.data.model.RegistrationToken;
+import com.oracleous.extention_manager.data.model.Users;
 import com.oracleous.extention_manager.data.repositories.AdminRepository;
 import com.oracleous.extention_manager.data.repositories.RegistrationTokenRepository;
 import com.oracleous.extention_manager.data.repositories.SuperAdminRepository;
@@ -42,9 +43,9 @@ public class AdminRegistrationService implements AdminRegistration {
 
     @Override
     public InitiateAdminRegistration initiateAdminRegistration(AdminRegistrationRequestDto request, String superAdminEmail) {
-        if (!superAdminRepository.existsByEmail(superAdminEmail)) {
-                throw new SecurityException(SUPER_ADMIN_INITIATIVE);
-        }
+//        if (!superAdminRepository .existsByEmail(superAdminEmail)) {
+//                throw new SecurityException(SUPER_ADMIN_INITIATIVE);
+//        }
         log.info("Using base URL: {}", baseUrl);
 
         //I validate email
@@ -52,11 +53,17 @@ public class AdminRegistrationService implements AdminRegistration {
             throw new IllegalArgumentException(INVALID_EMAIL_ADDRESS);
         }
 
-        if (adminRepository.existsByEmail(request.getEmail())) {
+        if (adminRepository.existsByUsersEmail(request.getEmail())) {
             throw new IllegalArgumentException(EMAIL_ALREADY_EXIST);
         }
-        Admin admin = Admin.builder()
+
+        Users users = Users.builder()
                 .email(request.getEmail())
+                .userRole(request.getRole())
+                .build();
+
+        Admin admin = Admin.builder()
+                .users(users)
                 .confirmed(false)
                 .build();
         adminRepository.save(admin);
@@ -87,7 +94,7 @@ public class AdminRegistrationService implements AdminRegistration {
 
     @Override
     public boolean isAdminEmailRegistered(String email) {
-        return adminRepository.existsByEmail(email);
+        return adminRepository.existsByUsersEmail(email);
     }
 
     public RegistrationToken validateToken(String token) {

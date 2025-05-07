@@ -32,6 +32,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(requests -> requests
                         .requestMatchers("/api/farmers/farmers_registration").permitAll()
+//                        .requestMatchers("/api/v1/farmers/register").permitAll()
                         .requestMatchers("/api/v1/farmers/register").permitAll()
                         .requestMatchers("/api/v1/farmers/verify-token").permitAll()
                         .requestMatchers("/auth/super_admin_registration").permitAll()

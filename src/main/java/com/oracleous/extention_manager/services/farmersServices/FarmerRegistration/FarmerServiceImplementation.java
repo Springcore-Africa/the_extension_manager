@@ -1,9 +1,12 @@
 package com.oracleous.extention_manager.services.farmersServices.FarmerRegistration;
 
 import com.oracleous.extention_manager.data.model.Farmer;
+import com.oracleous.extention_manager.data.model.Users;
 import com.oracleous.extention_manager.data.repositories.FarmersRepository;
+import com.oracleous.extention_manager.data.repositories.UserRepository;
 import com.oracleous.extention_manager.dto.requests.registrationRequest.FarmerVerifyTokenRequest;
 import com.oracleous.extention_manager.dto.requests.registrationRequest.FarmersRegistrationRequest;
+import com.oracleous.extention_manager.dto.requests.registrationRequest.UserRegistrationRequest;
 import com.oracleous.extention_manager.dto.response.registrationResponse.FarmerInfo;
 import com.oracleous.extention_manager.dto.response.registrationResponse.FarmerResponse;
 import com.oracleous.extention_manager.email.EmailEvent;
@@ -30,6 +33,7 @@ public class FarmerServiceImplementation implements FarmersService {
     private final ApplicationEventPublisher eventPublisher;
     private final ConcurrentHashMap<String, Farmer> pendingRegistrations = new ConcurrentHashMap<>();
     private static final long TOKEN_EXPIRATION_MINUTES = 15;
+    private final UserRepository userRepository;
 
     @Override
     public FarmerResponse registerFarmer(FarmersRegistrationRequest request) {
@@ -49,9 +53,22 @@ public class FarmerServiceImplementation implements FarmersService {
                     .farmerInfo(null)
                     .build();
         }
+        Users users = Users.builder()
+                .email(request.getEmail())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .userRole(request.getRole())
+                .build();
+//        userRepository.save(users);
+
+
+//        UserRegistrationRequest userRegistrationRequest = new UserRegistrationRequest();
+//        userRegistrationRequest.setEmail(request.getEmail());
+//        userRegistrationRequest.setPassword(passwordEncoder.encode(request.getPassword()));
+//        userRegistrationRequest.setUserRole(request.getRole());
 
         Farmer newFarmer = Farmer.builder()
-                .email(request.getEmail())
+                .users(users)
+//                .email(request.getEmail())
                 .nationalId(request.getNationalId())
                 .phoneNumber(request.getPhoneNumber())
                 .firstName(request.getFirstName())
@@ -68,7 +85,7 @@ public class FarmerServiceImplementation implements FarmersService {
                 .passportPhotograph(request.getPassportPhotograph())
                 .lastEducationalCertificate(request.getLastEducationalCertificate())
                 .birthCertificate(request.getBirthCertificate())
-                .password(passwordEncoder.encode(request.getPassword()))
+//                .password(passwordEncoder.encode(request.getPassword()))
                 .build();
 
         String token = registrationToken();

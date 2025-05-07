@@ -9,20 +9,11 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-//@Data
 public record UserPrincipal(Users users) implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-//        List<GrantedAuthority> authorities = new ArrayList<>();
-//        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
-//
-//        Roles users1 = users.getUserRole();
-//        if (users1 != null) {
-//            authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
-//        }
         return Collections.singleton(new SimpleGrantedAuthority(users.getUserRole().name()));
-//            return authorities;
     }
 
     @Override

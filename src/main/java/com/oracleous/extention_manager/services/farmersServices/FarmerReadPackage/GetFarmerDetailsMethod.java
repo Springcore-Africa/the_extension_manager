@@ -3,6 +3,7 @@ package com.oracleous.extention_manager.services.farmersServices.FarmerReadPacka
 import com.oracleous.extention_manager.data.model.Farmer;
 import com.oracleous.extention_manager.data.model.Gender;
 import com.oracleous.extention_manager.data.model.MaritalStatus;
+import com.oracleous.extention_manager.data.model.Users;
 import com.oracleous.extention_manager.data.repositories.FarmersRepository;
 import com.oracleous.extention_manager.dto.requests.readRequest.FarmerGetRequest;
 import com.oracleous.extention_manager.dto.response.readResponse.FarmerGetResponse;
@@ -22,10 +23,10 @@ public class GetFarmerDetailsMethod implements GetFarmerDetails {
 
     @Override
     public FarmerGetResponse getFarmerDetails(FarmerGetRequest getFarmerDetailsRequest) {
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal() instanceof String) {
-//            throw new IllegalArgumentException("User not found");
-//        }
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal() instanceof String) {
+            throw new IllegalArgumentException("User not found");
+        }
 
         String email = getFarmerDetailsRequest.getEmail();
         String phoneNumber = getFarmerDetailsRequest.getPhoneNumber();
@@ -42,10 +43,14 @@ public class GetFarmerDetailsMethod implements GetFarmerDetails {
                 lastName(farmer.getLastName()).
                 build();
 
+//        Users users = Users.builder()
+//                .email(farmer.getEmail())
+//                .build();
+
         return FarmerGetResponse.builder().
                 fullName(fullName).
                 phoneNumber(farmer.getPhoneNumber()).
-                email(farmer.getEmail()).
+                email(farmer.getUsers().getEmail()).
                 nationalId(farmer.getNationalId()).
                 dateOfBirth(farmer.getDateOfBirth()).
                 stateOfOrigin(farmer.getStateOfOrigin()).
@@ -62,7 +67,7 @@ public class GetFarmerDetailsMethod implements GetFarmerDetails {
                 gender((Gender) farmer.getGender()).
                 stateOfOrigin(farmer.getStateOfOrigin()).
                 dateOfBirth(farmer.getDateOfBirth()).
-                password(farmer.getPassword())
+                password(farmer.getUsers().getPassword())
                 .build();
 
     }

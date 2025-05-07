@@ -1,11 +1,11 @@
-package com.oracleous.extention_manager.services.agriBusinessServices.AgricBusinessRegistration;
-
-import com.oracleous.extention_manager.dto.requests.registrationRequest.AgriBusinessRegRequest;
-import com.oracleous.extention_manager.dto.response.registrationResponse.AgriBusinessResponse;
-import com.oracleous.extention_manager.exceptions.BusinessAlreadyExistsException;
-import com.oracleous.extention_manager.exceptions.FarmerNotFoundException;
-
-public interface AgriBusinessService {
-
-    AgriBusinessResponse registerAgriBusiness(AgriBusinessRegRequest agriBusinessRegRequest) throws BusinessAlreadyExistsException, FarmerNotFoundException;
-}
+//package com.oracleous.extention_manager.services.agriBusinessServices.AgricBusinessRegistration;
+//
+//import com.oracleous.extention_manager.dto.requests.registrationRequest.AgriBusinessRegRequest;
+//import com.oracleous.extention_manager.dto.response.registrationResponse.AgriBusinessResponse;
+//import com.oracleous.extention_manager.exceptions.BusinessAlreadyExistsException;
+//import com.oracleous.extention_manager.exceptions.FarmerNotFoundException;
+//
+//public interface AgriBusinessService {
+//
+//    AgriBusinessResponse registerAgriBusiness(AgriBusinessRegRequest agriBusinessRegRequest) throws BusinessAlreadyExistsException, FarmerNotFoundException;
+//}

@@ -1,5 +1,6 @@
 package com.oracleous.extention_manager.dto.requests.registrationRequest;
 
+import com.oracleous.extention_manager.data.model.Roles;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
@@ -23,6 +24,8 @@ public class SuperAdminRegRequest {
 
     @Schema(description = "Password for the SuperAdmin account", example = "SecurePass123!", required = true)
     private String password;
+
+    private Roles role;
 
     @Schema(description = "Short biography of the SuperAdmin", example = "Experienced admin with at least a year in management", required = false)
     private String shortBio;
