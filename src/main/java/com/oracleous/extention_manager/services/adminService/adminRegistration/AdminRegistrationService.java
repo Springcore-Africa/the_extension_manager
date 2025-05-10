@@ -2,6 +2,7 @@ package com.oracleous.extention_manager.services.adminService.adminRegistration;
 
 import com.oracleous.extention_manager.data.model.Admin;
 import com.oracleous.extention_manager.data.model.RegistrationToken;
+import com.oracleous.extention_manager.data.model.Roles;
 import com.oracleous.extention_manager.data.model.Users;
 import com.oracleous.extention_manager.data.repositories.AdminRepository;
 import com.oracleous.extention_manager.data.repositories.RegistrationTokenRepository;
@@ -13,6 +14,8 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -43,9 +46,15 @@ public class AdminRegistrationService implements AdminRegistration {
 
     @Override
     public InitiateAdminRegistration initiateAdminRegistration(AdminRegistrationRequestDto request, String superAdminEmail) {
-//        if (!superAdminRepository .existsByEmail(superAdminEmail)) {
-//                throw new SecurityException(SUPER_ADMIN_INITIATIVE);
-//        }
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(authentication == null || authentication.getPrincipal() == null) {
+            throw new IllegalArgumentException("SuperAdmin not found");
+        }
+        String email = authentication.getPrincipal().toString();
+        if(email.isEmpty()){
+            throw new IllegalArgumentException("SuperAdmin not found");
+        }
+
         log.info("Using base URL: {}", baseUrl);
 
         //I validate email
@@ -59,7 +68,7 @@ public class AdminRegistrationService implements AdminRegistration {
 
         Users users = Users.builder()
                 .email(request.getEmail())
-                .userRole(request.getRole())
+                .userRole(Roles.ADMIN)
                 .build();
 
         Admin admin = Admin.builder()

@@ -1,6 +1,7 @@
 package com.oracleous.extention_manager.data.repositories;
 
 import com.oracleous.extention_manager.data.model.Farmer;
+import com.oracleous.extention_manager.data.model.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -30,6 +31,7 @@ boolean existsByEmailOrNationalIdOrPhoneNumber(@Param("email") String email,
         "(:email IS NOT NULL AND LOWER(f.users.email) = LOWER(:email)) OR " +
         "(:phoneNumber IS NOT NULL AND f.phoneNumber = :phoneNumber)")
 Optional<Farmer> findByEmailOrPhoneNumber(@Param("email") String email, @Param("phoneNumber") String phoneNumber);
+    Optional<Farmer> findByUsers(Users users);
 
 //    boolean existsByEmail(String email);
 

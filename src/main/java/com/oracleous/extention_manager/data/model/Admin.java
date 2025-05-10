@@ -16,10 +16,6 @@ public class Admin {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    @Column(unique = true, nullable = false)
-//    private String email;
-//    private String password;
-
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "users_id")
     private Users users ;

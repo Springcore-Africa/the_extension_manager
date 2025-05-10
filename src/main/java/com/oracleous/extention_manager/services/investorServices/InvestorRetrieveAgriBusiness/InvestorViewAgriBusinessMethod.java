@@ -1,13 +1,11 @@
 package com.oracleous.extention_manager.services.investorServices.InvestorRetrieveAgriBusiness;
 
-import com.oracleous.extention_manager.data.model.AgriBusiness;
 import com.oracleous.extention_manager.data.model.Investor;
 import com.oracleous.extention_manager.data.repositories.AgriBusinessRepository;
 import com.oracleous.extention_manager.data.repositories.InvestorRepository;
 import com.oracleous.extention_manager.dto.requests.investorAgriBusinessRetrieval.InvestorAgriBusinessRetrievalRequest;
 import com.oracleous.extention_manager.dto.response.investorAgriBusinessResponse.InvestorAgriBusinessRetrievalResponse;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +21,7 @@ public class InvestorViewAgriBusinessMethod implements  InvestorViewAgriBusiness
 
     @Override
     public InvestorAgriBusinessRetrievalResponse agriBusinessResponse(InvestorAgriBusinessRetrievalRequest request) {
-        Optional<Investor> investor = investorRepository.findByEmailOrPhoneNumber(request.getEmail(), request.getPhoneNumber());
+        Optional<Investor> investor = investorRepository.findByUsersEmailOrPhoneNumber(request.getEmail(), request.getPhoneNumber());
             if(investor.isEmpty())
                 return InvestorAgriBusinessRetrievalResponse.builder().
                         message("Investor not found ").

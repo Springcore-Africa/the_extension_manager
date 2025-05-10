@@ -20,6 +20,8 @@ import org.springframework.web.cors.CorsConfiguration;
 
 import java.util.List;
 
+import static com.oracleous.extention_manager.data.model.Roles.FARMER;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -32,13 +34,18 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(requests -> requests
                         .requestMatchers("/api/farmers/farmers_registration").permitAll()
-//                        .requestMatchers("/api/v1/farmers/register").permitAll()
                         .requestMatchers("/api/v1/farmers/register").permitAll()
                         .requestMatchers("/api/v1/farmers/verify-token").permitAll()
+
+                        .requestMatchers("/api/agri-business/register").hasAuthority("USER.FARMER")
+                        .requestMatchers("/api/agri-business/find").hasAuthority("USER.FARMER")
+
                         .requestMatchers("/auth/super_admin_registration").permitAll()
+                        .requestMatchers("/admin/register/complete-form").hasAuthority("ADMIN")
+
                         .requestMatchers("/auth/investor_registration").permitAll()
                         .requestMatchers("/user/login").permitAll()
-                        .requestMatchers("/v1/farmers/find-farmer/").hasAuthority("farmer")
+                        .requestMatchers("/v1/farmers/find-farmer/").hasAuthority("FARMER")
 
 
                         .anyRequest().authenticated())

@@ -24,5 +24,5 @@ public class AdminRegistrationRequestDto {
             pattern = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$"
     )
     private String email;
-    private Roles role;
+//    private Roles role;
 }
