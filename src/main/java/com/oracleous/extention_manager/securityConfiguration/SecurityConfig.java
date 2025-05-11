@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -20,69 +19,60 @@ import org.springframework.web.cors.CorsConfiguration;
 
 import java.util.List;
 
-import static com.oracleous.extention_manager.data.model.Roles.FARMER;
-
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
     @Autowired
-    private JwtFilter jwtFilter ;
+    private JwtFilter jwtFilter;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity, JwtFilter jwtFilter)throws Exception{
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(requests -> requests
-                        .requestMatchers("/api/farmers/farmers_registration").permitAll()
-                        .requestMatchers("/api/v1/farmers/register").permitAll()
-                        .requestMatchers("/api/v1/farmers/verify-token").permitAll()
-
-                        .requestMatchers("/api/agri-business/register").hasAuthority("USER.FARMER")
-                        .requestMatchers("/api/agri-business/find").hasAuthority("USER.FARMER")
-
-                        .requestMatchers("/auth/super_admin_registration").permitAll()
-                        .requestMatchers("/admin/register/complete-form").hasAuthority("ADMIN")
-
-                        .requestMatchers("/auth/investor_registration").permitAll()
-                        .requestMatchers("/user/login").permitAll()
-                        .requestMatchers("/v1/farmers/find-farmer/").hasAuthority("FARMER")
-
-
-                        .anyRequest().authenticated())
-                .httpBasic(Customizer.withDefaults())
+                        .requestMatchers(
+                                "/api/farmers/farmers_registration",
+                                "/api/v1/farmers/register",
+                                "/api/v1/farmers/verify-token",
+                                "/auth/super_admin_registration",
+                                "/auth/local_admin_registration",
+                                "/auth/investor_registration",
+                                "/user/login"
+                        ).permitAll()
+                        .requestMatchers("/api/agri_business/register").hasRole("FARMER")
+                        .requestMatchers("/api/agri-business/find").hasRole("FARMER") // Updated to ROLE_FARMER
+                        .requestMatchers("/api/v1/farmers/find-farmer/**").hasRole("FARMER") // Updated to ROLE_FARMER
+                        .requestMatchers("/admin/register/complete-form").hasRole("ADMIN")
+                        .anyRequest().authenticated()
+                )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(jwtFilter , UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .cors(cors -> cors.configurationSource(request -> {
-            var config = new CorsConfiguration();
-            config.setAllowedOrigins(List.of("http://localhost:5173")); // Frontend URL
-            config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-            config.setAllowedHeaders(List.of("Authorization", "Content-Type"));
-            config.setAllowCredentials(true);
-            return config;
-        }));
+                    var config = new CorsConfiguration();
+                    config.setAllowedOrigins(List.of("http://localhost:5173"));
+                    config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+                    config.setAllowedHeaders(List.of("Authorization", "Content-Type"));
+                    config.setAllowCredentials(true);
+                    return config;
+                }));
         return httpSecurity.build();
     }
 
-        @Bean
-    public AuthenticationProvider authenticationProvider(UserDetailsService userDetailsService){
-        DaoAuthenticationProvider provide = new DaoAuthenticationProvider();
-        provide.setPasswordEncoder(new BCryptPasswordEncoder(12));
-        provide.setUserDetailsService(userDetailsService);
-        return provide;
-    }
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration)throws Exception{
-        return configuration.getAuthenticationManager();
-    }
-    @Bean
-    public BCryptPasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
+    public AuthenticationProvider authenticationProvider(UserDetailsService userDetailsService) {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setPasswordEncoder(new BCryptPasswordEncoder(12));
+        provider.setUserDetailsService(userDetailsService);
+        return provider;
     }
 
-    @Override
-    public String toString() {
-        return "SecurityConfig{" +
-                "jwtFilter=" + jwtFilter +
-                '}';
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+        return configuration.getAuthenticationManager();
+    }
+
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }

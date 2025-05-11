@@ -73,7 +73,7 @@ public class AgriBusinessController {
             )
     })
 
-    @GetMapping("/find_agriBusiness/")
+    @GetMapping("/find")
     public ResponseEntity <?> findAgriBusiness(@RequestBody AgricGetRequest agricGetRequest) {
         try{
             return new ResponseEntity<>(agricBusinessDetailsMethod.getAgricBusinessDetails(agricGetRequest), HttpStatus.FOUND);

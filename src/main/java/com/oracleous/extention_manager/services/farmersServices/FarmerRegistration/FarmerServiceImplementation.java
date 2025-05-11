@@ -44,7 +44,7 @@ public class FarmerServiceImplementation implements FarmersService {
         boolean farmerExists = farmersRepository.existsByEmailOrNationalIdOrPhoneNumber(
                 request.getEmail(), request.getNationalId(), request.getPhoneNumber()
         );
-
+        System.out.println("this is coming email ++++++"  + request.getEmail());
         if (farmerExists) {
             log.warn("Farmer already exists with email: {}, nationalId: {}, or phoneNumber: {}",
                     request.getEmail(), request.getNationalId(), request.getPhoneNumber());
@@ -54,13 +54,14 @@ public class FarmerServiceImplementation implements FarmersService {
                     .farmerInfo(null)
                     .build();
         }
+        System.out.println("this is if farmer exist ++++++"  + farmerExists);
         Users users = Users.builder()
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .userRole(Roles.FARMER)
                 .build();
 
-
+        System.out.println("this is user ++++++"  + users);
         Farmer newFarmer = Farmer.builder()
                 .users(users)
                 .nationalId(request.getNationalId())

@@ -2,6 +2,8 @@ package com.oracleous.extention_manager.services.agriBusinessServices.AgricBusin
 
 import com.oracleous.extention_manager.data.model.AgriBusiness;
 import com.oracleous.extention_manager.data.model.Farmer;
+import com.oracleous.extention_manager.data.model.UserPrincipal;
+import com.oracleous.extention_manager.data.model.Users;
 import com.oracleous.extention_manager.data.repositories.AgriBusinessRepository;
 import com.oracleous.extention_manager.data.repositories.FarmersRepository;
 import com.oracleous.extention_manager.dto.requests.readRequest.AgricGetRequest;
@@ -11,7 +13,10 @@ import com.oracleous.extention_manager.exceptions.FarmerNotFoundExceptionWhileFe
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.util.http.parser.Authorization;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import static com.oracleous.extention_manager.utilities.ApplicationUtilities.*;
 
@@ -22,13 +27,21 @@ import java.util.Optional;
 @AllArgsConstructor
 @Slf4j
 public class GetAgricBusinessDetailsMethod implements GetAgricBusinessDetails {
-    @Autowired
-    private AgriBusinessRepository agriBusinessRepository;
-    @Autowired
-    private FarmersRepository farmersRepository;
+    private final AgriBusinessRepository agriBusinessRepository;
+    private final FarmersRepository farmersRepository;
 
     @Override
     public AgricGetResponse getAgricBusinessDetails(AgricGetRequest getAgriBusinessDetailsRequest) {
+        Authentication authorization = SecurityContextHolder.getContext().getAuthentication();
+        if(authorization == null || !authorization.isAuthenticated()) {
+            throw new IllegalArgumentException("User not found");
+        }
+        UserPrincipal userPrincipal = (UserPrincipal) authorization.getPrincipal();
+        Users users = userPrincipal.users();
+
+        if (users == null) {
+            throw new IllegalArgumentException("User not found");
+        }
 
         String email = getAgriBusinessDetailsRequest.getEmail();
         String phoneNumber = getAgriBusinessDetailsRequest.getPhoneNumber();
