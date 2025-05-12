@@ -52,6 +52,7 @@ public class AgriBusinessImpl implements AgriBusinessService {
                 .businessLocationExact(regRequest.getBusinessLocationExact())
                 .cacNumber(regRequest.getCacNumber())
                 .cacRegistrationDate(LocalDateTime.now())
+                .regNumber(ApplicationUtilities.generateBusRegNumber())
                 .farmSize(regRequest.getFarmSize())
                 .agriculturalProduct(regRequest.getAgriculturalProduct())
                 .yearlyProduction(regRequest.getYearlyProduction())
@@ -61,7 +62,6 @@ public class AgriBusinessImpl implements AgriBusinessService {
                 .memart(regRequest.getMemart())
                 .farmPhotos(regRequest.getFarmPhotos())
                 .productPhotos(regRequest.getProductPhotos())
-                .regNumber(ApplicationUtilities.generateBusRegNumber())
                 .farmer(farmer)
                 .build();
 
@@ -69,8 +69,9 @@ public class AgriBusinessImpl implements AgriBusinessService {
         AgriBusiness savedBusiness = agriBusinessRepository.save(agriBusiness);
 
         //  THIS is the missing link
-//        farmer.setAgriBusiness(savedBusiness);
-//        farmersRepository.save(farmer);
+        farmer.setAgriBusiness(savedBusiness);
+        farmersRepository.save(farmer);
+
         return AgriBusinessResponse.builder()
                 .responseCode(BUSINESS_REGISTERED_CODE)
                 .responseMessage(BUSINESS_REGISTERED_MESSAGE)

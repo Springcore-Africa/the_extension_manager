@@ -14,9 +14,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AgricGetResponse {
-//    private FullName fullName;
-//    private String email;
-//    private String phoneNumber;
     private String businessName;
     private String businessLocationState;
     private String businessLocationLga;
@@ -35,9 +32,9 @@ public class AgricGetResponse {
     private String regNumber;
     private Long farmerId;
     private Gender gender;
-    private MaritalStatus maritalStatus;
+//    private MaritalStatus maritalStatus;
 
     // This is error response
-    private String responseCode;
+//    private String responseCode;
     private String responseMessage;
 }

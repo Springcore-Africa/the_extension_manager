@@ -40,7 +40,6 @@ public class FarmerServiceImplementation implements FarmersService {
     public FarmerResponse registerFarmer(FarmersRegistrationRequest request) {
         log.info("Registering farmer with email: {}", request.getEmail());
 
-        // Check if farmer already exists
         boolean farmerExists = farmersRepository.existsByEmailOrNationalIdOrPhoneNumber(
                 request.getEmail(), request.getNationalId(), request.getPhoneNumber()
         );

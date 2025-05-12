@@ -6,21 +6,18 @@ import com.oracleous.extention_manager.data.model.UserPrincipal;
 import com.oracleous.extention_manager.data.model.Users;
 import com.oracleous.extention_manager.data.repositories.AgriBusinessRepository;
 import com.oracleous.extention_manager.data.repositories.FarmersRepository;
-import com.oracleous.extention_manager.dto.requests.readRequest.AgricGetRequest;
 import com.oracleous.extention_manager.dto.response.readResponse.AgricGetResponse;
-import com.oracleous.extention_manager.dto.response.readResponse.FullName;
 import com.oracleous.extention_manager.exceptions.FarmerNotFoundExceptionWhileFetching;
+import com.oracleous.extention_manager.utilities.ApplicationUtilities;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.tomcat.util.http.parser.Authorization;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import static com.oracleous.extention_manager.utilities.ApplicationUtilities.*;
 
-import java.util.Optional;
+
+import static com.oracleous.extention_manager.utilities.ApplicationUtilities.*;
 
 @Service
 @Builder
@@ -31,60 +28,40 @@ public class GetAgricBusinessDetailsMethod implements GetAgricBusinessDetails {
     private final FarmersRepository farmersRepository;
 
     @Override
-    public AgricGetResponse getAgricBusinessDetails(AgricGetRequest getAgriBusinessDetailsRequest) {
-        Authentication authorization = SecurityContextHolder.getContext().getAuthentication();
-        if(authorization == null || !authorization.isAuthenticated()) {
-            throw new IllegalArgumentException("User not found");
-        }
-        UserPrincipal userPrincipal = (UserPrincipal) authorization.getPrincipal();
-        Users users = userPrincipal.users();
-
+    public AgricGetResponse getAgricBusinessDetails() {
+        Users users = ApplicationUtilities.getCurrentUser();
         if (users == null) {
             throw new IllegalArgumentException("User not found");
         }
 
-        String email = getAgriBusinessDetailsRequest.getEmail();
-        String phoneNumber = getAgriBusinessDetailsRequest.getPhoneNumber();
+        Farmer farmer = farmersRepository.findByUsers(users)
+                .orElseThrow(() -> new FarmerNotFoundExceptionWhileFetching(USER_NOT_FOUND_MESSAGE));
 
-        if ((email == null || email.isEmpty()) && (phoneNumber == null || phoneNumber.isEmpty())) {
-            throw new IllegalArgumentException(REQUIRED_REQUEST_MESSAGE);
-        }
-
-        Optional<Farmer> optionalFarmer = farmersRepository.findByEmailOrPhoneNumber(email, phoneNumber);
-        if (optionalFarmer.isEmpty()) {
-            throw new FarmerNotFoundExceptionWhileFetching(USER_NOT_FOUND_MESSAGE);
-        }
-//
-        Farmer farmer = optionalFarmer.get();
-        AgriBusiness business = farmer.getAgriBusiness();
-        if (business == null) {
+        AgriBusiness agriBusiness = farmer.getAgriBusiness();
+        if (agriBusiness == null) {
             return AgricGetResponse.builder()
                     .responseMessage(AGRIBUSINESS_NOT_FOUND_MESSAGE)
                     .build();
         }
+
         return AgricGetResponse.builder()
-//                .fullName(FullName.builder()
-//                        .firstName(farmer.getFirstName())
-//                        .lastName(farmer.getLastName())
-//                        .build())
-//                .email(farmer.getEmail())
-//                .phoneNumber(farmer.getPhoneNumber())
-                .businessLocationLga(business.getBusinessLocationLga())
-                .businessName(business.getBusinessName())
-                .businessLocationState(business.getBusinessLocationState())
-                .businessLocationExact(business.getBusinessLocationExact())
-                .cacNumber(business.getCacNumber())
-                .cacRegistrationDate(business.getCacRegistrationDate())
-                .regNumber(business.getRegNumber())
-                .farmSize(business.getFarmSize())
-                .agriculturalProduct(business.getAgriculturalProduct())
-                .yearlyProduction(business.getYearlyProduction())
-                .numberOfEmployees(business.getNumberOfEmployees())
-                .productDescription(business.getProductDescription())
-                .cacCertificate(business.getCacCertificate())
-                .memart(business.getMemart())
-                .farmPhotos(business.getFarmPhotos())
-                .productPhotos(business.getProductPhotos())
+                .businessLocationLga(agriBusiness.getBusinessLocationLga())
+                .businessName(agriBusiness.getBusinessName())
+                .businessLocationState(agriBusiness.getBusinessLocationState())
+                .businessLocationExact(agriBusiness.getBusinessLocationExact())
+                .cacNumber(agriBusiness.getCacNumber())
+                .cacRegistrationDate(agriBusiness.getCacRegistrationDate())
+                .regNumber(agriBusiness.getRegNumber())
+                .farmSize(agriBusiness.getFarmSize())
+                .agriculturalProduct(agriBusiness.getAgriculturalProduct())
+                .yearlyProduction(agriBusiness.getYearlyProduction())
+                .numberOfEmployees(agriBusiness.getNumberOfEmployees())
+                .productDescription(agriBusiness.getProductDescription())
+                .cacCertificate(agriBusiness.getCacCertificate())
+                .memart(agriBusiness.getMemart())
+                .farmerId(farmer.getId())
+                .farmPhotos(agriBusiness.getFarmPhotos())
+                .productPhotos(agriBusiness.getProductPhotos())
                 .build();
     }
 }

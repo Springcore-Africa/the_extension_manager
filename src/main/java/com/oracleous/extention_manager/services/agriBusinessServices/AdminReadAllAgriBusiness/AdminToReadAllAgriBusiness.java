@@ -1,0 +1,4 @@
+package com.oracleous.extention_manager.services.agriBusinessServices.AdminReadAllAgriBusiness;
+
+public interface AdminToReadAllAgriBusiness {
+}

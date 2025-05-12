@@ -40,8 +40,8 @@ public class SecurityConfig {
                                 "/user/login"
                         ).permitAll()
                         .requestMatchers("/api/agri_business/register").hasRole("FARMER")
-                        .requestMatchers("/api/agri-business/find").hasRole("FARMER") // Updated to ROLE_FARMER
-                        .requestMatchers("/api/v1/farmers/find-farmer/**").hasRole("FARMER") // Updated to ROLE_FARMER
+                        .requestMatchers("/api/agri_business/find").hasRole("FARMER")
+                        .requestMatchers("/api/v1/farmers/find-farmer/**").hasRole("FARMER")
                         .requestMatchers("/admin/register/complete-form").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
