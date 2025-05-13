@@ -1,10 +1,10 @@
 package com.oracleous.extention_manager.services.investorServices.InvestorRetrieveAgriBusiness;
 
+import com.oracleous.extention_manager.data.model.AgriBusiness;
 import com.oracleous.extention_manager.dto.requests.investorAgriBusinessRetrieval.InvestorAgriBusinessRetrievalRequest;
-import com.oracleous.extention_manager.dto.response.investorAgriBusinessResponse.InvestorAgriBusinessRetrievalResponse;
 import org.springframework.stereotype.Service;
 
 @Service
 public interface InvestorViewAgriBusiness {
-    InvestorAgriBusinessRetrievalResponse agriBusinessResponse(InvestorAgriBusinessRetrievalRequest request);
+    AgriBusiness agriBusinessResponse();
 }

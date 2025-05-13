@@ -37,6 +37,8 @@ public class ApplicationUtilities {
     public static final String INVALID_TOKEN_CODE = "400";
     public static final String TOKEN_EXPIRED_CODE = "400";
     public static final String TOKEN_SENT_CODE = "201";
+    public static final String USER_NOT_FOUND = "User  not found";
+    public static final String INVESTOR_NOT_FOUND = "Investor now found";
 
 
     public static String generateRegNumber() {

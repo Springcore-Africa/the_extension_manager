@@ -1,6 +1,7 @@
 package com.oracleous.extention_manager.data.repositories;
 
 import com.oracleous.extention_manager.data.model.Investor;
+import com.oracleous.extention_manager.data.model.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -20,5 +21,5 @@ public interface InvestorRepository extends JpaRepository<Investor, Long> {
 
     Optional<Investor> findByUsersEmailOrPhoneNumber(String email, String phoneNumber);
 
-//    boolean existsByEmailOrPhoneNumber(String email);
+    Optional<Investor> findByUsers(Users users);
 }

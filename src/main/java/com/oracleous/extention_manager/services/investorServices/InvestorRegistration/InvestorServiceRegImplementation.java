@@ -35,13 +35,11 @@ public class InvestorServiceRegImplementation implements InvestorServiceReg {
                     responseMessage(INVESTOR_ALREADY_EXIST)
                     .build();
         }
-
         Users user = Users.builder()
                 .email(investorRegistrationRequest.getEmail())
                 .password(passwordEncoder.encode(investorRegistrationRequest.getPassword()))
                 .userRole(Roles.INVESTOR)
                 .build();
-
 
         Investor investor = Investor.builder().
                 users(user).

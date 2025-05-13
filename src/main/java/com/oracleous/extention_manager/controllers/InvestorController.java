@@ -5,6 +5,7 @@ import com.oracleous.extention_manager.dto.requests.readRequest.InvestorGetReque
 import com.oracleous.extention_manager.dto.response.registrationResponse.InvestorRegistrationResponse;
 import com.oracleous.extention_manager.services.investorServices.InvestorReadPackage.GetInvestorDetails;
 import com.oracleous.extention_manager.services.investorServices.InvestorRegistration.InvestorServiceReg;
+import com.oracleous.extention_manager.services.investorServices.InvestorRetrieveAgriBusiness.InvestorViewAgriBusiness;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 public class InvestorController {
     private final InvestorServiceReg investorServiceReg;
     private final GetInvestorDetails getInvestorDetails;
+    private final InvestorViewAgriBusiness investorViewAgriBusiness ;
 
     @Operation(
             summary = "Investor Registration",
@@ -75,6 +77,15 @@ public class InvestorController {
         try {
             return new ResponseEntity<>(getInvestorDetails.getInvestorDetails(investorGetRequest), HttpStatus.OK);
         } catch (Exception exception) {
+            return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/find_agriBusiness")
+    public ResponseEntity <?> findAgriBusiness() {
+        try{
+            return new ResponseEntity<>(investorViewAgriBusiness.agriBusinessResponse(), HttpStatus.OK);
+        }catch (Exception exception){
             return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }

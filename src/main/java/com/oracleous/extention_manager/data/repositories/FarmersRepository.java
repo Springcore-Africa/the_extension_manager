@@ -1,5 +1,6 @@
 package com.oracleous.extention_manager.data.repositories;
 
+import com.oracleous.extention_manager.data.model.AgriBusiness;
 import com.oracleous.extention_manager.data.model.Farmer;
 import com.oracleous.extention_manager.data.model.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -23,4 +24,5 @@ Optional<Farmer> findByEmailOrPhoneNumber(@Param("email") String email, @Param("
 
     Optional<Farmer> findByUsers(Users users);
 
+    AgriBusiness findByAgriBusiness(AgriBusiness agriBusiness);
 }

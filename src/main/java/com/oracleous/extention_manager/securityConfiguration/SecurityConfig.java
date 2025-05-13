@@ -43,6 +43,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/agri_business/find").hasRole("FARMER")
                         .requestMatchers("/api/v1/farmers/find-farmer/**").hasRole("FARMER")
                         .requestMatchers("/admin/register/complete-form").hasRole("ADMIN")
+                        .requestMatchers("/auth/find_agriBusiness").hasRole("INVESTOR")
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
