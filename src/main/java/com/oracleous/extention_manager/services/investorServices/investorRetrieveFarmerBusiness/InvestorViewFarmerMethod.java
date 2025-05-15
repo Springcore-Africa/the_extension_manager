@@ -1,8 +1,6 @@
 package com.oracleous.extention_manager.services.investorServices.investorRetrieveFarmerBusiness;
 
-import com.oracleous.extention_manager.dto.response.investorFarmerRetrieval.InvestorFarmerRetrievalResponse;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import com.oracleous.extention_manager.dto.response.investorFarmerRetrieval.InvestorViewFarmerResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +10,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class InvestorViewFarmerMethod implements InvestorViewFarmer{
     @Override
-    public InvestorFarmerRetrievalResponse retrieveFarmer() {
+    public InvestorViewFarmerResponse retrieveFarmer() {
         return null;
     }
 }

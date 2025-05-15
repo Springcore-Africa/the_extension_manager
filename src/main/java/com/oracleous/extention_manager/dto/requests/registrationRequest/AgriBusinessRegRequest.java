@@ -59,7 +59,6 @@ public class AgriBusinessRegRequest {
     @Schema(description = "AgriBusiness registration number", example = "1212", required = true)
     private String regNumber;
 
-    @Schema(description = "Farmer ID associated with the business", example = "100DRO", required = true)
-    private Long farmerId;
-
+//    @Schema(description = "Farmer ID associated with the business", example = "100DRO", required = true)
+//    private Long farmerId;
 }

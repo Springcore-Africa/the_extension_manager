@@ -56,7 +56,8 @@ public class AgriBusiness {
     private String farmPhotos;
     @Column(name = "PRODUCT PHOTOS")
     private String productPhotos;
-    @OneToOne(mappedBy = "agriBusiness")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "agriBusiness")
     private Farmer farmer;
 
 

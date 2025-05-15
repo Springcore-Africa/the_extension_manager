@@ -1,14 +1,16 @@
 package com.oracleous.extention_manager.services.investorServices.InvestorRetrieveAgriBusiness;
 
-import com.oracleous.extention_manager.data.model.AgriBusiness;
-import com.oracleous.extention_manager.data.model.Investor;
-import com.oracleous.extention_manager.data.model.Users;
+import com.oracleous.extention_manager.data.model.*;
 import com.oracleous.extention_manager.data.repositories.FarmersRepository;
 import com.oracleous.extention_manager.data.repositories.InvestorRepository;
+import com.oracleous.extention_manager.exceptions.FarmerNotFoundException;
 import com.oracleous.extention_manager.exceptions.InvestorNotFoundException;
 import com.oracleous.extention_manager.utilities.ApplicationUtilities;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -25,15 +27,25 @@ public class InvestorViewAgriBusinessMethod implements  InvestorViewAgriBusiness
 
     @Override
     public AgriBusiness agriBusinessResponse() {
-        Users users = ApplicationUtilities.getCurrentUser();
-        if(users == null){
-            throw new IllegalArgumentException(USER_NOT_FOUND);
-        }
+        Users users = getUsers();
+        log.info("users here{}", users);
         Optional<Investor> investor = investorRepository.findByUsers(users);
         if(investor.isEmpty()){
             throw new InvestorNotFoundException(INVESTOR_NOT_FOUND);
         }
-        AgriBusiness agricBusiness = farmersRepository.findByUsers(users).orElseThrow(() -> new IllegalArgumentException("User not found")).getAgriBusiness();
+        log.info("investor here {}", investor);
+
+        Optional<Farmer> farmer = farmersRepository.findByUsers(users);
+        if(farmer.isEmpty()){
+            throw new IllegalStateException(USER_NOT_FOUND);
+        }
+        log.info("farmer here {}", farmer);
+
+        AgriBusiness agricBusiness = farmer.get().getAgriBusiness();
+        if(agricBusiness == null){
+            throw new InvestorNotFoundException(USER_NOT_FOUND);
+        }
+        log.info("agricBusiness here {}", agricBusiness);
         return AgriBusiness.builder()
                 .businessName(agricBusiness.getBusinessName())
                 .businessLocationLga(agricBusiness.getBusinessLocationLga())
@@ -44,5 +56,20 @@ public class InvestorViewAgriBusinessMethod implements  InvestorViewAgriBusiness
                 .businessLocationExact(agricBusiness.getBusinessLocationExact())
                 .productPhotos(agricBusiness.getProductPhotos())
                 .build();
+    }
+
+    private static @NotNull Users getUsers() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated()) {
+            throw new IllegalStateException("No authenticated user found");
+        }
+        UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
+//        return userPrincipal.users();
+//        Users users = ApplicationUtilities.getCurrentUser();
+        Users users = userPrincipal.users();
+        if(users == null){
+            throw new IllegalArgumentException(USER_NOT_FOUND);
+        }
+        return users;
     }
 }

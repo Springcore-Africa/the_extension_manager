@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 @Builder
 @Schema(description = "Request payload require to fetch AgriBusiness data")
-public class InvestorFarmerRetrievalResponse {
+public class InvestorViewFarmerResponse {
     private String firstName ;
     private String lastName ;
     private String residentialAddress ;
