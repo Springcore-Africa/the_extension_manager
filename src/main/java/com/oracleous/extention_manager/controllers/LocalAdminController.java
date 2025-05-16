@@ -2,7 +2,6 @@ package com.oracleous.extention_manager.controllers;
 import com.oracleous.extention_manager.dto.requests.registrationRequest.LocalAdminRegRequest;
 import com.oracleous.extention_manager.services.localAdminService.localAdminRegistration.LocalAdminService;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/investor")
 @RequiredArgsConstructor
 public class LocalAdminController {
     private final LocalAdminService localAdminService;

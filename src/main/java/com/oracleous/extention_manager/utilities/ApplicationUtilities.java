@@ -2,6 +2,7 @@ package com.oracleous.extention_manager.utilities;
 
 import com.oracleous.extention_manager.data.model.UserPrincipal;
 import com.oracleous.extention_manager.data.model.Users;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -87,12 +88,16 @@ public class ApplicationUtilities {
     ;
 
     public static Users getCurrentUser() {
-
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null || !authentication.isAuthenticated()) {
-            throw new IllegalStateException("No authenticated user found");
+         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (authentication == null || !authentication.isAuthenticated()) {
+                throw new IllegalStateException("No authenticated user found");
+            }
+            UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
+            Users users = userPrincipal.users();
+            if(users == null){
+                throw new IllegalArgumentException(USER_NOT_FOUND);
+            }else {
+            return getCurrentUser();
         }
-        UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
-        return userPrincipal.users();
     }
 }

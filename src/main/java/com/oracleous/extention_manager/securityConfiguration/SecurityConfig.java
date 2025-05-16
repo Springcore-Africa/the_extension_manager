@@ -34,16 +34,17 @@ public class SecurityConfig {
                                 "/api/farmers/farmers_registration",
                                 "/api/v1/farmers/register",
                                 "/api/v1/farmers/verify-token",
-                                "/auth/super_admin_registration",
-                                "/auth/local_admin_registration",
-                                "/auth/investor_registration",
+                                "/investor/super_admin_registration",
+                                "/investor/local_admin_registration",
+                                "/investor/registration",
                                 "/user/login"
                         ).permitAll()
                         .requestMatchers("/api/agri_business/register").hasRole("FARMER")
                         .requestMatchers("/api/agri_business/find").hasRole("FARMER")
                         .requestMatchers("/api/v1/farmers/find-farmer/**").hasRole("FARMER")
                         .requestMatchers("/admin/register/complete-form").hasRole("ADMIN")
-                        .requestMatchers("/auth/find_agriBusiness").hasRole("INVESTOR")
+                        .requestMatchers("/investor/find_agriBusiness").hasRole("INVESTOR")
+                        .requestMatchers("/investor/check_all_farmers").hasRole("INVESTOR")
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

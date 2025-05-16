@@ -27,7 +27,7 @@ public class InvestorViewAgriBusinessMethod implements  InvestorViewAgriBusiness
 
     @Override
     public AgriBusiness agriBusinessResponse() {
-        Users users = getUsers();
+        Users users = ApplicationUtilities.getCurrentUser();
         log.info("users here{}", users);
         Optional<Investor> investor = investorRepository.findByUsers(users);
         if(investor.isEmpty()){
@@ -58,18 +58,5 @@ public class InvestorViewAgriBusinessMethod implements  InvestorViewAgriBusiness
                 .build();
     }
 
-    private static @NotNull Users getUsers() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null || !authentication.isAuthenticated()) {
-            throw new IllegalStateException("No authenticated user found");
-        }
-        UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
-//        return userPrincipal.users();
-//        Users users = ApplicationUtilities.getCurrentUser();
-        Users users = userPrincipal.users();
-        if(users == null){
-            throw new IllegalArgumentException(USER_NOT_FOUND);
-        }
-        return users;
-    }
+
 }
