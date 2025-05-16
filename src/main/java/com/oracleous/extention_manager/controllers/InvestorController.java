@@ -2,6 +2,7 @@ package com.oracleous.extention_manager.controllers;
 
 import com.oracleous.extention_manager.dto.requests.registrationRequest.InvestorRegistrationRequest;
 import com.oracleous.extention_manager.dto.requests.readRequest.InvestorGetRequest;
+import com.oracleous.extention_manager.dto.response.investorAgriBusinessResponse.InvestorViewAgriBusinessResponse;
 import com.oracleous.extention_manager.dto.response.registrationResponse.InvestorRegistrationResponse;
 import com.oracleous.extention_manager.services.investorServices.InvestorReadPackage.GetInvestorDetails;
 import com.oracleous.extention_manager.services.investorServices.InvestorRegistration.InvestorServiceReg;
@@ -27,6 +28,8 @@ public class InvestorController {
     private final GetInvestorDetails getInvestorDetails;
     private final InvestorViewAgriBusiness investorViewAgriBusiness ;
     private final InvestorViewAllFarmers investorViewAllFarmers;
+
+
 
 
     @Operation(
@@ -102,4 +105,14 @@ public class InvestorController {
             return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
+
+    @GetMapping("check_all_agricBusines")
+    public ResponseEntity<?> getAgriBusinessByFarmer(@PathVariable Long farmerId) {
+        try {
+            return new ResponseEntity<>(investorViewAllFarmers.getAgriBusinessByFarmer(farmerId), HttpStatus.OK);
+        }catch (Exception exception){
+            return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
 }
+
