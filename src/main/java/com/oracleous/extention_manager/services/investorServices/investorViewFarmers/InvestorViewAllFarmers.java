@@ -134,44 +134,6 @@ public class InvestorViewAllFarmers implements InvestorViewFarmers {
     }
 
     @Override
-    public InvestorViewAgriBusinessResponse getAgriBusinessByFarmer(Long farmerId) {
-        Users user = getUsers();
-        log.info("Users: {}", user);
-
-        Optional<Investor> investor = investorRepository.findByUsers(user);
-        if (investor.isEmpty()) {
-            log.error("No Investor found for user: {}", user.getEmail());
-            throw new InvestorNotFoundException(INVESTOR_NOT_FOUND);
-        }
-        log.info("Investor: {}", investor.get());
-
-        Optional<Farmer> farmer = farmerRepository.findById(farmerId);
-        if (farmer.isEmpty()) {
-            log.error("No Farmer found with ID: {}", farmerId);
-            throw new IllegalStateException("Farmer not found");
-        }
-        log.info("Farmer: {}", farmer.get());
-
-        AgriBusiness agriBusiness = farmer.get().getAgriBusiness();
-        if (agriBusiness == null) {
-            log.warn("No AgriBusiness found for farmer ID: {}", farmerId);
-            throw new IllegalStateException("AgriBusiness not found for farmer");
-        }
-        log.info("AgriBusiness: {}", agriBusiness);
-
-        return InvestorViewAgriBusinessResponse.builder()
-                .businessName(agriBusiness.getBusinessName())
-                .businessLocationLga(agriBusiness.getBusinessLocationLga())
-                .businessLocationState(agriBusiness.getBusinessLocationState())
-                .agriculturalProduct(agriBusiness.getAgriculturalProduct())
-                .farmPhotos(agriBusiness.getFarmPhotos())
-                .productDescription(agriBusiness.getProductDescription())
-                .businessLocationExact(agriBusiness.getBusinessLocationExact())
-                .productPhotos(agriBusiness.getProductPhotos())
-                .build();
-    }
-
-    @Override
     public List<InvestorViewAgriBusinessResponse> getAllAgriBusinesses() {
         Users user = getUsers();
         log.info("Users: {}", user);

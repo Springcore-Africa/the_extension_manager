@@ -2,11 +2,11 @@ package com.oracleous.extention_manager.controllers;
 
 import com.oracleous.extention_manager.dto.requests.registrationRequest.InvestorRegistrationRequest;
 import com.oracleous.extention_manager.dto.requests.readRequest.InvestorGetRequest;
-import com.oracleous.extention_manager.dto.response.investorAgriBusinessResponse.InvestorViewAgriBusinessResponse;
 import com.oracleous.extention_manager.dto.response.registrationResponse.InvestorRegistrationResponse;
 import com.oracleous.extention_manager.services.investorServices.InvestorReadPackage.GetInvestorDetails;
 import com.oracleous.extention_manager.services.investorServices.InvestorRegistration.InvestorServiceReg;
-import com.oracleous.extention_manager.services.investorServices.InvestorRetrieveAgriBusiness.InvestorViewAgriBusiness;
+//import com.oracleous.extention_manager.services.investorServices.InvestorRetrieveAgriBusiness.InvestorViewAgriBusiness;
+import com.oracleous.extention_manager.services.investorServices.investorViewFarmerBusiness.InvestorViewFarmerBusinessMethod;
 import com.oracleous.extention_manager.services.investorServices.investorViewFarmers.InvestorViewAllFarmers;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -26,11 +26,10 @@ import org.springframework.web.bind.annotation.*;
 public class InvestorController {
     private final InvestorServiceReg investorServiceReg;
     private final GetInvestorDetails getInvestorDetails;
-    private final InvestorViewAgriBusiness investorViewAgriBusiness ;
+//    private final InvestorViewAgriBusiness investorViewAgriBusiness ;
     private final InvestorViewAllFarmers investorViewAllFarmers;
-
-
-
+    private final InvestorViewFarmerBusinessMethod investorViewFarmerBusinessMethod;
+    
 
     @Operation(
             summary = "Investor Registration",
@@ -87,14 +86,14 @@ public class InvestorController {
         }
     }
 
-    @GetMapping("/find_agriBusiness")
-    public ResponseEntity <?> findAgriBusiness() {
-        try{
-            return new ResponseEntity<>(investorViewAgriBusiness.agriBusinessResponse(), HttpStatus.OK);
-        }catch (Exception exception){
-            return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
-        }
-    }
+//    @GetMapping("/find_agriBusiness")
+//    public ResponseEntity <?> findAgriBusiness() {
+//        try{
+//            return new ResponseEntity<>(investorViewAgriBusiness.agriBusinessResponse(), HttpStatus.OK);
+//        }catch (Exception exception){
+//            return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
+//        }
+//    }
 
 
     @GetMapping("check_all_farmers")
@@ -106,13 +105,14 @@ public class InvestorController {
         }
     }
 
-    @GetMapping("check_all_agricBusines")
+    @GetMapping("/check_agriBusiness_link_with_farmer/{farmerId}")
     public ResponseEntity<?> getAgriBusinessByFarmer(@PathVariable Long farmerId) {
         try {
-            return new ResponseEntity<>(investorViewAllFarmers.getAgriBusinessByFarmer(farmerId), HttpStatus.OK);
-        }catch (Exception exception){
+            return new ResponseEntity<>(investorViewFarmerBusinessMethod.getAgriBusinessByFarmer(farmerId), HttpStatus.OK);
+        } catch (Exception exception) {
             return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
+
 }
 

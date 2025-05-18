@@ -66,8 +66,8 @@ public class GetFarmerDetailsMethod implements GetFarmerDetails {
                 maritalStatus((MaritalStatus) farmer.getMaritalStatus()).
                 gender((Gender) farmer.getGender()).
                 stateOfOrigin(farmer.getStateOfOrigin()).
-                dateOfBirth(farmer.getDateOfBirth()).
-                password(farmer.getUsers().getPassword())
+                dateOfBirth(farmer.getDateOfBirth())
+//                password(farmer.getUsers().getPassword())
                 .build();
 
     }
