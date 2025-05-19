@@ -30,9 +30,6 @@ public class GetAgricBusinessDetailsMethod implements GetAgricBusinessDetails {
     @Override
     public AgricGetResponse getAgricBusinessDetails() {
         Users users = ApplicationUtilities.getCurrentUser();
-        if (users == null) {
-            throw new IllegalArgumentException("User not found");
-        }
 
         Farmer farmer = farmersRepository.findByUsers(users)
                 .orElseThrow(() -> new FarmerNotFoundExceptionWhileFetching(USER_NOT_FOUND_MESSAGE));
