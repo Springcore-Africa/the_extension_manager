@@ -34,15 +34,19 @@ public class SecurityConfig {
                                 "/api/farmers/farmers_registration",
                                 "/api/v1/farmers/register",
                                 "/api/v1/farmers/verify-token",
-                                "/investor/super_admin_registration",
-                                "/investor/local_admin_registration",
                                 "/investor/registration",
+                                "/local_admin/registration",
+                                "/super_admin/registration",
                                 "/user/login"
                         ).permitAll()
                         .requestMatchers("/api/agri_business/register").hasRole("FARMER")
                         .requestMatchers("/api/agri_business/find").hasRole("FARMER")
                         .requestMatchers("/api/v1/farmers/find-farmer/**").hasRole("FARMER")
+
+                        .requestMatchers("/admin/register/initiate").hasRole("SUPER_ADMIN")
                         .requestMatchers("/admin/register/complete-form").hasRole("ADMIN")
+                        .requestMatchers("/Admin/view/agriBusiness").hasRole("ADMIN")
+
                         .requestMatchers("/investor/find_agriBusiness").hasRole("INVESTOR")
                         .requestMatchers("/investor/check_all_farmers").hasRole("INVESTOR")
                         .requestMatchers("/investor/check_agriBusiness_link_with_farmer/").hasRole("INVESTOR")

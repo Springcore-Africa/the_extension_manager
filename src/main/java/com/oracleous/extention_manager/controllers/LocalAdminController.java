@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/investor")
+@RequestMapping("/local_admin")
 @RequiredArgsConstructor
 public class LocalAdminController {
     private final LocalAdminService localAdminService;
 
-    @PostMapping("/local_admin_registration")
+    @PostMapping("/registration")
 
 
     public ResponseEntity <?> agriBusinessRegistration(@RequestBody LocalAdminRegRequest localAdminRegRequest){

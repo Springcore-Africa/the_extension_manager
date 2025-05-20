@@ -1,5 +1,6 @@
 package com.oracleous.extention_manager.services.superAdminServices.superAdminRegistration;
 
+import com.oracleous.extention_manager.data.model.Roles;
 import com.oracleous.extention_manager.data.model.SuperAdmin;
 import com.oracleous.extention_manager.data.model.Users;
 import com.oracleous.extention_manager.data.repositories.SuperAdminRepository;
@@ -33,7 +34,7 @@ public class SuperAdminRegistrationImplementation implements SuperAdminRegistrat
         Users users = Users.builder()
                 .email(superAdminRegRequest.getEmail())
                 .password(passwordEncoder.encode(superAdminRegRequest.getPassword()))
-                .userRole(superAdminRegRequest.getRole())
+                .userRole(Roles.SUPER_ADMIN)
                 .build();
 
         SuperAdmin superAdminReg = SuperAdmin.builder()

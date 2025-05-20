@@ -4,7 +4,8 @@ import com.oracleous.extention_manager.data.model.Roles;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
-@Data
+@Setter
+@Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -34,59 +35,4 @@ public class SuperAdminRegRequest {
     private String passportPhotograph;
 
 
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getShortBio() {
-        return shortBio;
-    }
-
-    public void setShortBio(String shortBio) {
-        this.shortBio = shortBio;
-    }
-
-    public String getPassportPhotograph() {
-        return passportPhotograph;
-    }
-
-    public void setPassportPhotograph(String passportPhotograph) {
-        this.passportPhotograph = passportPhotograph;
-    }
 }

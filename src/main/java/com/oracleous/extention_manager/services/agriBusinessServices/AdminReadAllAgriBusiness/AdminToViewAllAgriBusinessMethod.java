@@ -7,6 +7,7 @@ import com.oracleous.extention_manager.data.model.Users;
 import com.oracleous.extention_manager.data.repositories.AdminRepository;
 import com.oracleous.extention_manager.data.repositories.AgriBusinessRepository;
 import com.oracleous.extention_manager.data.repositories.FarmersRepository;
+import com.oracleous.extention_manager.dto.response.AdminViewAgriBusiness.AdminViewAgriBusinessErrorMessage;
 import com.oracleous.extention_manager.dto.response.AdminViewAgriBusiness.AdminViewAgriBusinessResponse;
 import com.oracleous.extention_manager.dto.response.readResponse.AgricGetResponse;
 import com.oracleous.extention_manager.exceptions.FarmerNotFoundExceptionWhileFetching;
@@ -21,32 +22,31 @@ import static com.oracleous.extention_manager.utilities.ApplicationUtilities.USE
 @Service
 @Slf4j
 @AllArgsConstructor
-public class AdminToViewAllAgriBusinessMethod implements AdminToViewAllAgriBusiness{
+public class AdminToViewAllAgriBusinessMethod implements AdminToViewAllAgriBusiness {
     private final AdminRepository adminRepository;
-    private final FarmersRepository farmersRepository ;
+    private final FarmersRepository farmersRepository;
     private final AgriBusinessRepository agriBusinessRepository;
 
     @Override
     public AdminViewAgriBusinessResponse adminViewAgriBusinessResponse() {
         Users users = ApplicationUtilities.getCurrentUser();
 
-        Admin admin  = adminRepository.findByUsers(users);
+        Admin admin = adminRepository.findByUsers(users);
         if (admin != null) {
-            AgriBusiness agriBusiness = agriBusinessRepository.findAll().getFirst();
+            agriBusinessRepository.findAll().getFirst();
 
         }
-
-
         Farmer farmer = farmersRepository.findByUsers(users)
                 .orElseThrow(() -> new FarmerNotFoundExceptionWhileFetching(USER_NOT_FOUND_MESSAGE));
 
         AgriBusiness agriBusiness = farmer.getAgriBusiness();
-        if (agriBusiness != null) {
-            return AdminViewAgriBusinessResponse.builder()
-                    .businessName(agriBusiness.getBusinessName())
-                    .businessLocationState(agriBusiness.getBusinessLocationState())
-                    .build();
+        if (agriBusiness == null) {
+            throw new FarmerNotFoundExceptionWhileFetching(AGRIBUSINESS_NOT_FOUND_MESSAGE);
         }
-        return ;
+
+        return AdminViewAgriBusinessResponse.builder()
+                .businessName(agriBusiness.getBusinessName())
+                .businessLocationState(agriBusiness.getBusinessLocationState())
+                .build();
     }
 }
