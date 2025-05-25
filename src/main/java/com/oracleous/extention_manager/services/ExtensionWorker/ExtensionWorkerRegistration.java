@@ -3,6 +3,7 @@ package com.oracleous.extention_manager.services.ExtensionWorker;
 import com.oracleous.extention_manager.data.model.*;
 import com.oracleous.extention_manager.data.repositories.ExtensionWorkerRepository;
 import com.oracleous.extention_manager.data.repositories.RegistrationTokenRepository;
+import com.oracleous.extention_manager.dto.requests.registrationRequest.ExtensionWorkerAdminDecision;
 import com.oracleous.extention_manager.dto.requests.registrationRequest.ExtensionWorkerRequest;
 import com.oracleous.extention_manager.dto.requests.registrationRequest.TokenVerificationRequest;
 import com.oracleous.extention_manager.dto.response.extensionWorkerResponse.ExtensionWorkerResponse;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Service
@@ -81,13 +83,6 @@ public class ExtensionWorkerRegistration implements ExtentionWorker {
         // Store in pending registrations
         pendingRegistrations.put(extensionWorkerRequest.getEmail(), extensionWorker);
 
-        // Send verification email
-//        String verificationLink = baseUrl + "/api/extension-worker/verify?token=" + token;
-//        String emailText = "<p>Hello " + extensionWorkerRequest.getFirstName() + ",</p>" +
-//                "<p>Please verify your registration by clicking the link below:</p>" +
-//                "<a href=\"" + verificationLink + "\">Verify Registration</a>" +
-//                "<p>This link will expire in 24 hours.</p>";
-        // Send plain token in email
         String emailText = "<p>Hello " + extensionWorkerRequest.getFirstName() + ",</p>" +
                 "<p>Your verification token is:</p>" +
                 "<h2>" + token + "</h2>" +
@@ -149,38 +144,84 @@ public class ExtensionWorkerRegistration implements ExtentionWorker {
                 .build();
     }
 
+//    @Transactional
+//    public String approveExtensionWorker(String email, Stamp action) {
+//        ExtensionWorker pendingWorker = pendingRegistrations.get(email);
+//        if (pendingWorker == null) {
+//            throw new IllegalArgumentException("No pending registration found for email: " + email);
+//        }
+//
+//        if (action == Stamp.APPROVE) {
+//            // Save to database
+//            extensionWorkerRepository.save(pendingWorker);
+//            pendingRegistrations.remove(email);
+//
+//            // Send approval email
+//            String approvalEmailText = "<p>Hello " + pendingWorker.getFirstName() + ",</p>" +
+//                    "<p>Your registration as an Extension Worker has been approved!</p>";
+//            eventPublisher.publishEvent(new EmailEvent(this, email,
+//                    "Registration Approved", approvalEmailText));
+//
+//            return "Extension Worker approved and saved to database";
+//        } else if (action == Stamp.REJECT) {
+//            // Remove from pending registrations
+//            pendingRegistrations.remove(email);
+//
+//            // Send rejection email
+//            String rejectionEmailText = "<p>Hello " + pendingWorker.getFirstName() + ",</p>" +
+//                    "<p>Your registration as an Extension Worker has been rejected.</p>";
+//            eventPublisher.publishEvent(new EmailEvent(this, email,
+//                    "Registration Rejected", rejectionEmailText));
+//
+//            return "Extension Worker registration rejected";
+//        } else {
+//            throw new IllegalArgumentException("Invalid action: " + action);
+//        }
+//    }
+
+
     @Transactional
-    public String approveExtensionWorker(String email, Stamp action) {
+    public String approveOrRejectExtensionWorker(ExtensionWorkerAdminDecision decision) {
+        String email = decision.getEmail();
+        Stamp action = decision.getAction();
+
         ExtensionWorker pendingWorker = pendingRegistrations.get(email);
         if (pendingWorker == null) {
             throw new IllegalArgumentException("No pending registration found for email: " + email);
         }
 
         if (action == Stamp.APPROVE) {
-            // Save to database
             extensionWorkerRepository.save(pendingWorker);
             pendingRegistrations.remove(email);
 
-            // Send approval email
             String approvalEmailText = "<p>Hello " + pendingWorker.getFirstName() + ",</p>" +
                     "<p>Your registration as an Extension Worker has been approved!</p>";
-            eventPublisher.publishEvent(new EmailEvent(this, email,
-                    "Registration Approved", approvalEmailText));
-
+            eventPublisher.publishEvent(new EmailEvent(this, email, "Registration Approved", approvalEmailText));
             return "Extension Worker approved and saved to database";
+
         } else if (action == Stamp.REJECT) {
-            // Remove from pending registrations
             pendingRegistrations.remove(email);
 
-            // Send rejection email
             String rejectionEmailText = "<p>Hello " + pendingWorker.getFirstName() + ",</p>" +
                     "<p>Your registration as an Extension Worker has been rejected.</p>";
-            eventPublisher.publishEvent(new EmailEvent(this, email,
-                    "Registration Rejected", rejectionEmailText));
-
+            eventPublisher.publishEvent(new EmailEvent(this, email, "Registration Rejected", rejectionEmailText));
             return "Extension Worker registration rejected";
-        } else {
-            throw new IllegalArgumentException("Invalid action: " + action);
         }
+
+        throw new IllegalArgumentException("Invalid action: " + action);
     }
+
+
+    public List<ExtensionWorkerRequest> getAllPendingWorkers() {
+        return pendingRegistrations.values().stream()
+                .map(worker -> ExtensionWorkerRequest.builder()
+                        .email(worker.getUsers().getEmail())
+                        .firstName(worker.getFirstName())
+                        .lastName(worker.getLastName())
+                        .phoneNumber(worker.getPhoneNumber())
+                        .passportPhotograph(worker.getPassportPhotograph())
+                        .build())
+                .toList();
+    }
+
 }

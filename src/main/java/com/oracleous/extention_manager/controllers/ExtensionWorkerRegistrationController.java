@@ -1,5 +1,6 @@
 package com.oracleous.extention_manager.controllers;
 
+import com.oracleous.extention_manager.dto.requests.registrationRequest.ExtensionWorkerAdminDecision;
 import com.oracleous.extention_manager.dto.requests.registrationRequest.ExtensionWorkerRequest;
 import com.oracleous.extention_manager.dto.requests.registrationRequest.TokenVerificationRequest;
 import com.oracleous.extention_manager.dto.response.extensionWorkerResponse.ExtensionWorkerResponse;
@@ -9,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/extension-worker")
@@ -48,15 +51,19 @@ public class ExtensionWorkerRegistrationController {
         return ResponseEntity.ok(pendingWorker);
     }
 
+
+//    @GetMapping("/pending")
+//    public List<ExtensionWorkerRequest> getPendingWorkers() {
+//        return extensionWorkerService.getAllPendingWorkers();
+//    }
+
     /**
      * Admin approval or rejection of the worker
      */
-    @PostMapping("/approve")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<String> approveExtensionWorker(
-            @RequestParam("email") String email,
-            @RequestParam("action") Stamp action) {
-        String result = extensionWorkerService.approveExtensionWorker(email, action);
-        return ResponseEntity.ok(result);
+    @PostMapping("/decision")
+    public ResponseEntity<String> processAdminDecision(@RequestBody ExtensionWorkerAdminDecision decision) {
+        String message = extensionWorkerService.approveOrRejectExtensionWorker(decision);
+        return ResponseEntity.ok(message);
     }
+
 }

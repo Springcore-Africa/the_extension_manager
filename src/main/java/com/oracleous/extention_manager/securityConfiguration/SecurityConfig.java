@@ -42,7 +42,7 @@ public class SecurityConfig {
 //                                "/api/extension-worker/register"
                         ).permitAll()
                                 .requestMatchers("/api/extension-worker/register", "/api/extension-worker/verify", "/error").permitAll()
-                                .requestMatchers("/api/extension-worker/pending/**", "/api/extension-worker/approve").hasRole("ADMIN")
+                                .requestMatchers("/api/extension-worker/pending/**", "/api/extension-worker/approve", "/api/extension-worker/decision").hasRole("ADMIN")
 
                         .requestMatchers("/api/agri_business/register").hasRole("FARMER")
                         .requestMatchers("/api/agri_business/find").hasRole("FARMER")
