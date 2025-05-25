@@ -9,6 +9,7 @@ import com.oracleous.extention_manager.dto.response.extensionWorkerResponse.Exte
 import com.oracleous.extention_manager.email.EmailEvent;
 import com.oracleous.extention_manager.utilities.ApplicationUtilities;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -20,6 +21,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ExtensionWorkerRegistration implements ExtentionWorker {
     private final ExtensionWorkerRepository extensionWorkerRepository;
     private final BCryptPasswordEncoder passwordEncoder;
@@ -31,19 +33,21 @@ public class ExtensionWorkerRegistration implements ExtentionWorker {
     private String baseUrl;
 
     @Override
-    @Transactional
     public ExtensionWorkerResponse extensionWorker(ExtensionWorkerRequest extensionWorkerRequest) {
         // Check if user already exists
         boolean exists = extensionWorkerRepository.existsByUsersEmailAndPhoneNumber(
                 extensionWorkerRequest.getEmail(),
                 extensionWorkerRequest.getPhoneNumber()
         );
+        log.info("user first input password{}", extensionWorkerRequest.getPassword());
+
+
         if (exists) {
             return ExtensionWorkerResponse.builder()
                     .message("User already exists")
                     .build();
         }
-
+        log.info("this is password{}", passwordEncoder.encode(extensionWorkerRequest.getPassword()));
 // Validate password is not null
         if (extensionWorkerRequest.getPassword() == null || extensionWorkerRequest.getPassword().isBlank()) {
             throw new IllegalArgumentException("Password cannot be null or empty");
@@ -78,11 +82,19 @@ public class ExtensionWorkerRegistration implements ExtentionWorker {
         pendingRegistrations.put(extensionWorkerRequest.getEmail(), extensionWorker);
 
         // Send verification email
-        String verificationLink = baseUrl + "/api/extension-worker/verify?token=" + token;
+//        String verificationLink = baseUrl + "/api/extension-worker/verify?token=" + token;
+//        String emailText = "<p>Hello " + extensionWorkerRequest.getFirstName() + ",</p>" +
+//                "<p>Please verify your registration by clicking the link below:</p>" +
+//                "<a href=\"" + verificationLink + "\">Verify Registration</a>" +
+//                "<p>This link will expire in 24 hours.</p>";
+        // Send plain token in email
         String emailText = "<p>Hello " + extensionWorkerRequest.getFirstName() + ",</p>" +
-                "<p>Please verify your registration by clicking the link below:</p>" +
-                "<a href=\"" + verificationLink + "\">Verify Registration</a>" +
-                "<p>This link will expire in 24 hours.</p>";
+                "<p>Your verification token is:</p>" +
+                "<h2>" + token + "</h2>" +
+                "<p>Please enter this token in the app to verify your registration.</p>" +
+                "<p>This token will expire in 24 hours.</p>";
+
+
         eventPublisher.publishEvent(new EmailEvent(this, extensionWorkerRequest.getEmail(),
                 "Verify Your Extension Worker Registration", emailText));
 
@@ -107,7 +119,7 @@ public class ExtensionWorkerRegistration implements ExtentionWorker {
 
         // Send pending approval email
         String pendingEmailText = "<p>Hello " + pendingWorker.getFirstName() + ",</p>" +
-                "<p>Your registration is now pending admin approval. You will be notified once approved.</p>";
+                "<p>Your registration is now pending, please wait for admin approval. You will be notified once approved.</p>";
         eventPublisher.publishEvent(new EmailEvent(this, token.getEmail(),
                 "Registration Pending Approval", pendingEmailText));
 

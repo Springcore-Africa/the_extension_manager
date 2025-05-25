@@ -15,5 +15,4 @@ public interface ExtensionWorkerRepository extends JpaRepository<ExtensionWorker
 //    @Query("SELECT CASE WHEN COUNT(f) > 0 THEN TRUE ELSE FALSE END FROM ExtensionWorker f WHERE LOWER(f.users.email) = LOWER(:email) OR f.phoneNumber = :phoneNumber")
 //    boolean existsByUsersEmailAndPhoneNumber(String phoneNumber, String email);
 
-    Optional<ExtensionWorker> findByUsersEmail(String email);
 }

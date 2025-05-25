@@ -9,5 +9,6 @@ public interface ExtentionWorker {
     ExtensionWorkerResponse extensionWorker(ExtensionWorkerRequest extensionWorkerRequest);
     ExtensionWorkerRequest verifyToken(TokenVerificationRequest tokenVerificationRequest);
     ExtensionWorkerRequest getPendingWorkerDetails(String email);
+
     String approveExtensionWorker(String email, Stamp action);
 }
