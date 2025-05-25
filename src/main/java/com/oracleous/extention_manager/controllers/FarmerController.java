@@ -1,7 +1,7 @@
 package com.oracleous.extention_manager.controllers; // Adjust package as needed
 
 import com.oracleous.extention_manager.dto.requests.readRequest.FarmerGetRequest;
-import com.oracleous.extention_manager.dto.requests.registrationRequest.FarmerVerifyTokenRequest;
+import com.oracleous.extention_manager.dto.requests.registrationRequest.TokenVerificationRequest;
 import com.oracleous.extention_manager.dto.requests.registrationRequest.FarmersRegistrationRequest;
 import com.oracleous.extention_manager.dto.response.readResponse.FarmerGetResponse;
 import com.oracleous.extention_manager.dto.response.registrationResponse.FarmerResponse;
@@ -73,8 +73,8 @@ public class FarmerController {
             )
     })
     @PostMapping("/verify-token")
-    public ResponseEntity<FarmerResponse> verifyToken(@RequestBody FarmerVerifyTokenRequest farmerVerifyTokenRequest) {
-        FarmerResponse response = farmersService.verifyToken(farmerVerifyTokenRequest);
+    public ResponseEntity<FarmerResponse> verifyToken(@RequestBody TokenVerificationRequest tokenVerificationRequest) {
+        FarmerResponse response = farmersService.verifyToken(tokenVerificationRequest);
         return new ResponseEntity<>(response, response.getResponseCode().equals(ACCOUNT_CREATED_CODE) ? HttpStatus.OK : HttpStatus.BAD_REQUEST);
     }
 

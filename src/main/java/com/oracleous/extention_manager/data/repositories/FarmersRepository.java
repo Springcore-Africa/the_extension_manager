@@ -16,7 +16,6 @@ boolean existsByEmailOrNationalIdOrPhoneNumber(@Param("email") String email,
                                                @Param("nationalId") String nationalId,
                                                @Param("phoneNumber") String phoneNumber);
 
-
 @Query("SELECT f FROM Farmer f WHERE " +
         "(:email IS NOT NULL AND LOWER(f.users.email) = LOWER(:email)) OR " +
         "(:phoneNumber IS NOT NULL AND f.phoneNumber = :phoneNumber)")

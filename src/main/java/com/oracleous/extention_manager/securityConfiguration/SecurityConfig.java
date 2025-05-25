@@ -24,6 +24,7 @@ import java.util.List;
 public class SecurityConfig {
     @Autowired
     private JwtFilter jwtFilter;
+//    private CustomUserDetailsService userDetailsService; // Implement this
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -38,13 +39,25 @@ public class SecurityConfig {
                                 "/local_admin/registration",
                                 "/super_admin/registration",
                                 "/user/login"
+//                                "/api/extension-worker/register"
                         ).permitAll()
+                                .requestMatchers("/api/extension-worker/register", "/api/extension-worker/verify", "/error").permitAll()
+                                .requestMatchers("/api/extension-worker/pending/**", "/api/extension-worker/approve").hasRole("ADMIN")
+
                         .requestMatchers("/api/agri_business/register").hasRole("FARMER")
                         .requestMatchers("/api/agri_business/find").hasRole("FARMER")
                         .requestMatchers("/api/v1/farmers/find-farmer/**").hasRole("FARMER")
+//                        .requestMatchers("/api/extension-worker/register", "/api/extension-worker/verify").permitAll()
+
+//                        .requestMatchers("/api/extension-worker/register").hasRole("EXTENSION_WORKER")
 
                         .requestMatchers("/admin/register/initiate").hasRole("SUPER_ADMIN")
-                        .requestMatchers("/admin/register/complete-form").hasRole("ADMIN")
+                        .requestMatchers(
+                                "/admin/register/complete-form",
+                                "/admin/register/complete",
+                                "/admin/registration-success").permitAll()
+
+
                         .requestMatchers("/Admin/view/agriBusiness").hasRole("ADMIN")
 
                         .requestMatchers("/investor/find_agriBusiness").hasRole("INVESTOR")

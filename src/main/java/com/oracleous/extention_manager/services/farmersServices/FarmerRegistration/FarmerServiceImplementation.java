@@ -5,9 +5,8 @@ import com.oracleous.extention_manager.data.model.Roles;
 import com.oracleous.extention_manager.data.model.Users;
 import com.oracleous.extention_manager.data.repositories.FarmersRepository;
 import com.oracleous.extention_manager.data.repositories.UserRepository;
-import com.oracleous.extention_manager.dto.requests.registrationRequest.FarmerVerifyTokenRequest;
+import com.oracleous.extention_manager.dto.requests.registrationRequest.TokenVerificationRequest;
 import com.oracleous.extention_manager.dto.requests.registrationRequest.FarmersRegistrationRequest;
-import com.oracleous.extention_manager.dto.requests.registrationRequest.UserRegistrationRequest;
 import com.oracleous.extention_manager.dto.response.registrationResponse.FarmerInfo;
 import com.oracleous.extention_manager.dto.response.registrationResponse.FarmerResponse;
 import com.oracleous.extention_manager.email.EmailEvent;
@@ -18,7 +17,6 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
@@ -99,7 +97,6 @@ public class FarmerServiceImplementation implements FarmersService {
 
         eventPublisher.publishEvent(new EmailEvent(this, request.getEmail(), subject, emailContent));
         log.info("Email event published for farmer: {}", request.getEmail());
-
         return FarmerResponse.builder()
                 .responseCode(TOKEN_SENT_CODE)
                 .responseMessage("Registration initiated. Please check your email for the verification token.")
@@ -108,12 +105,12 @@ public class FarmerServiceImplementation implements FarmersService {
     }
 
     @Override
-    public FarmerResponse verifyToken(FarmerVerifyTokenRequest farmerVerifyTokenRequest) {
-        log.info("Verifying token: {}", farmerVerifyTokenRequest);
+    public FarmerResponse verifyToken(TokenVerificationRequest tokenVerificationRequest) {
+        log.info("Verifying token: {}", tokenVerificationRequest);
 
-        Farmer farmer = pendingRegistrations.get(farmerVerifyTokenRequest.getToken());
+        Farmer farmer = pendingRegistrations.get(tokenVerificationRequest.getToken());
         if (farmer == null) {
-            log.warn("No pending registration found for token: {}", farmerVerifyTokenRequest);
+            log.warn("No pending registration found for token: {}", tokenVerificationRequest);
             return FarmerResponse.builder()
                     .responseCode(INVALID_TOKEN_CODE)
                     .responseMessage("Invalid or expired token.")
@@ -122,8 +119,8 @@ public class FarmerServiceImplementation implements FarmersService {
         }
 
         if (System.currentTimeMillis() > farmer.getTokenExpiration()) {
-            pendingRegistrations.remove(farmerVerifyTokenRequest.getToken());
-            log.warn("Token expired for token: {}", farmerVerifyTokenRequest);
+            pendingRegistrations.remove(tokenVerificationRequest.getToken());
+            log.warn("Token expired for token: {}", tokenVerificationRequest);
             return FarmerResponse.builder()
                     .responseCode(TOKEN_EXPIRED_CODE)
                     .responseMessage("Token has expired. Please register again.")
@@ -132,7 +129,7 @@ public class FarmerServiceImplementation implements FarmersService {
         }
 
         Farmer savedFarmer = farmersRepository.save(farmer);
-        pendingRegistrations.remove(farmerVerifyTokenRequest.getToken());
+        pendingRegistrations.remove(tokenVerificationRequest.getToken());
         log.info("Farmer saved to database with regNumber: {}", savedFarmer.getRegNumber());
 
         return FarmerResponse.builder()

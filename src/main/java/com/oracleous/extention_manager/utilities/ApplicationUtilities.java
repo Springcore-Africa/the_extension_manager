@@ -83,9 +83,7 @@ public class ApplicationUtilities {
     public static String registrationToken() {
         int token = 100000 + random.nextInt(900000);
         return String.valueOf(token);
-    }
-
-    ;
+    };
 
     public static Users getCurrentUser() {
          Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -100,4 +98,6 @@ public class ApplicationUtilities {
             return getCurrentUser();
         }
     }
+
+
 }

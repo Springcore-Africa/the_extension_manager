@@ -10,13 +10,14 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ExtensionWorker {
+public class ExtensionWorkerRequest {
 
     private String firstName;
     private String lastName;
+    private String email;
+    private String Password ;
     private String phoneNumber;
     private Users users ;
     private String shortBio;
     private String passportPhotograph;
-
 }
