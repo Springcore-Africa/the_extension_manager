@@ -17,7 +17,7 @@ public class AgriBusinessInfo {
     private String businessName;
 
     @Schema(description = "Registration number of the agribusiness", example = "AGB12345XYZ")
-    private String businessRgeNumber;
+    private String businessRegNumber;
 
     @Schema(description = "Name of the farmer associated with the business", example = "John Doe")
     private String farmersName;

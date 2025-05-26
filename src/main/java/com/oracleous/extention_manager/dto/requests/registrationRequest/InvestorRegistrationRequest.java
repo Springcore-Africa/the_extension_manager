@@ -1,5 +1,6 @@
 package com.oracleous.extention_manager.dto.requests.registrationRequest;
 
+import com.oracleous.extention_manager.data.model.Roles;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,6 +24,8 @@ public class InvestorRegistrationRequest {
 
     @Schema(description = "user password", example = "1010", required = true)
     private String password;
+
+//    private Roles role ;
 
     @Schema(description = "a brief description of user", example = "i am a user and born in lagos", required = true)
     private String shortBio;

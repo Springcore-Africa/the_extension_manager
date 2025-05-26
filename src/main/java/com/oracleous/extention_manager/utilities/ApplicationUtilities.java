@@ -1,5 +1,11 @@
 package com.oracleous.extention_manager.utilities;
 
+import com.oracleous.extention_manager.data.model.UserPrincipal;
+import com.oracleous.extention_manager.data.model.Users;
+import org.jetbrains.annotations.NotNull;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+
 import java.security.SecureRandom;
 import java.time.Year;
 import java.util.random.RandomGenerator;
@@ -13,7 +19,7 @@ public class ApplicationUtilities {
     public static final String ACCOUNT_CREATED_CODE = "002";
     public static final String ACCOUNT_CREATED_MESSAGE = "Account Created Successfully";
     public static final String BUSINESS_REGISTERED_CODE = "003";
-    public static final String BUSINESS_REGISTERED_MESSAGE ="Business Registered Successfully";
+    public static final String BUSINESS_REGISTERED_MESSAGE = "Business Registered Successfully";
     public static final String SUPER_ADMIN_MESSAGE = "You are not permitted to perform this action";
     public static final String INVESTOR_ALREADY_EXIST = "Investor With These details Already Exist";
     public static final String INVESTOR_CREATED_CODE = "004";
@@ -32,7 +38,8 @@ public class ApplicationUtilities {
     public static final String INVALID_TOKEN_CODE = "400";
     public static final String TOKEN_EXPIRED_CODE = "400";
     public static final String TOKEN_SENT_CODE = "201";
-
+    public static final String USER_NOT_FOUND = "User  not found";
+    public static final String INVESTOR_NOT_FOUND = "Investor now found";
 
 
     public static String generateRegNumber() {
@@ -43,7 +50,7 @@ public class ApplicationUtilities {
         int maxValue = 999999;
         int minValue = 100000;
 
-        int randomNumber = (int)Math.floor(Math.random()*(maxValue - minValue +1)- minValue);
+        int randomNumber = (int) Math.floor(Math.random() * (maxValue - minValue + 1) - minValue);
 
         String randomString = String.valueOf(randomNumber);
         String year = String.valueOf(currentYear);
@@ -53,6 +60,7 @@ public class ApplicationUtilities {
 
         return FARM + regNumber.append(year).append(randomString);
     }
+
     public static String generateBusRegNumber() {
         /**
          * Registration Number is "FRM_BUS", Current Year plus 6 random numbers
@@ -61,7 +69,7 @@ public class ApplicationUtilities {
         int maxValue = 999999;
         int minValue = 100000;
 
-        int randomNumber = (int)Math.floor(Math.random()*(maxValue - minValue +1)- minValue);
+        int randomNumber = (int) Math.floor(Math.random() * (maxValue - minValue + 1) - minValue);
 
         String randomString = String.valueOf(randomNumber);
         String year = String.valueOf(currentYear);
@@ -72,10 +80,24 @@ public class ApplicationUtilities {
         return FARM + regNumber.append(year).append(randomString);
     }
 
-    public static String registrationToken(){
+    public static String registrationToken() {
         int token = 100000 + random.nextInt(900000);
         return String.valueOf(token);
     };
 
-}
+    public static Users getCurrentUser() {
+         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (authentication == null || !authentication.isAuthenticated()) {
+                throw new IllegalStateException("No authenticated user found");
+            }
+            UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
+            Users users = userPrincipal.users();
+            if(users == null){
+                throw new IllegalArgumentException(USER_NOT_FOUND);
+            }else {
+            return getCurrentUser();
+        }
+    }
 
+
+}

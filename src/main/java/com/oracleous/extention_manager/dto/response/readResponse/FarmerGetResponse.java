@@ -28,8 +28,8 @@ public class FarmerGetResponse {
     @Schema(description = "Farmer's phone number", example = "+2341234567890", requiredMode = Schema.RequiredMode.REQUIRED)
     private String phoneNumber;
 
-    @Schema(description = "Farmer's password (hashed)", example = "********", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private String password;
+//    @Schema(description = "Farmer's password (hashed)", example = "********", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+//    private String password;
 
     @Schema(description = "Farmer's national ID", example = "12345678901", requiredMode = Schema.RequiredMode.REQUIRED)
     private String nationalId;

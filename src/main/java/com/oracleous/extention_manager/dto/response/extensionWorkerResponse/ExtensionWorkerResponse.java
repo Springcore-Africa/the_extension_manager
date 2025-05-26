@@ -1,4 +1,4 @@
-package com.oracleous.extention_manager.dto.requests.registrationRequest;
+package com.oracleous.extention_manager.dto.response.extensionWorkerResponse;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -6,9 +6,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-    public class FarmerVerifyTokenRequest {
-    private String token;
+public class ExtensionWorkerResponse {
+    private String message ;
+
 }

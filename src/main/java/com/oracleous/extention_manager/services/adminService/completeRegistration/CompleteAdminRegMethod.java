@@ -2,12 +2,15 @@ package com.oracleous.extention_manager.services.adminService.completeRegistrati
 
 import com.oracleous.extention_manager.data.model.Admin;
 import com.oracleous.extention_manager.data.model.RegistrationToken;
+import com.oracleous.extention_manager.data.model.Roles;
+import com.oracleous.extention_manager.data.model.Users;
 import com.oracleous.extention_manager.data.repositories.AdminRepository;
 import com.oracleous.extention_manager.data.repositories.RegistrationTokenRepository;
 import com.oracleous.extention_manager.dto.requests.requestEmail.AdminCompletionRequestDto;
 import com.oracleous.extention_manager.dto.response.ResponseToMailSend.CompleteAdminRegistration;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -21,6 +24,7 @@ import static com.oracleous.extention_manager.utilities.ApplicationUtilities.ADM
 public class CompleteAdminRegMethod implements CompleteAdminReg{
     private final AdminRepository adminRepository;
     private final RegistrationTokenRepository tokenRepository;
+    private BCryptPasswordEncoder passwordEncoder ;
 
     @Override
     public CompleteAdminRegistration completeAdminRegistration(AdminCompletionRequestDto request) {
@@ -34,7 +38,8 @@ public class CompleteAdminRegMethod implements CompleteAdminReg{
         }
         log.info("this is token{}" , tokenData);
         String email = request.getEmail();
-        Admin admin = adminRepository.findByEmail(email);
+        Admin admin = adminRepository.findByUsersEmail(email);
+
         if (admin == null) {
             throw new IllegalArgumentException(ADMIN_NOT_FOUND);
         }
@@ -42,15 +47,21 @@ public class CompleteAdminRegMethod implements CompleteAdminReg{
             throw new IllegalStateException(ADMIN_ALREADY_CONFIRMED);
         }
 
-        admin.setEmail(request.getEmail());
+        Users users = Users.builder()
+                .email(request.getEmail())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .userRole(Roles.ADMIN)
+                .build();
+
+//        admin.setEmail(request.getEmail());
+        admin.setUsers(users);
         admin.setName(request.getName());
-        admin.setPassword(request.getPassword());
+//        admin.setPassword(request.getPassword());
         admin.setConfirmed(true);
         adminRepository.save(admin);
 
         // Delete token
         tokenRepository.deleteById(request.getToken());
-
 
         return CompleteAdminRegistration.builder().
                 message("Registration successful")

@@ -1,10 +1,13 @@
 package com.oracleous.extention_manager.dto.requests.registrationRequest;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class LocalAdminRegRequest {
     private String firstName;
     private String lastName;

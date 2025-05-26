@@ -22,7 +22,7 @@ public class GetInvestorDetailsMethod implements GetInvestorDetails{
         if ((email == null || email.isEmpty()) && (phoneNumber == null || phoneNumber.isEmpty())) {
             throw new InvestorNotFoundException("Either Email or PhoneNumber must be provided");
         }
-        Investor investor = investorRepository.findByEmailOrPhoneNumber(email, phoneNumber).
+        Investor investor = investorRepository.findByUsersEmailOrPhoneNumber(email, phoneNumber).
                 orElseThrow(()-> new InvestorNotFoundException("Email or PhoneNumber is not found"));
 
         FullName fullName = FullName.builder().
