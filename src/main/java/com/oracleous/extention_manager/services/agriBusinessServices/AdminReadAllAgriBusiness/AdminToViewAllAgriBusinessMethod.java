@@ -33,7 +33,7 @@ public class AdminToViewAllAgriBusinessMethod implements AdminToViewAllAgriBusin
 
         Admin admin = adminRepository.findByUsers(users);
         if (admin != null) {
-            agriBusinessRepository.findAll().getFirst();
+            agriBusinessRepository.findAll();
 
         }
         Farmer farmer = farmersRepository.findByUsers(users)

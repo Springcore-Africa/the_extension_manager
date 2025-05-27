@@ -20,8 +20,8 @@ public class AdminRegistrationRequestDto {
     @Schema(
             description = "Admin email address, must match the regex ^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$",
             example = "admin@example.com",
-            required = true,
-            pattern = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$"
+            required = true
+//            pattern = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$"
     )
     private String email;
 //    private Roles role;
