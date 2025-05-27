@@ -2,8 +2,11 @@
 FROM eclipse-temurin:17-jdk-alpine AS build
 WORKDIR /workspace/app
 
-# Copy Maven files and download dependencies
+# Copy Maven wrapper and make it executable
 COPY mvnw .
+RUN chmod +x mvnw
+
+# Copy Maven settings and download dependencies
 COPY .mvn .mvn
 COPY pom.xml .
 RUN ./mvnw dependency:go-offline -B
