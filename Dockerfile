@@ -23,4 +23,4 @@ USER spring:spring
 
 # Expose port 8080 (Render's default)
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-jar", "/app/app.jar"]

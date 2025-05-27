@@ -11,11 +11,7 @@ import java.util.Optional;
 
 @Repository
 public interface InvestorRepository extends JpaRepository<Investor, Long> {
-//    boolean existsByEmailAndPhoneNumber(String email, String phoneNumber);
 
-//    Optional<Investor> findByEmailOrPhoneNumber(String email, String phoneNumber);
-
-//    boolean existsByUserEmailAndUserPhoneNumber(String email, String phoneNumber);
     @Query("SELECT CASE WHEN COUNT(i) > 0 THEN true ELSE false END FROM Investor i WHERE i.users.email = :email AND i.phoneNumber = :phoneNumber")
     boolean existsByUsersEmailAndPhoneNumber(@Param("email") String email, @Param("phoneNumber") String phoneNumber);
 

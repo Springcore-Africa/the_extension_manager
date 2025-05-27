@@ -49,8 +49,6 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/farmers/find-farmer/**").hasRole("FARMER")
 //                        .requestMatchers("/api/extension-worker/register", "/api/extension-worker/verify").permitAll()
 
-//                        .requestMatchers("/api/extension-worker/register").hasRole("EXTENSION_WORKER")
-
                         .requestMatchers("/admin/register/initiate").hasRole("SUPER_ADMIN")
                         .requestMatchers(
                                 "/admin/register/complete-form",
