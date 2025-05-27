@@ -12,7 +12,7 @@ import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
-import org.jetbrains.annotations.NotNull;
+//import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDate;
 
@@ -48,7 +48,7 @@ public class FarmersRegistrationRequest {
     private String nationalId;
 
     @Schema(description = "Date of birth of the farmer", example = "2025-07-20", required = true)
-    @NotNull
+//    @NotNull
     @JsonFormat(pattern = "yyyy/MM/dd")
     private LocalDate dateOfBirth;
 
