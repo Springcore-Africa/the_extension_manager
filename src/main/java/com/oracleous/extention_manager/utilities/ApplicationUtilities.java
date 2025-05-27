@@ -2,13 +2,11 @@ package com.oracleous.extention_manager.utilities;
 
 import com.oracleous.extention_manager.data.model.UserPrincipal;
 import com.oracleous.extention_manager.data.model.Users;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.security.SecureRandom;
 import java.time.Year;
-import java.util.random.RandomGenerator;
 
 public class ApplicationUtilities {
     private static final SecureRandom random = new SecureRandom();

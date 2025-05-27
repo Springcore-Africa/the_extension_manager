@@ -1,0 +1,45 @@
+version: '3.8'
+services:
+  app:
+    build:
+      context: ..
+      dockerfile: the_extension_manager/src/main/java/com/oracleous/extention_manager/Dockerfile
+    image: the_extension_manager:latest
+    ports:
+      - "8080:8080" # Changed to 8080 for consistency
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/extension_manager?createDatabaseIfNotExist=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=Ishola123?
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SERVER_PORT=8080 # Changed to 8080
+      - APP_BASE_URL=http://localhost:8080
+    networks:
+      - app-network
+
+  mysql:
+    image: mysql:8.0
+    environment:
+      - MYSQL_ROOT_PASSWORD=Ishola123?
+      - MYSQL_DATABASE=extension_manager
+    ports:
+      - "3306:3306" # Changed to 3306 (no conflict locally)
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-pIshola123?"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - app-network
+
+volumes:
+  mysql-data:
+
+networks:
+  app-network:
+    driver: bridge
