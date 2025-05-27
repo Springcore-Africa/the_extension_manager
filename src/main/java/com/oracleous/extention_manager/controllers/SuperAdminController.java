@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/super_admin")
 @AllArgsConstructor
 @Tag(name = "SuperAdmin Registration", description = "API for registering SuperAdmin users")
 public class SuperAdminController {
@@ -41,7 +41,7 @@ public class SuperAdminController {
             )
     })
 
-    @PostMapping("/super_admin_registration")
+    @PostMapping("/registration")
     public ResponseEntity<SuperAdminResponse> superAdminRegistration(@RequestBody SuperAdminRegRequest superAdminRegRequest) {
 
         try {

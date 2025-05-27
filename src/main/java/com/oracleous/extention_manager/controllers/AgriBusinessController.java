@@ -8,6 +8,7 @@ import com.oracleous.extention_manager.dto.response.registrationResponse.SuperAd
 import com.oracleous.extention_manager.exceptions.BusinessAlreadyExistsException;
 import com.oracleous.extention_manager.exceptions.FarmerNotFoundException;
 import com.oracleous.extention_manager.services.agriBusinessServices.AgricBusinessReadPackage.GetAgricBusinessDetailsMethod;
+//import com.oracleous.extention_manager.services.agriBusinessServices.AgricBusinessRegistration.AgriBusinessService;
 import com.oracleous.extention_manager.services.agriBusinessServices.AgricBusinessRegistration.AgriBusinessService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -45,7 +46,7 @@ public class AgriBusinessController {
             )
     })
 
-    @PostMapping("/agri_business_registration")
+    @PostMapping("/register")
     public ResponseEntity <?> agriBusinessRegistration(@RequestBody AgriBusinessRegRequest agriBusinessRegRequest) throws BusinessAlreadyExistsException, FarmerNotFoundException {
        try{
            return new ResponseEntity<>(agriBusinessService.registerAgriBusiness(agriBusinessRegRequest), HttpStatus.CREATED);
@@ -72,10 +73,10 @@ public class AgriBusinessController {
             )
     })
 
-    @GetMapping("/find_agriBusiness/")
-    public ResponseEntity <?> findAgriBusiness(@RequestBody AgricGetRequest agricGetRequest) {
+    @GetMapping("/find")
+    public ResponseEntity <?> findAgriBusiness() {
         try{
-            return new ResponseEntity<>(agricBusinessDetailsMethod.getAgricBusinessDetails(agricGetRequest), HttpStatus.FOUND);
+            return new ResponseEntity<>(agricBusinessDetailsMethod.getAgricBusinessDetails(), HttpStatus.FOUND);
         }catch (Exception exception){
             return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
         }

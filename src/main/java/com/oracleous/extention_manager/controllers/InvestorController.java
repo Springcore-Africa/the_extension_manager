@@ -5,6 +5,9 @@ import com.oracleous.extention_manager.dto.requests.readRequest.InvestorGetReque
 import com.oracleous.extention_manager.dto.response.registrationResponse.InvestorRegistrationResponse;
 import com.oracleous.extention_manager.services.investorServices.InvestorReadPackage.GetInvestorDetails;
 import com.oracleous.extention_manager.services.investorServices.InvestorRegistration.InvestorServiceReg;
+//import com.oracleous.extention_manager.services.investorServices.InvestorRetrieveAgriBusiness.InvestorViewAgriBusiness;
+import com.oracleous.extention_manager.services.investorServices.investorViewFarmerBusiness.InvestorViewFarmerBusinessMethod;
+import com.oracleous.extention_manager.services.investorServices.investorViewFarmers.InvestorViewAllFarmers;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -17,12 +20,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/investor")
 @RequiredArgsConstructor
 @Tag(name = "Investor registering and retrieving API", description = "Registering and Retrieving investor details")
 public class InvestorController {
     private final InvestorServiceReg investorServiceReg;
     private final GetInvestorDetails getInvestorDetails;
+//    private final InvestorViewAgriBusiness investorViewAgriBusiness ;
+    private final InvestorViewAllFarmers investorViewAllFarmers;
+    private final InvestorViewFarmerBusinessMethod investorViewFarmerBusinessMethod;
+    
 
     @Operation(
             summary = "Investor Registration",
@@ -40,7 +47,7 @@ public class InvestorController {
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = String.class))
             )
     })
-    @PostMapping("/investor_registration")
+    @PostMapping("/registration")
     public ResponseEntity<?> investorRegistration(@RequestBody InvestorRegistrationRequest investorRegistrationRequest) {
         try {
             return new ResponseEntity<>(investorServiceReg.investorRegistration(investorRegistrationRequest), HttpStatus.CREATED);
@@ -78,4 +85,34 @@ public class InvestorController {
             return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
+
+//    @GetMapping("/find_agriBusiness")
+//    public ResponseEntity <?> findAgriBusiness() {
+//        try{
+//            return new ResponseEntity<>(investorViewAgriBusiness.agriBusinessResponse(), HttpStatus.OK);
+//        }catch (Exception exception){
+//            return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
+//        }
+//    }
+
+
+    @GetMapping("check_all_farmers")
+    public ResponseEntity <?> checkAllFarmers(){
+        try{
+            return new ResponseEntity<>(investorViewAllFarmers.getAllFarmers(), HttpStatus.OK);
+        }catch (Exception exception){
+            return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/check_agriBusiness_link_with_farmer/{farmerId}")
+    public ResponseEntity<?> getAgriBusinessByFarmer(@PathVariable Long farmerId) {
+        try {
+            return new ResponseEntity<>(investorViewFarmerBusinessMethod.getAgriBusinessByFarmer(farmerId), HttpStatus.OK);
+        } catch (Exception exception) {
+            return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
 }
+

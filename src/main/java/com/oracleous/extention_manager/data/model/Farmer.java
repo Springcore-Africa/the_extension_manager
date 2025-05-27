@@ -31,10 +31,15 @@ public class Farmer {
     private String lastName;
     @Column(name = "PHONE NUMBER")
     private String phoneNumber;
-    @Column(name = "EMAIL")
-    private String email;
-    @Column(name = "PASSWORD")
-    private String password;
+//    @Column(name = "EMAIL")
+//    private String email;
+//    @Column(name = "PASSWORD")
+//    private String password;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "users_id")
+    private Users users ;
+
     @Column(name = "NATIONAL ID")
     private String nationalId;
     @Column(name = "DATE OF BIRTH")

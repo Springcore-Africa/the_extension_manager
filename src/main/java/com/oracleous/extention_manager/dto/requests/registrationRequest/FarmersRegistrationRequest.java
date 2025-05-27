@@ -3,19 +3,24 @@ package com.oracleous.extention_manager.dto.requests.registrationRequest;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.oracleous.extention_manager.data.model.Gender;
 import com.oracleous.extention_manager.data.model.MaritalStatus;
+import com.oracleous.extention_manager.data.model.Roles;
+import com.oracleous.extention_manager.data.model.Users;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDate;
 
-@Setter
-@Getter
+@Data
 @Schema(description = "Request payload to register a farmer")
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class FarmersRegistrationRequest {
 
     @Schema(description = "First name of the farmer", example = "Ola", required = true)
@@ -34,6 +39,9 @@ public class FarmersRegistrationRequest {
 
     @Schema(description = "Account password", example = "securepassword123", required = true)
     private String password;
+
+    private Roles role;
+//    private UserRegistrationRequest userRegistrationRequest ;
 
     @NotBlank
     @Schema(description = "National ID card number", example = "WRN290K", required = true)
