@@ -1,3 +1,15 @@
+#spring:
+#  datasource:
+#    url: ${SPRING_DATASOURCE_URL}
+#    username: ${SPRING_DATASOURCE_USERNAME}
+#    password: ${SPRING_DATASOURCE_PASSWORD}
+#    driver-class-name: org.postgresql.Driver
+#  jpa:
+#    hibernate:
+#      ddl-auto: update
+#app:
+#  base-url: ${APP_BASE_URL:https://your-app.onrender.com}
+
 spring:
   datasource:
     url: ${SPRING_DATASOURCE_URL}
@@ -7,5 +19,6 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-app:
-  base-url: ${APP_BASE_URL:https://your-app.onrender.com}
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
