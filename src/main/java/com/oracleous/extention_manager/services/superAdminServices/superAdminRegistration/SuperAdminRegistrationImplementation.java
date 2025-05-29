@@ -27,27 +27,24 @@ public class SuperAdminRegistrationImplementation implements SuperAdminRegistrat
         boolean superAdminExist = superAdminRepository.existsByUsers_Email(superAdminRegRequest.getEmail());
         if (superAdminExist) {
             return SuperAdminResponse.builder()
-                    .message(SUPER_ADMIN_EXIST)
-                    .build();
+                .message(SUPER_ADMIN_EXIST)
+                .build();
         }
-
         Users users = Users.builder()
-                .email(superAdminRegRequest.getEmail())
-                .password(passwordEncoder.encode(superAdminRegRequest.getPassword()))
-                .userRole(Roles.SUPER_ADMIN)
-                .build();
-
+            .email(superAdminRegRequest.getEmail())
+            .password(passwordEncoder.encode(superAdminRegRequest.getPassword()))
+            .userRole(Roles.SUPER_ADMIN)
+            .build();
         SuperAdmin superAdminReg = SuperAdmin.builder()
-                .users(users)
-                .firstName(superAdminRegRequest.getFirstName())
-                .lastName(superAdminRegRequest.getLastName())
-                .phoneNumber(superAdminRegRequest.getPhoneNumber())
-                .passportPhotograph(superAdminRegRequest.getPassportPhotograph())
-                .build();
+            .users(users)
+            .firstName(superAdminRegRequest.getFirstName())
+            .lastName(superAdminRegRequest.getLastName())
+            .phoneNumber(superAdminRegRequest.getPhoneNumber())
+            .passportPhotograph(superAdminRegRequest.getPassportPhotograph())
+            .build();
         superAdminRepository.save(superAdminReg);
-
         return SuperAdminResponse.builder()
-                .message(ACCOUNT_CREATED_MESSAGE)
-                .build();
+            .message(ACCOUNT_CREATED_MESSAGE)
+            .build();
     }
 }

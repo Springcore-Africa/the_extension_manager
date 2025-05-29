@@ -15,8 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
-import static com.oracleous.extention_manager.utilities.ApplicationUtilities.ADMIN_ALREADY_CONFIRMED;
-import static com.oracleous.extention_manager.utilities.ApplicationUtilities.ADMIN_NOT_FOUND;
+import static com.oracleous.extention_manager.utilities.ApplicationUtilities.*;
 
 @Service
 @AllArgsConstructor
@@ -29,43 +28,27 @@ public class CompleteAdminRegMethod implements CompleteAdminReg{
     @Override
     public CompleteAdminRegistration completeAdminRegistration(AdminCompletionRequestDto request) {
         RegistrationToken tokenData = tokenRepository.findByToken(request.getToken()).
-                filter(time -> time.getExpiresAt().isAfter(LocalDateTime.now())).
-                orElseThrow(()-> new IllegalArgumentException("Specify duration has expired or invalid token"));
-
+            filter(time -> time.getExpiresAt().isAfter(LocalDateTime.now())).
+            orElseThrow(()-> new IllegalArgumentException(DURATION_HAS_EXPIRE));
         //I Check if token matches email
-        if (!tokenData.getEmail().equals(request.getEmail())) {
-            throw new IllegalArgumentException("Token does not match email");
-        }
-        log.info("this is token{}" , tokenData);
-        String email = request.getEmail();
+        if (!tokenData.getEmail().equals(request.getEmail())) {throw new IllegalArgumentException(TOKEN_DOES_NOT_MATCH);}
+            String email = request.getEmail();
         Admin admin = adminRepository.findByUsersEmail(email);
 
-        if (admin == null) {
-            throw new IllegalArgumentException(ADMIN_NOT_FOUND);
-        }
-        if (admin.isConfirmed()) {
-            throw new IllegalStateException(ADMIN_ALREADY_CONFIRMED);
-        }
-
+        if (admin == null) {throw new IllegalArgumentException(ADMIN_NOT_FOUND);}
+        if (admin.isConfirmed()) {throw new IllegalStateException(ADMIN_ALREADY_CONFIRMED);}
         Users users = Users.builder()
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .userRole(Roles.ADMIN)
                 .build();
-
-//        admin.setEmail(request.getEmail());
         admin.setUsers(users);
         admin.setName(request.getName());
-//        admin.setPassword(request.getPassword());
         admin.setConfirmed(true);
         adminRepository.save(admin);
-
         // Delete token
         tokenRepository.deleteById(request.getToken());
-
-        return CompleteAdminRegistration.builder().
-                message("Registration successful")
-                .build();
+        return CompleteAdminRegistration.builder().message(REGISTRATION_SUCCESSFUL).build();
     }
 
 

@@ -21,10 +21,10 @@ public class LoginMethod implements Login{
             throw new IllegalArgumentException("Email and password are required");
         }
         authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        loginRequest.getEmail(),
-                        loginRequest.getPassword()
-                )
+            new UsernamePasswordAuthenticationToken(
+                loginRequest.getEmail(),
+                loginRequest.getPassword()
+            )
         );
         String token = jwtService.GenerateToken(loginRequest.getEmail());
         return LoginResponse.builder()

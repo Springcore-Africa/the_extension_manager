@@ -30,20 +30,15 @@ public class AdminToViewAllAgriBusinessMethod implements AdminToViewAllAgriBusin
     @Override
     public AdminViewAgriBusinessResponse adminViewAgriBusinessResponse() {
         Users users = ApplicationUtilities.getCurrentUser();
-
         Admin admin = adminRepository.findByUsers(users);
         if (admin != null) {
             agriBusinessRepository.findAll();
-
         }
-        Farmer farmer = farmersRepository.findByUsers(users)
-                .orElseThrow(() -> new FarmerNotFoundExceptionWhileFetching(USER_NOT_FOUND_MESSAGE));
-
+        Farmer farmer = farmersRepository.findByUsers(users).orElseThrow(() -> new FarmerNotFoundExceptionWhileFetching(USER_NOT_FOUND_MESSAGE));
         AgriBusiness agriBusiness = farmer.getAgriBusiness();
         if (agriBusiness == null) {
             throw new FarmerNotFoundExceptionWhileFetching(AGRIBUSINESS_NOT_FOUND_MESSAGE);
         }
-
         return AdminViewAgriBusinessResponse.builder()
                 .businessName(agriBusiness.getBusinessName())
                 .businessLocationState(agriBusiness.getBusinessLocationState())

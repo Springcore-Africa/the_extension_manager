@@ -24,29 +24,16 @@ public class GetFarmerDetailsMethod implements GetFarmerDetails {
     @Override
     public FarmerGetResponse getFarmerDetails(FarmerGetRequest getFarmerDetailsRequest) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal() instanceof String) {
-            throw new IllegalArgumentException("User not found");
-        }
-
+        if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal() instanceof String) {throw new IllegalArgumentException(USER_NOT_FOUND);}
         String email = getFarmerDetailsRequest.getEmail();
         String phoneNumber = getFarmerDetailsRequest.getPhoneNumber();
 
-        if ((email == null || email.isEmpty()) && (phoneNumber == null || phoneNumber.isEmpty())) {
-            throw new FarmerNotFoundExceptionWhileFetching(REQUIRED_REQUEST_MESSAGE);
-        }
-
-        Farmer farmer = farmersRepository.findByEmailOrPhoneNumber(email,phoneNumber).
-                orElseThrow(()-> new FarmerNotFoundExceptionWhileFetching(USER_NOT_FOUND_MESSAGE));
-
+        if ((email == null || email.isEmpty()) && (phoneNumber == null || phoneNumber.isEmpty())) {throw new FarmerNotFoundExceptionWhileFetching(REQUIRED_REQUEST_MESSAGE);}
+        Farmer farmer = farmersRepository.findByEmailOrPhoneNumber(email,phoneNumber).orElseThrow(()-> new FarmerNotFoundExceptionWhileFetching(USER_NOT_FOUND_MESSAGE));
         FullName fullName = FullName.builder().
                 firstName(farmer.getFirstName()).
                 lastName(farmer.getLastName()).
                 build();
-
-//        Users users = Users.builder()
-//                .email(farmer.getEmail())
-//                .build();
-
         return FarmerGetResponse.builder().
                 fullName(fullName).
                 phoneNumber(farmer.getPhoneNumber()).
@@ -67,8 +54,6 @@ public class GetFarmerDetailsMethod implements GetFarmerDetails {
                 gender((Gender) farmer.getGender()).
                 stateOfOrigin(farmer.getStateOfOrigin()).
                 dateOfBirth(farmer.getDateOfBirth())
-//                password(farmer.getUsers().getPassword())
                 .build();
-
     }
 }

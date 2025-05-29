@@ -30,17 +30,13 @@ public class GetAgricBusinessDetailsMethod implements GetAgricBusinessDetails {
     @Override
     public AgricGetResponse getAgricBusinessDetails() {
         Users users = ApplicationUtilities.getCurrentUser();
-
-        Farmer farmer = farmersRepository.findByUsers(users)
-                .orElseThrow(() -> new FarmerNotFoundExceptionWhileFetching(USER_NOT_FOUND_MESSAGE));
-
+        Farmer farmer = farmersRepository.findByUsers(users).orElseThrow(() -> new FarmerNotFoundExceptionWhileFetching(USER_NOT_FOUND_MESSAGE));
         AgriBusiness agriBusiness = farmer.getAgriBusiness();
         if (agriBusiness == null) {
             return AgricGetResponse.builder()
                     .responseMessage(AGRIBUSINESS_NOT_FOUND_MESSAGE)
                     .build();
         }
-
         return AgricGetResponse.builder()
                 .businessLocationLga(agriBusiness.getBusinessLocationLga())
                 .businessName(agriBusiness.getBusinessName())

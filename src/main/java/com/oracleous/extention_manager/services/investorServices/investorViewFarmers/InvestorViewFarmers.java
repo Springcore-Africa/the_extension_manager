@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface InvestorViewFarmers {
     List<InvestorViewFarmerResponse> getAllFarmers();
-//    InvestorViewAgriBusinessResponse getAgriBusinessByFarmer(Long farmerId);
-    List<InvestorViewAgriBusinessResponse> getAllAgriBusinesses();}
+//    List<InvestorViewAgriBusinessResponse> getAllAgriBusinesses();
+    }

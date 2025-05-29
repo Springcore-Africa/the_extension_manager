@@ -47,36 +47,25 @@ public class AdminRegistrationService implements AdminRegistration {
     @Override
     public InitiateAdminRegistration initiateAdminRegistration(AdminRegistrationRequestDto request, String superAdminEmail) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if(authentication == null || authentication.getPrincipal() == null) {
-            throw new IllegalArgumentException("SuperAdmin not found");
-        }
+        if(authentication == null || authentication.getPrincipal() == null) {throw new IllegalArgumentException(SUPER_ADMIN_NOT_FOUND);}
         String email = authentication.getPrincipal().toString();
-        if(email.isEmpty()){
-            throw new IllegalArgumentException("SuperAdmin not found");
-        }
-
+        if(email.isEmpty()){throw new IllegalArgumentException(SUPER_ADMIN_NOT_FOUND);}
         log.info("Using base URL: {}", baseUrl);
-
         //I validate email
         if (request.getEmail() == null || !request.getEmail().matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
             throw new IllegalArgumentException(INVALID_EMAIL_ADDRESS);
         }
 
-        if (adminRepository.existsByUsersEmail(request.getEmail())) {
-            throw new IllegalArgumentException(EMAIL_ALREADY_EXIST);
-        }
-
+        if (adminRepository.existsByUsersEmail(request.getEmail())) {throw new IllegalArgumentException(EMAIL_ALREADY_EXIST);}
         Users users = Users.builder()
                 .email(request.getEmail())
                 .userRole(Roles.ADMIN)
                 .build();
-
         Admin admin = Admin.builder()
                 .users(users)
                 .confirmed(false)
                 .build();
         adminRepository.save(admin);
-
         // I generate and save token
         String token = UUID.randomUUID().toString();
         RegistrationToken registrationToken = new RegistrationToken();
@@ -96,16 +85,13 @@ public class AdminRegistrationService implements AdminRegistration {
                 "<p> This link will expire after 2 hours.</p>";  // i added this
         eventPublisher.publishEvent(new EmailEvent(this, request.getEmail(), subject, text));
 
-        return InitiateAdminRegistration.builder()
-                .message(EMAIL_REGISTRATION_SENT)
-                .build();
+        return InitiateAdminRegistration.builder().message(EMAIL_REGISTRATION_SENT).build();
     }
 
     @Override
     public boolean isAdminEmailRegistered(String email) {
         return adminRepository.existsByUsersEmail(email);
     }
-
     public RegistrationToken validateToken(String token) {
         return tokenRepository.findByToken(token)
                 .filter(t -> t.getExpiresAt().isAfter(LocalDateTime.now()))

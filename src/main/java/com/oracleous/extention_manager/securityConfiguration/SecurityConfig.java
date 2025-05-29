@@ -24,7 +24,6 @@ import java.util.List;
 public class SecurityConfig {
     @Autowired
     private JwtFilter jwtFilter;
-//    private CustomUserDetailsService userDetailsService; // Implement this
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -38,26 +37,24 @@ public class SecurityConfig {
                                 "/investor/registration",
                                 "/local_admin/registration",
                                 "/super_admin/registration",
-                                "/user/login"
-//                                "/api/extension-worker/register"
+                                "/user/login",
+                                "/api/extension-worker/register",
+                                "/api/extension-worker/verify",
+                                "/error"
                         ).permitAll()
-                                .requestMatchers("/api/extension-worker/register", "/api/extension-worker/verify", "/error").permitAll()
-                                .requestMatchers("/api/extension-worker/pending/**", "/api/extension-worker/approve", "/api/extension-worker/decision").hasRole("ADMIN")
-
+                        .requestMatchers("/api/extension-worker/pending/**",
+                                "/api/extension-worker/approve",
+                                "/api/extension-worker/decision"
+                                ).hasRole("ADMIN")
                         .requestMatchers("/api/agri_business/register").hasRole("FARMER")
                         .requestMatchers("/api/agri_business/find").hasRole("FARMER")
                         .requestMatchers("/api/v1/farmers/find-farmer/**").hasRole("FARMER")
-//                        .requestMatchers("/api/extension-worker/register", "/api/extension-worker/verify").permitAll()
-
                         .requestMatchers("/admin/register/initiate").hasRole("SUPER_ADMIN")
                         .requestMatchers(
                                 "/admin/register/complete-form",
                                 "/admin/register/complete",
                                 "/admin/registration-success").permitAll()
-
-
                         .requestMatchers("/Admin/view/agriBusiness").hasRole("ADMIN")
-
                         .requestMatchers("/investor/find_agriBusiness").hasRole("INVESTOR")
                         .requestMatchers("/investor/check_all_farmers").hasRole("INVESTOR")
                         .requestMatchers("/investor/check_agriBusiness_link_with_farmer/").hasRole("INVESTOR")
@@ -68,7 +65,10 @@ public class SecurityConfig {
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .cors(cors -> cors.configurationSource(request -> {
                     var config = new CorsConfiguration();
-                    config.setAllowedOrigins(List.of("http://localhost:5173", "https://the-extension-manager-2.onrender.com"));
+                    config.setAllowedOrigins(List.of(
+                            "http://localhost:5173",
+                            "https://the-extension-manager-2.onrender.com"
+                    ));
                     config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
                     config.setAllowedHeaders(List.of("Authorization", "Content-Type"));
                     config.setAllowCredentials(true);

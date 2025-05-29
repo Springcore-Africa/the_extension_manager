@@ -36,29 +36,22 @@ public class FarmerServiceImplementation implements FarmersService {
 
     @Override
     public FarmerResponse registerFarmer(FarmersRegistrationRequest request) {
-        log.info("Registering farmer with email: {}", request.getEmail());
-
         boolean farmerExists = farmersRepository.existsByEmailOrNationalIdOrPhoneNumber(
                 request.getEmail(), request.getNationalId(), request.getPhoneNumber()
         );
-        System.out.println("this is coming email ++++++"  + request.getEmail());
         if (farmerExists) {
-            log.warn("Farmer already exists with email: {}, nationalId: {}, or phoneNumber: {}",
-                    request.getEmail(), request.getNationalId(), request.getPhoneNumber());
+            log.warn(FARMER_EXIST ,request.getEmail(), request.getNationalId(), request.getPhoneNumber());
             return FarmerResponse.builder()
-                    .responseCode(FARMER_EXIST_CODE)
-                    .responseMessage(FARMER_ALREADY_EXIST)
-                    .farmerInfo(null)
-                    .build();
+                .responseCode(FARMER_EXIST_CODE)
+                .responseMessage(FARMER_ALREADY_EXIST)
+                .farmerInfo(null)
+                .build();
         }
-        System.out.println("this is if farmer exist ++++++"  + farmerExists);
         Users users = Users.builder()
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .userRole(Roles.FARMER)
                 .build();
-
-        System.out.println("this is user ++++++"  + users);
         Farmer newFarmer = Farmer.builder()
                 .users(users)
                 .nationalId(request.getNationalId())
@@ -78,14 +71,11 @@ public class FarmerServiceImplementation implements FarmersService {
                 .lastEducationalCertificate(request.getLastEducationalCertificate())
                 .birthCertificate(request.getBirthCertificate())
                 .build();
-
         String token = registrationToken();
         newFarmer.setVerificationToken(token);
         newFarmer.setTokenExpiration(System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(TOKEN_EXPIRATION_MINUTES));
-
         pendingRegistrations.put(token, newFarmer);
-        log.info("Stored pending registration for token: {}", token);
-
+//        log.info("Stored pending registration for token: {}", token);
         String subject = "Complete Your Farmer Registration";
         String emailContent = String.format(
                 "<p>Dear %s,</p>" +
@@ -94,7 +84,6 @@ public class FarmerServiceImplementation implements FarmersService {
                         "<p>This token will expire in %d minutes.</p>",
                 request.getFirstName(), token, TOKEN_EXPIRATION_MINUTES
         );
-
         eventPublisher.publishEvent(new EmailEvent(this, request.getEmail(), subject, emailContent));
         log.info("Email event published for farmer: {}", request.getEmail());
         return FarmerResponse.builder()
@@ -103,35 +92,26 @@ public class FarmerServiceImplementation implements FarmersService {
                 .farmerInfo(null)
                 .build();
     }
-
     @Override
     public FarmerResponse verifyToken(TokenVerificationRequest tokenVerificationRequest) {
-        log.info("Verifying token: {}", tokenVerificationRequest);
-
         Farmer farmer = pendingRegistrations.get(tokenVerificationRequest.getToken());
         if (farmer == null) {
-            log.warn("No pending registration found for token: {}", tokenVerificationRequest);
-            return FarmerResponse.builder()
-                    .responseCode(INVALID_TOKEN_CODE)
-                    .responseMessage("Invalid or expired token.")
-                    .farmerInfo(null)
-                    .build();
+        return FarmerResponse.builder()
+                .responseCode(INVALID_TOKEN_CODE)
+                .responseMessage(INVALID_OR_EXPIRE_TOKEN)
+                .farmerInfo(null)
+                .build();
         }
-
         if (System.currentTimeMillis() > farmer.getTokenExpiration()) {
             pendingRegistrations.remove(tokenVerificationRequest.getToken());
-            log.warn("Token expired for token: {}", tokenVerificationRequest);
             return FarmerResponse.builder()
-                    .responseCode(TOKEN_EXPIRED_CODE)
-                    .responseMessage("Token has expired. Please register again.")
-                    .farmerInfo(null)
-                    .build();
-        }
-
+                .responseCode(TOKEN_EXPIRED_CODE)
+                .responseMessage(TOKEN_HAS_EXPIRED_PLEASE_RE_REGISTER)
+                .farmerInfo(null)
+                .build();
+    }
         Farmer savedFarmer = farmersRepository.save(farmer);
         pendingRegistrations.remove(tokenVerificationRequest.getToken());
-        log.info("Farmer saved to database with regNumber: {}", savedFarmer.getRegNumber());
-
         return FarmerResponse.builder()
                 .responseCode(ACCOUNT_CREATED_CODE)
                 .responseMessage(ACCOUNT_CREATED_MESSAGE)

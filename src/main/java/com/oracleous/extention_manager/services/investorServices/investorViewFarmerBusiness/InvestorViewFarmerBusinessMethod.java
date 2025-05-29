@@ -16,8 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-import static com.oracleous.extention_manager.utilities.ApplicationUtilities.INVESTOR_NOT_FOUND;
-import static com.oracleous.extention_manager.utilities.ApplicationUtilities.USER_NOT_FOUND;
+import static com.oracleous.extention_manager.utilities.ApplicationUtilities.*;
 
 @Service
 @AllArgsConstructor
@@ -30,50 +29,30 @@ public class InvestorViewFarmerBusinessMethod implements InvestorViewFarmerBusin
     @Override
     public InvestorViewAgriBusinessResponse getAgriBusinessByFarmer(Long farmerId) {
         Users user = getUsers();
-        log.info("Users: {}", user);
-
         Optional<Investor> investor = investorRepository.findByUsers(user);
-        if (investor.isEmpty()) {
-            log.error("No Investor found for user: {}", user.getEmail());
-            throw new InvestorNotFoundException(INVESTOR_NOT_FOUND);
-        }
-        log.info("Investor: {}", investor.get());
-
+        if (investor.isEmpty()) {throw new InvestorNotFoundException(INVESTOR_NOT_FOUND);}
         Optional<Farmer> farmer = farmerRepository.findById(farmerId);
-        if (farmer.isEmpty()) {
-            log.error("No Farmer found with ID: {}", farmerId);
-            throw new IllegalStateException("Farmer not found");
-        }
-        log.info("Farmer: {}", farmer.get());
+        if (farmer.isEmpty()) {throw new IllegalStateException(FARMER_NOT_FOUND);}
 
         AgriBusiness agriBusiness = farmer.get().getAgriBusiness();
-        if (agriBusiness == null) {
-            log.warn("No AgriBusiness found for farmer ID: {}", farmerId);
-            throw new IllegalStateException("AgriBusiness not found for farmer");
-        }
-        log.info("AgriBusiness: {}", agriBusiness);
-
+        if (agriBusiness == null) {throw new IllegalStateException(AGRI_BUSINESS_NOT_FOUND);}
         return InvestorViewAgriBusinessResponse.builder()
-                .businessName(agriBusiness.getBusinessName())
-                .businessLocationLga(agriBusiness.getBusinessLocationLga())
-                .businessLocationState(agriBusiness.getBusinessLocationState())
-                .agriculturalProduct(agriBusiness.getAgriculturalProduct())
-                .farmPhotos(agriBusiness.getFarmPhotos())
-                .productDescription(agriBusiness.getProductDescription())
-                .businessLocationExact(agriBusiness.getBusinessLocationExact())
-                .productPhotos(agriBusiness.getProductPhotos())
-                .build();
+            .businessName(agriBusiness.getBusinessName())
+            .businessLocationLga(agriBusiness.getBusinessLocationLga())
+            .businessLocationState(agriBusiness.getBusinessLocationState())
+            .agriculturalProduct(agriBusiness.getAgriculturalProduct())
+            .farmPhotos(agriBusiness.getFarmPhotos())
+            .productDescription(agriBusiness.getProductDescription())
+            .businessLocationExact(agriBusiness.getBusinessLocationExact())
+            .productPhotos(agriBusiness.getProductPhotos())
+            .build();
     }
     private static @NotNull Users getUsers() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null || !authentication.isAuthenticated()) {
-            throw new IllegalStateException("No authenticated user found");
-        }
+        if (authentication == null || !authentication.isAuthenticated()) {throw new IllegalStateException(NO_AUTHENTICATION_USER_FOUND);}
         UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
         Users users = userPrincipal.users();
-        if (users == null) {
-            throw new IllegalArgumentException(USER_NOT_FOUND);
-        }
+        if (users == null) {throw new IllegalArgumentException(USER_NOT_FOUND);}
         return users;
     }
 }

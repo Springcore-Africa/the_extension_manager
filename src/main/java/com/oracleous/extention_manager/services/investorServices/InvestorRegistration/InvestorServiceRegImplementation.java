@@ -20,27 +20,17 @@ public class InvestorServiceRegImplementation implements InvestorServiceReg {
 
     @Override
     public InvestorRegistrationResponse investorRegistration(InvestorRegistrationRequest investorRegistrationRequest) {
-
-//        boolean investorExist = investorRepository.existsByUsersEmailAndUsersPhoneNumber(
-//                investorRegistrationRequest.getEmail(),
-//                investorRegistrationRequest.getPhoneNumber()
-//        );
         boolean investorExist = investorRepository.existsByUsersEmailAndPhoneNumber(
                 investorRegistrationRequest.getEmail(),
                 investorRegistrationRequest.getPhoneNumber()
         );
-
         if(investorExist){
-            return InvestorRegistrationResponse.builder().
-                    responseMessage(INVESTOR_ALREADY_EXIST)
-                    .build();
-        }
+            return InvestorRegistrationResponse.builder().responseMessage(INVESTOR_ALREADY_EXIST).build();}
         Users user = Users.builder()
                 .email(investorRegistrationRequest.getEmail())
                 .password(passwordEncoder.encode(investorRegistrationRequest.getPassword()))
                 .userRole(Roles.INVESTOR)
                 .build();
-
         Investor investor = Investor.builder().
                 users(user).
                 firstName(investorRegistrationRequest.getFirstName()).
@@ -50,7 +40,6 @@ public class InvestorServiceRegImplementation implements InvestorServiceReg {
                 passportPhotograph(investorRegistrationRequest.getPassportPhotograph()).
                 build();
         Investor savedInvestor = investorRepository.save(investor);
-
         return InvestorRegistrationResponse.builder().
                 FirstName(savedInvestor.getFirstName()).
                 LastName(savedInvestor.getLastName()).

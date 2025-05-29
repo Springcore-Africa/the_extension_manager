@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import static com.oracleous.extention_manager.utilities.ApplicationUtilities.EMAIL_ALREADY_EXIST;
 import static com.oracleous.extention_manager.utilities.ApplicationUtilities.INVESTOR_CREATED_MESSAGE;
 
 @Service
@@ -25,16 +26,12 @@ public class LocalAdminServiceRegistrationMethod implements LocalAdminService {
                 localAdminRegRequest.getPhoneNumber()
         );
 
-        if(localAdminExists) {
-            throw new IllegalArgumentException("Email already exists");
-        }
-
+        if(localAdminExists) {throw new IllegalArgumentException(EMAIL_ALREADY_EXIST);}
         Users users = Users.builder()
                 .email(localAdminRegRequest.getEmail())
                 .password(passwordEncoder.encode(localAdminRegRequest.getPassword()))
                 .userRole(Roles.LOCAL_ADMIN)
                 .build();
-
         LocalAdmin localAdmin = LocalAdmin.builder()
                 .users(users)
                 .lastName(localAdminRegRequest.getLastName())
@@ -42,9 +39,7 @@ public class LocalAdminServiceRegistrationMethod implements LocalAdminService {
                 .passportPhotograph(localAdminRegRequest.getPassportPhotograph())
                 .shortBio(localAdminRegRequest.getShortBio())
                 .build();
-
         LocalAdmin savedLocalAdmin = localAdminRepository.save(localAdmin);
-
         return LocalAdminRegResponse.builder()
                 .firstName(savedLocalAdmin.getFirstName())
                 .lastName(savedLocalAdmin.getLastName())

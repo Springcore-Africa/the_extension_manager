@@ -20,8 +20,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static com.oracleous.extention_manager.utilities.ApplicationUtilities.BUSINESS_REGISTERED_CODE;
-import static com.oracleous.extention_manager.utilities.ApplicationUtilities.BUSINESS_REGISTERED_MESSAGE;
+import static com.oracleous.extention_manager.utilities.ApplicationUtilities.*;
 
 @Service
 @RequiredArgsConstructor
@@ -32,19 +31,12 @@ public class AgriBusinessImpl implements AgriBusinessService {
     @Override
     public AgriBusinessResponse registerAgriBusiness(AgriBusinessRegRequest regRequest) throws BusinessAlreadyExistsException, FarmerNotFoundException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if(authentication == null || !authentication.isAuthenticated()) {
-            throw new FarmerNotFoundException("Farmer not found");
-        }
+        if(authentication == null || !authentication.isAuthenticated()) {throw new FarmerNotFoundException(FARMER_NOT_FOUND);}
         UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
         Users users = userPrincipal.users();
 
-        Farmer farmer = farmersRepository.findByUsers(users).
-                orElseThrow(() -> new FarmerNotFoundException("Farmer not found"));
-
-        if (agriBusinessRepository.existsByCacNumber(regRequest.getCacNumber())) {
-            throw new BusinessAlreadyExistsException("Business with CAC number already exists.");
-        }
-
+        Farmer farmer = farmersRepository.findByUsers(users).orElseThrow(() -> new FarmerNotFoundException(FARMER_NOT_FOUND));
+        if (agriBusinessRepository.existsByCacNumber(regRequest.getCacNumber())) {throw new BusinessAlreadyExistsException(BUSINESS_WITH_CAC_NUMBER_ALREADY_EXIST);}
         AgriBusiness agriBusiness = AgriBusiness.builder()
                 .businessName(regRequest.getBusinessName())
                 .businessLocationState(regRequest.getBusinessLocationState())
@@ -64,10 +56,7 @@ public class AgriBusinessImpl implements AgriBusinessService {
                 .productPhotos(regRequest.getProductPhotos())
                 .farmer(farmer)
                 .build();
-
-
         AgriBusiness savedBusiness = agriBusinessRepository.save(agriBusiness);
-
         //  THIS is the missing link
         farmer.setAgriBusiness(savedBusiness);
         farmersRepository.save(farmer);
@@ -78,12 +67,9 @@ public class AgriBusinessImpl implements AgriBusinessService {
                 .agriBusinessInfo(AgriBusinessInfo.builder()
                         .businessName(savedBusiness.getBusinessName())
                         .businessRegNumber(savedBusiness.getRegNumber())
-//                        .farmersName(farmer.getFirstName() + " " + farmer.getLastName())
                         .build())
-
                 .build();
     }
-
     public List<AgriBusiness> getBusinessesByFarmer(Long farmerId) {
         return agriBusinessRepository.findByFarmerId(farmerId);
     }
