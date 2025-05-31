@@ -22,3 +22,19 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+
+springdoc:
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui
+  api-docs:
+    path: /api-docs
+  info:
+    title: Extension Manager API
+    description: API for managing SuperAdmin registration and other extension manager functionalities
+    version: 1.0.0
+    contact:
+      name: springcore
+      email: springcore.africa@gmail.com
+  packages-to-scan: com.oracleous.extention_manager
+  paths-to-match: /api/**,/auth/**,/admin/**,/investor,/local_admin,/user/,/super_admin

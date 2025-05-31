@@ -42,6 +42,13 @@ public class SecurityConfig {
                                 "/api/extension-worker/verify",
                                 "/error"
                         ).permitAll()
+                        .requestMatchers(
+                                "/swagger-ui/**",
+                                "/swagger-ui.html",
+                                "/v3/api-docs/**",
+                                "/api-docs/**",
+                                "/api/farmers/farmers_registration"
+                        ).permitAll()
                         .requestMatchers("/api/extension-worker/pending/**",
                                 "/api/extension-worker/approve",
                                 "/api/extension-worker/decision"
