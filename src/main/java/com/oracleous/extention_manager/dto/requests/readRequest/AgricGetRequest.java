@@ -10,8 +10,12 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Schema(description = "Request payload require to fetch AgriBusiness data")
+@Schema(description = "Request payload required to fetch AgriBusiness data")
 public class AgricGetRequest {
-    private String email ;
+
+    @Schema(description = "Email address of the AgriBusiness entity", example = "agri.business@example.com")
+    private String email;
+
+    @Schema(description = "Phone number of the AgriBusiness entity", example = "09087654321")
     private String phoneNumber;
 }

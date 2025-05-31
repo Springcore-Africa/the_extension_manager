@@ -121,33 +121,6 @@ public class InvestorViewAllFarmers implements InvestorViewFarmers {
                 .build())
             .collect(Collectors.toList());
     }
-//    @Override
-//    public List<InvestorViewAgriBusinessResponse> getAllAgriBusinesses() {
-//        Users user = getUsers();
-//        Optional<Investor> investor = investorRepository.findByUsers(user);
-//        if (investor.isEmpty()) {throw new InvestorNotFoundException(INVESTOR_NOT_FOUND);}
-//        List<Farmer> farmers = farmerRepository.findAll();
-//        if (farmers.isEmpty()) {
-//            log.warn("No farmers found");
-//            return List.of();
-//        }
-//        return farmers.stream()
-//            .filter(farmer -> farmer.getAgriBusiness() != null)
-//            .map(farmer -> {
-//                AgriBusiness agriBusiness = farmer.getAgriBusiness();
-//                return InvestorViewAgriBusinessResponse.builder()
-//                    .businessName(agriBusiness.getBusinessName())
-//                    .businessLocationLga(agriBusiness.getBusinessLocationLga())
-//                    .businessLocationState(agriBusiness.getBusinessLocationState())
-//                    .agriculturalProduct(agriBusiness.getAgriculturalProduct())
-//                    .farmPhotos(agriBusiness.getFarmPhotos())
-//                    .productDescription(agriBusiness.getProductDescription())
-//                    .businessLocationExact(agriBusiness.getBusinessLocationExact())
-//                    .productPhotos(agriBusiness.getProductPhotos())
-//                    .build();
-//            })
-//            .collect(Collectors.toList());
-//    }
 
     private static @NotNull Users getUsers() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

@@ -10,9 +10,12 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Schema(description = "Request payload require to fetch investor data")
+@Schema(description = "Request payload required to fetch investor data")
 public class InvestorGetRequest {
-    private String email ;
-    private String phoneNumber ;
 
+    @Schema(description = "Email address of the investor", example = "investor@example.com")
+    private String email;
+
+    @Schema(description = "Phone number of the investor", example = "08012345678")
+    private String phoneNumber;
 }

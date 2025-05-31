@@ -2,10 +2,11 @@ package com.oracleous.extention_manager.controllers;
 
 import com.oracleous.extention_manager.dto.requests.registrationRequest.InvestorRegistrationRequest;
 import com.oracleous.extention_manager.dto.requests.readRequest.InvestorGetRequest;
+import com.oracleous.extention_manager.dto.response.investorAgriBusinessResponse.InvestorViewAgriBusinessResponse;
+import com.oracleous.extention_manager.dto.response.investorFarmerRetrieval.InvestorViewFarmerResponse;
 import com.oracleous.extention_manager.dto.response.registrationResponse.InvestorRegistrationResponse;
 import com.oracleous.extention_manager.services.investorServices.InvestorReadPackage.GetInvestorDetails;
 import com.oracleous.extention_manager.services.investorServices.InvestorRegistration.InvestorServiceReg;
-//import com.oracleous.extention_manager.services.investorServices.InvestorRetrieveAgriBusiness.InvestorViewAgriBusiness;
 import com.oracleous.extention_manager.services.investorServices.investorViewFarmerBusiness.InvestorViewFarmerBusinessMethod;
 import com.oracleous.extention_manager.services.investorServices.investorViewFarmers.InvestorViewAllFarmers;
 import io.swagger.v3.oas.annotations.Operation;
@@ -26,7 +27,6 @@ import org.springframework.web.bind.annotation.*;
 public class InvestorController {
     private final InvestorServiceReg investorServiceReg;
     private final GetInvestorDetails getInvestorDetails;
-//    private final InvestorViewAgriBusiness investorViewAgriBusiness ;
     private final InvestorViewAllFarmers investorViewAllFarmers;
     private final InvestorViewFarmerBusinessMethod investorViewFarmerBusinessMethod;
     
@@ -86,25 +86,58 @@ public class InvestorController {
         }
     }
 
-//    @GetMapping("/find_agriBusiness")
-//    public ResponseEntity <?> findAgriBusiness() {
-//        try{
-//            return new ResponseEntity<>(investorViewAgriBusiness.agriBusinessResponse(), HttpStatus.OK);
-//        }catch (Exception exception){
-//            return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
-//        }
-//    }
 
-
-    @GetMapping("check_all_farmers")
-    public ResponseEntity <?> checkAllFarmers(){
-        try{
+    @Operation(
+            summary = "Retrieve All Farmers",
+            description = "Fetches a list of all farmers available in the system."
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "List of farmers retrieved successfully",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = InvestorViewFarmerResponse.class))
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Invalid request or error retrieving farmers",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = String.class))
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Internal server error",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = String.class))
+            )
+    })
+    @GetMapping("/check_all_farmers")
+    public ResponseEntity<?> checkAllFarmers() {
+        try {
             return new ResponseEntity<>(investorViewAllFarmers.getAllFarmers(), HttpStatus.OK);
-        }catch (Exception exception){
+        } catch (Exception exception) {
             return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
+    @Operation(
+            summary = "Retrieve AgriBusiness by Farmer",
+            description = "Fetches AgriBusiness details associated with a specific farmer by their ID."
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "AgriBusiness details retrieved successfully",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = InvestorViewAgriBusinessResponse.class))
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Invalid farmer ID or error retrieving AgriBusiness",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = String.class))
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Internal server error",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = String.class))
+            )
+    })
     @GetMapping("/check_agriBusiness_link_with_farmer/{farmerId}")
     public ResponseEntity<?> getAgriBusinessByFarmer(@PathVariable Long farmerId) {
         try {

@@ -26,9 +26,6 @@ public class AgriBusinessRegRequest {
     @Schema(description = "CAC registration number of the business", example = "0019OL8", required = true)
     private String cacNumber;
 
-//    @Schema(description = "CAC registration date", example = "2023-01-01", required = true)
-//    private LocalDateTime cacRegistrationDate;
-
     @Schema(description = "Size of the farm in hectares", example = "2", required = true)
     private int farmSize;
 
