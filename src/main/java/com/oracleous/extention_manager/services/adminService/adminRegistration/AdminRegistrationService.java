@@ -10,7 +10,6 @@ import com.oracleous.extention_manager.data.repositories.SuperAdminRepository;
 import com.oracleous.extention_manager.dto.requests.requestEmail.AdminRegistrationRequestDto;
 import com.oracleous.extention_manager.dto.response.ResponseToMailSend.InitiateAdminRegistration;
 import com.oracleous.extention_manager.email.EmailEvent;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
@@ -23,7 +22,6 @@ import java.util.UUID;
 import static com.oracleous.extention_manager.utilities.ApplicationUtilities.*;
 
 @Service
-//@AllArgsConstructor
 @Slf4j
 public class AdminRegistrationService implements AdminRegistration {
     private final AdminRepository adminRepository;
@@ -57,15 +55,15 @@ public class AdminRegistrationService implements AdminRegistration {
         }
 
         if (adminRepository.existsByUsersEmail(request.getEmail())) {throw new IllegalArgumentException(EMAIL_ALREADY_EXIST);}
-        Users users = Users.builder()
-                .email(request.getEmail())
-                .userRole(Roles.ADMIN)
-                .build();
-        Admin admin = Admin.builder()
-                .users(users)
-                .confirmed(false)
-                .build();
-        adminRepository.save(admin);
+//        Users users = Users.builder()
+//                .email(request.getEmail())
+//                .userRole(Roles.ADMIN)
+//                .build();
+//        Admin admin = Admin.builder()
+//                .users(users)
+//                .confirmed(false)
+//                .build();
+//        adminRepository.save(admin);
         // I generate and save token
         String token = UUID.randomUUID().toString();
         RegistrationToken registrationToken = new RegistrationToken();

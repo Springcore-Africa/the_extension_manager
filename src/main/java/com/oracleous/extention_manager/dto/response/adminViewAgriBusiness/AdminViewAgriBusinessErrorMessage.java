@@ -1,4 +1,4 @@
-package com.oracleous.extention_manager.dto.response.AdminViewAgriBusiness;
+package com.oracleous.extention_manager.dto.response.adminViewAgriBusiness;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;

@@ -49,7 +49,13 @@ public class SecurityConfig {
                                 "/api-docs/**",
                                 "/api/farmers/farmers_registration"
                         ).permitAll()
-                        .requestMatchers("/api/extension-worker/pending/**",
+                        .requestMatchers(
+                                "/admin/register/complete-form",
+                                "/admin/register/complete",
+                                "/admin/registration-success"
+                        ).permitAll()
+                        .requestMatchers(
+                                "/api/extension-worker/pending/**",
                                 "/api/extension-worker/approve",
                                 "/api/extension-worker/decision"
                                 ).hasRole("ADMIN")
@@ -57,11 +63,9 @@ public class SecurityConfig {
                         .requestMatchers("/api/agri_business/find").hasRole("FARMER")
                         .requestMatchers("/api/v1/farmers/find-farmer/**").hasRole("FARMER")
                         .requestMatchers("/admin/register/initiate").hasRole("SUPER_ADMIN")
-                        .requestMatchers(
-                                "/admin/register/complete-form",
-                                "/admin/register/complete",
-                                "/admin/registration-success").permitAll()
+
                         .requestMatchers("/Admin/view/agriBusiness").hasRole("ADMIN")
+                        .requestMatchers("/admin/view/farmer").hasRole("ADMIN")
                         .requestMatchers("/investor/find_agriBusiness").hasRole("INVESTOR")
                         .requestMatchers("/investor/check_all_farmers").hasRole("INVESTOR")
                         .requestMatchers("/investor/check_agriBusiness_link_with_farmer/").hasRole("INVESTOR")

@@ -1,22 +1,27 @@
-#spring:
-#  datasource:
-#    url: jdbc:mysql://localhost:3306/extension_manager?createDatabaseIfNotExist=true
-#    username: root
-#    password: Ishola123?
-#    driver-class-name: com.mysql.cj.jdbc.Driver
-#  jpa:
-#    hibernate:
-#      ddl-auto: update
-#app:
-#  base-url: http://localhost:8080
+#spring.datasource.url=jdbc:h2:mem:testdb
+#spring.datasource.driver-class-name=org.h2.Driver
+#spring.datasource.username=sa
+#spring.datasource.password=
+#spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+#spring.jpa.hibernate.ddl-auto=update
+#
+#spring.mail.username=ajaditaoreed@gmail.com
+#spring.mail.password=elpw axly snek fmah
+
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+
+mail:
+  username: ajaditaoreed@gmail.com
+  password: elpw axly snek fmah
 
 
-spring.datasource.url=jdbc:h2:mem:testdb
-spring.datasource.driver-class-name=org.h2.Driver
-spring.datasource.username=sa
-spring.datasource.password=
-spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
-spring.jpa.hibernate.ddl-auto=update
 
-spring.mail.username=${MAIL_USERNAME:ajaditaoreed@gmail.com}
-spring.mail.password=${MAIL_PASSWORD:elpw axly snek fmah}

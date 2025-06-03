@@ -33,23 +33,29 @@ public class CompleteAdminRegMethod implements CompleteAdminReg{
         //I Check if token matches email
         if (!tokenData.getEmail().equals(request.getEmail())) {throw new IllegalArgumentException(TOKEN_DOES_NOT_MATCH);}
             String email = request.getEmail();
-        Admin admin = adminRepository.findByUsersEmail(email);
+//        // Check if email already exists (race condition protection)
+        if (adminRepository.existsByUsersEmail(request.getEmail())) {
+            throw new IllegalStateException(EMAIL_ALREADY_EXIST);
+        }
+//        Admin admin = adminRepository.findByUsersEmail(email);
 
-        if (admin == null) {throw new IllegalArgumentException(ADMIN_NOT_FOUND);}
-        if (admin.isConfirmed()) {throw new IllegalStateException(ADMIN_ALREADY_CONFIRMED);}
+
+
+//        if (admin == null) {throw new IllegalArgumentException(ADMIN_NOT_FOUND);}
+//        if (admin.isConfirmed()) {throw new IllegalStateException(ADMIN_ALREADY_CONFIRMED);}
         Users users = Users.builder()
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .userRole(Roles.ADMIN)
                 .build();
-        admin.setUsers(users);
-        admin.setName(request.getName());
-        admin.setConfirmed(true);
+        Admin admin = Admin.builder()
+                .users(users)
+                .name(request.getName())
+                .confirmed(true)
+                .build();
         adminRepository.save(admin);
         // Delete token
-        tokenRepository.deleteById(request.getToken());
+        tokenRepository.deleteById(tokenData.getToken());
         return CompleteAdminRegistration.builder().message(REGISTRATION_SUCCESSFUL).build();
     }
-
-
 }
