@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Cascade;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -64,9 +65,15 @@ public class Farmer {
     private String lastEducationalCertificate;
     @Column(name = "PHOTOGRAPH")
     private String passportPhotograph;
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "BUSINESS_ID", referencedColumnName = "ID")
     private AgriBusiness agriBusiness;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "FARM_ID", referencedColumnName = "ID")
+    private Farm farm;
+
     @Column(name = "RegistrationToken")
     private String verificationToken ;
     private boolean isVerified ;

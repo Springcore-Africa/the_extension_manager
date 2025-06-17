@@ -22,9 +22,5 @@ public class MyUserDetailsService implements UserDetailsService {
                 orElseThrow(()-> new UsernameNotFoundException("User not found"));
         return new UserPrincipal(users); // <<< CHANGE IS HERE
 
-//        return new org.springframework.security.core.userdetails.User(
-//                users.getEmail(),
-//                users.getPassword(),
-//                new ArrayList<>());
     }
 }
