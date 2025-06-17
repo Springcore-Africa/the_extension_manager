@@ -13,6 +13,9 @@ public class Farm {
     private String location ;
     private String farmSize ;
     private String cropPlanted ;
+
+    @Lob
+    @Column(columnDefinition = "LONGBLOB")
     private byte farmPicture ;
 
     @OneToOne(cascade = CascadeType.ALL)
