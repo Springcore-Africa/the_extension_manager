@@ -22,7 +22,7 @@ public class Farm {
 
     @Lob
     @Column(columnDefinition = "LONGBLOB")
-    private byte farmPicture ;
+    private byte[] farmPicture ;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "FARMER_ID")

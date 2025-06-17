@@ -13,6 +13,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 @Service
 @AllArgsConstructor
 public class FarmServiceImp implements FarmService {
@@ -27,16 +30,19 @@ public class FarmServiceImp implements FarmService {
         Users username = userPrincipal.users();
         if(username == null){throw new IllegalArgumentException("Username required");}
         Farmer farmer = farmersRepository.findByUsers(username).orElseThrow(()-> new IllegalArgumentException("Farmer not found"));
+        Farm farm = new Farm();
 
-
-        Farm farm = Farm.builder()
-                .farmer(farmer)
-                .farmName(farmRequest.getFarmName())
-                .farmSize(farmRequest.getFarmSize())
-                .cropPlanted(farmRequest.getCropPlanted())
-                .location(farmRequest.getLocation())
-//                .farmPicture()
-                .build();
+        try(InputStream inputStream = farmRequest.getFarmPicture().getInputStream()){
+            byte[] fileBytes = inputStream.readAllBytes();
+            farm.setFarmPicture(fileBytes);
+        }catch(IOException e){
+            throw new IllegalArgumentException("Farm Picture Not Found");
+        }
+            farm.setFarmer(farmer);
+            farm.setFarmName(farmRequest.getFarmName());
+            farm.setFarmSize(farmRequest.getFarmSize());
+            farm.setCropPlanted(farmRequest.getCropPlanted());
+            farm.setLocation(farmRequest.getLocation());
         farmRepository.save(farm);
         return FarmResponse.builder()
                 .message("Farmer registration successful")
