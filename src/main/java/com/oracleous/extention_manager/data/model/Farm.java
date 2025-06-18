@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Farm {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id ;
 
     private String farmName ;
@@ -27,4 +28,6 @@ public class Farm {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "FARMER_ID")
     private Farmer farmer ;
+
+
 }

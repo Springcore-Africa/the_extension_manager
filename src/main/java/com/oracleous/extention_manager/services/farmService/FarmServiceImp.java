@@ -30,6 +30,14 @@ public class FarmServiceImp implements FarmService {
         Users username = userPrincipal.users();
         if(username == null){throw new IllegalArgumentException("Username required");}
         Farmer farmer = farmersRepository.findByUsers(username).orElseThrow(()-> new IllegalArgumentException("Farmer not found"));
+        Farm farm = getFarm(farmRequest, farmer);
+        farmRepository.save(farm);
+        return FarmResponse.builder()
+                .message("Farmer registration successful")
+                .build();
+    }
+
+    private static Farm getFarm(FarmRequest farmRequest, Farmer farmer) {
         Farm farm = new Farm();
 
         try(InputStream inputStream = farmRequest.getFarmPicture().getInputStream()){
@@ -38,14 +46,11 @@ public class FarmServiceImp implements FarmService {
         }catch(IOException e){
             throw new IllegalArgumentException("Farm Picture Not Found");
         }
-            farm.setFarmer(farmer);
-            farm.setFarmName(farmRequest.getFarmName());
-            farm.setFarmSize(farmRequest.getFarmSize());
-            farm.setCropPlanted(farmRequest.getCropPlanted());
-            farm.setLocation(farmRequest.getLocation());
-        farmRepository.save(farm);
-        return FarmResponse.builder()
-                .message("Farmer registration successful")
-                .build();
+        farm.setFarmer(farmer);
+        farm.setFarmName(farmRequest.getFarmName());
+        farm.setFarmSize(farmRequest.getFarmSize());
+        farm.setCropPlanted(farmRequest.getCropPlanted());
+        farm.setLocation(farmRequest.getLocation());
+        return farm;
     }
 }

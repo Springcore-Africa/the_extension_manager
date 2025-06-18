@@ -59,6 +59,11 @@ public class SecurityConfig {
                                 "/api/extension-worker/approve",
                                 "/api/extension-worker/decision"
                                 ).hasRole("ADMIN")
+                        .requestMatchers("/farmer/farm_registration").hasRole("FARMER")
+                        .requestMatchers("/farmer/farm/*/picture").permitAll()  // Allow image access without login
+
+
+
                         .requestMatchers("/api/agri_business/register").hasRole("FARMER")
                         .requestMatchers("/api/agri_business/find").hasRole("FARMER")
                         .requestMatchers("/api/v1/farmers/find-farmer/**").hasRole("FARMER")

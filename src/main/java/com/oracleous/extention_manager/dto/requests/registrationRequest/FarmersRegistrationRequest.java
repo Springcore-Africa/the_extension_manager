@@ -90,6 +90,6 @@ public class FarmersRegistrationRequest {
     @Schema(description = "Passport photograph URL", example = "https://example.com/passport.jpg", required = true)
     private String passportPhotograph;
 
-    @Schema(description = "Verification token", example = "102930", required = true)
-    private String verificationToken;
+//    @Schema(description = "Verification token", example = "102930", required = true)
+//    private String verificationToken;
 }
