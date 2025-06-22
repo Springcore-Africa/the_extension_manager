@@ -17,7 +17,7 @@ import java.util.Map;
 @AllArgsConstructor
 @NoArgsConstructor
 public class FarmingCostDto {
-    private Map<CostItemType, CostItem> costItems = new EnumMap<>(CostItemType.class);
+    private Map<CostItemType, CostItemDto> costItems = new EnumMap<>(CostItemType.class);
     private BigDecimal totalDirectCost;
     private BigDecimal totalOverheadCost;
     private BigDecimal totalFarmingCost;
