@@ -17,5 +17,5 @@ public class FarmFinanceRequestDto {
     private BigDecimal pricePerQuantity;
     private BigDecimal overHeadCost;
 
-    private Long farmingCostId;
+    private Long farmingCostId ;
 }

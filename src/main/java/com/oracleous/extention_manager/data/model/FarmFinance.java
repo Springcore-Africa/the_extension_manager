@@ -1,13 +1,13 @@
 package com.oracleous.extention_manager.data.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.oracleous.extention_manager.data.model.FarmingCost;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.math.BigDecimal;
 
 @Entity
 @Data
@@ -15,16 +15,20 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class FarmFinance {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id ;
+    private Long id;
 
-    private String TotalQuantityOfCropProduced;
-    private String TotalQuantitySold ;
-    private String PricePerQuantity  ;
-    private String TotalRevenue ;
-    private String TotalDirectCost  ;
-    private String GrossProfit ;
-    private String OverHeadCost ;
-    private String NetProfit ;
+    private BigDecimal totalQuantityOfCropProduced;
+    private BigDecimal totalQuantitySold;
+    private BigDecimal pricePerQuantity;
+    private BigDecimal totalRevenue;
+    private BigDecimal totalDirectCost;
+    private BigDecimal grossProfit;
+    private BigDecimal overHeadCost;
+    private BigDecimal netProfit;
+
+    @OneToOne
+    private FarmingCost farmingCost;
 }
