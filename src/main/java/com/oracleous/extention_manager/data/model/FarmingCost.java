@@ -1,9 +1,6 @@
 package com.oracleous.extention_manager.data.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,4 +21,11 @@ public class FarmingCost {
     private BigDecimal totalDirectCost;
     private BigDecimal totalOverheadCost;
     private BigDecimal totalFarmingCost;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private Users user;
+
+
+
 }

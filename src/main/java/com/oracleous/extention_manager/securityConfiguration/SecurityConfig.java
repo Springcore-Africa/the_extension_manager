@@ -61,7 +61,7 @@ public class SecurityConfig {
                                 ).hasRole("ADMIN")
                         .requestMatchers("/farmer/farm_registration").hasRole("FARMER")
                         .requestMatchers("/farmer/farming-cost").hasRole("FARMER")
-//                        .requestMatchers("/farmer/farm/*/picture").permitAll()
+                        .requestMatchers("/farmer/farm-finance").hasRole("FARMER")
 
                         .requestMatchers("/api/agri_business/register").hasRole("FARMER")
                         .requestMatchers("/api/agri_business/find").hasRole("FARMER")
