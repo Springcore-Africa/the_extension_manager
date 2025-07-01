@@ -23,14 +23,14 @@ jobs:
       uses: docker/login-action@v2
       with:
         registry: https://mcr.microsoft.com/
-        username: ${{ secrets.AzureAppService_ContainerUsername_6fa8dde9eba2440aa3530093ae44c566 }}
-        password: ${{ secrets.AzureAppService_ContainerPassword_8598f4befdcf41a6a97f12288a99c77e }}
+        username: ${{ secrets.AzureAppService_ContainerUsername_9da99b691bbc4c64a7945d6c62b4509a }}
+        password: ${{ secrets.AzureAppService_ContainerPassword_f0a2653035d8400f835135d173ced4c1 }}
 
     - name: Build and push container image to registry
       uses: docker/build-push-action@v3
       with:
         push: true
-        tags: mcr.microsoft.com/${{ secrets.AzureAppService_ContainerUsername_6fa8dde9eba2440aa3530093ae44c566 }}/appsvc/staticsite:${{ github.sha }}
+        tags: mcr.microsoft.com/${{ secrets.AzureAppService_ContainerUsername_9da99b691bbc4c64a7945d6c62b4509a }}/appsvc/staticsite:${{ github.sha }}
         file: ./Dockerfile
 
   deploy:
@@ -47,5 +47,5 @@ jobs:
       with:
         app-name: 'extensionmanager'
         slot-name: 'production'
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile_8880000039f342379b4dd0426ce8b105 }}
-        images: 'mcr.microsoft.com/${{ secrets.AzureAppService_ContainerUsername_6fa8dde9eba2440aa3530093ae44c566 }}/appsvc/staticsite:${{ github.sha }}'
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_d3305e503bc647e68da292c8c86eba9d }}
+        images: 'mcr.microsoft.com/${{ secrets.AzureAppService_ContainerUsername_9da99b691bbc4c64a7945d6c62b4509a }}/appsvc/staticsite:${{ github.sha }}'
