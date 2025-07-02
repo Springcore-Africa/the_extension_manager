@@ -57,6 +57,16 @@
 #          slot-name: production
 #          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
 #          images: ${{ secrets.DOCKER_USERNAME }}/extension_manager:latest
+name: Build and Deploy to Azure
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -97,3 +107,5 @@ jobs:
           images: ${{ secrets.DOCKER_USERNAME }}/extension_manager:latest
         env:
           SERVER_PORT: 9000
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          images: ${{ secrets.DOCKER_USERNAME }}/extension_manager:latest
