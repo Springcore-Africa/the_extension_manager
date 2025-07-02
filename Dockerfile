@@ -2,13 +2,15 @@
 FROM eclipse-temurin:17-jdk-alpine AS build
 WORKDIR /workspace/app
 
-# Copy Maven wrapper and make it executable
+# Copy Maven wrapper and pom.xml first
 COPY mvnw .
-RUN chmod +x mvnw
-
-# Copy Maven settings and download dependencies
 COPY .mvn .mvn
 COPY pom.xml .
+
+# Make mvnw executable
+RUN chmod +x mvnw
+
+# Download dependencies
 RUN ./mvnw dependency:go-offline -B
 
 # Copy source code and build the application
@@ -24,6 +26,6 @@ COPY --from=build /workspace/app/target/*.jar app.jar
 RUN addgroup -S spring && adduser -S spring -G spring
 USER spring:spring
 
-# Expose port 8080 (Render's default)
+# Expose port 8080 (Render's default, advisory only)
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "/app/app.jar"]
