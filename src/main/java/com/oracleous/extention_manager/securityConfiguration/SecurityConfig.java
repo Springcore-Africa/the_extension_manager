@@ -82,7 +82,8 @@ public class SecurityConfig {
                     var config = new CorsConfiguration();
                     config.setAllowedOrigins(List.of(
                             "http://localhost:5173",
-                            "https://the-extension-manager-2.onrender.com"
+                            "https://the-extension-manager-2.onrender.com",
+                            "https://extensionmanager-cgcereebffbeaaev.westcentralus-01.azurewebsites.net"
                     ));
                     config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
                     config.setAllowedHeaders(List.of("Authorization", "Content-Type"));

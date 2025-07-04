@@ -25,14 +25,7 @@ public class FarmFinanceServiceImpl implements FarmFinanceService{
 
     @Override
     public FarmFinanceResponseDto calculateFarmFinance(FarmFinanceRequestDto farmFinanceRequestDto) {
-//        ApplicationUtilities.getCurrentUser();
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        if(authentication == null  || !authentication.isAuthenticated()) {throw new IllegalArgumentException("Farmer not found ");}
-//        UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
-//        if(userPrincipal == null) {throw new IllegalArgumentException("Farmer not found ");}
-//        FarmingCost farmingCost = farmingCostRepository.findTopByUserOrderByIdDesc(currentUser)
-//                .orElseThrow(() -> new IllegalArgumentException("Farming cost not found for user"));
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         log.info("this is authentication {}", authentication);
 
         UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
