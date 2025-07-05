@@ -1,31 +1,52 @@
-# Multi-stage build to reduce image size
-FROM eclipse-temurin:17-jdk-alpine AS build
-WORKDIR /workspace/app
-
-# Copy Maven wrapper and pom.xml first
-COPY mvnw .
-COPY .mvn .mvn
-COPY pom.xml .
-
-# Make mvnw executable
-RUN chmod +x mvnw
-
-# Download dependencies
-RUN ./mvnw dependency:go-offline -B
-
-# Copy source code and build the application
-COPY src src
-RUN ./mvnw package -DskipTests
-
-# Final image
+# 🛠️ Stage 1: Build the app
+#FROM eclipse-temurin:17-jdk-alpine AS build
+#WORKDIR /workspace/app
+#
+## Prepare Maven
+#COPY mvnw .
+#COPY .mvn .mvn
+#COPY pom.xml .
+#RUN chmod +x mvnw
+#RUN ./mvnw dependency:go-offline -B
+#
+## Copy and build source
+#COPY src src
+## Remove these lines:
+## RUN ./mvnw package -DskipTests
+#
+## Replace with:
+#COPY target/extention-manager-0.0.1-SNAPSHOT.jar /app/app.jar
+#
+#
+## 🧼 Stage 2: Minimal runtime image
+#FROM eclipse-temurin:17-jre-alpine
+#WORKDIR /app
+#
+## Copy the exact built JAR from Stage 1
+#COPY --from=build /workspace/app/target/extention-manager-0.0.1-SNAPSHOT.jar /app/app.jar
+#
+## Run securely as non-root user
+#RUN addgroup -S spring && adduser -S spring -G spring
+#USER spring:spring
+#
+## Expose the correct port your app uses
+#EXPOSE 9000
+#
+## 💡 Startup command
+#ENTRYPOINT ["java", "-jar", "/app/app.jar"]
+# 🧼 Stage: Minimal runtime image only (no build inside Docker)
 FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
-COPY --from=build /workspace/app/target/*.jar app.jar
 
-# Run as non-root user for security
+# 🟢 Copy your locally built Spring Boot JAR
+COPY target/extention-manager-0.0.1-SNAPSHOT.jar /app/app.jar
+
+# 👤 Run securely as non-root user
 RUN addgroup -S spring && adduser -S spring -G spring
 USER spring:spring
 
-# Expose port 8080 (Render's default, advisory only)
-EXPOSE 8080
+# 📢 App listens on this port (used in Azure)
+EXPOSE 9000
+
+# 🚀 Startup command
 ENTRYPOINT ["java", "-jar", "/app/app.jar"]
